@@ -28,7 +28,7 @@ class SpecmaticServer:
         junit_report_path = "./junit_report/TEST-junit-jupiter.xml"
         root = ET.parse(junit_report_path).getroot()
         for testcase in root.iter('testcase'):
-            scenario = testcase.find('system-out').text.split('Scenario:')[1]
+            scenario = testcase.find('system-out').text.split('display-name:  ')[1]
             test_name = "test_" + scenario
             failure = testcase.find('failure')
             if failure is None:
@@ -52,7 +52,7 @@ class SpecmaticServer:
         junit_report_path = "./junit_report/TEST-junit-jupiter.xml"
         root = ET.parse(junit_report_path).getroot()
         for testcase in root.iter('testcase'):
-            scenario = testcase.find('system-out').text.split('Scenario:')[1]
+            scenario = testcase.find('system-out').text.split('display-name:  ')[1]
             test_name = "test_" + scenario
             failure = testcase.find('failure')
             if failure is None:
