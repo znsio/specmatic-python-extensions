@@ -3,3 +3,4 @@
 .specmatic/*
 junit_report
 .pytest_cache
+specmatic.jar

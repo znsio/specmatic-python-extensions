@@ -1,9 +1,6 @@
-import os
-from pathlib import Path
-
 import pytest
 
-from src.specmatic_server import SpecmaticServer
+from src.specmatic.specmatic_server import SpecmaticServer
 from src.utils import get_project_root
 
 host = "127.0.0.1"
