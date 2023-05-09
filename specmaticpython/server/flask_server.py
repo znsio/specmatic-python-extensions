@@ -1,6 +1,6 @@
 from flask import Flask
 
-from src.server.server_thread import ServerThread
+from specmaticpython.server.server_thread import ServerThread
 
 
 class FlaskServer:

@@ -1,7 +1,7 @@
 import unittest
 
-from src.specmatic.specmatic_server import SpecmaticServer
-from src.utils import get_project_root
+from specmaticpython.specmatic.specmatic_server import SpecmaticServer
+from specmaticpython.utils import get_project_root
 
 host = "127.0.0.1"
 port = 5000
