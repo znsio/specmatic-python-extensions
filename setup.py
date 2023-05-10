@@ -19,16 +19,16 @@ def get_version():
     return version
 
 
-specmatic_python_version = get_version()
+version = get_version()
 
-download_specmatic_jar(specmatic_python_version['__version__'])
+download_specmatic_jar(version['__specmatic_version__'])
 
 this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='specmatic-python',
-    version=specmatic_python_version['__version__'],
+    version=version['__version__'],
     description='A Python module for using the Specmatic Library.',
     long_description=long_description,
     long_description_content_type='text/markdown',
