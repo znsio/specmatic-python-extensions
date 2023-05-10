@@ -4,26 +4,27 @@ from setuptools import setup, find_packages
 import urllib.request
 
 
-def download_specmatic_jar():
-    file_url = 'https://github.com/znsio/specmatic/releases/download/0.65.1/specmatic.jar'
-    file_path = 'specmaticpython/specmatic/specmatic.jar'
+def download_specmatic_jar(version):
+    file_url = f'https://github.com/znsio/specmatic/releases/download/{version}/specmatic.jar'
+    file_path = 'specmatic_python/specmatic/specmatic.jar'
+    print(f"Downloading specmatic jar from: {file_url}")
     urllib.request.urlretrieve(file_url, file_path)
 
 
 def get_version():
     version = {}
-    with open(os.path.join('specmaticpython', 'version.py')) as file:
+    with open(os.path.join('specmatic_python', 'version.py')) as file:
         exec(file.read(), version)
     return version
 
 
-download_specmatic_jar()
+specmatic_python_version = get_version()
 
-specmaticpython_version = get_version()
+download_specmatic_jar(specmatic_python_version['__version__'])
 
 setup(
     name='specmatic-python',
-    version=specmaticpython_version['__version__'],
+    version=specmatic_python_version['__version__'],
     description='A Python module for using the Specmatic Library.',
     author='Specmatic Builders',
     author_email='info@specmatic.in',

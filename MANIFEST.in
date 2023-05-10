@@ -1,2 +1,2 @@
 include README.md
-include specmaticpython/specmatic/specmatic.jar
+include specmatic_python/specmatic/specmatic.jar

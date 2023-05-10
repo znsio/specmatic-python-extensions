@@ -2,7 +2,7 @@ import os
 import pathlib
 import subprocess
 
-from specmaticpython.utils import get_junit_report_file_path, get_junit_report_dir_path
+from specmatic_python.utils import get_junit_report_file_path, get_junit_report_dir_path
 import shutil
 
 

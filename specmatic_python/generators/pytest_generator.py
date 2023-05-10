@@ -1,6 +1,6 @@
 import pytest
 
-from specmaticpython.generators.test_generator_base import TestGeneratorBase
+from specmatic_python.generators.test_generator_base import TestGeneratorBase
 
 
 class PyTestGenerator(TestGeneratorBase):

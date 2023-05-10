@@ -1,7 +1,7 @@
-from specmaticpython.generators.pytest_generator import PyTestGenerator
-from specmaticpython.generators.unittest_generator import UnitTestGenerator
-from specmaticpython.specmatic.specmatic_runner import SpecmaticRunner
-from specmaticpython.utils import get_junit_report_file_path
+from specmatic_python.generators.pytest_generator import PyTestGenerator
+from specmatic_python.generators.unittest_generator import UnitTestGenerator
+from specmatic_python.specmatic.specmatic_runner import SpecmaticRunner
+from specmatic_python.utils import get_junit_report_file_path
 
 
 class SpecmaticServer:

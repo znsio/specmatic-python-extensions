@@ -1,7 +1,7 @@
 import pytest
 
-from specmaticpython.specmatic.specmatic_server import SpecmaticServer
-from specmaticpython.utils import get_project_root
+from specmatic_python.specmatic.specmatic_server import SpecmaticServer
+from specmatic_python.utils import get_project_root
 
 host = "127.0.0.1"
 port = 5000
