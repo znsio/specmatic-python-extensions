@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from setuptools import setup, find_packages
 import urllib.request
@@ -22,10 +23,15 @@ specmatic_python_version = get_version()
 
 download_specmatic_jar(specmatic_python_version['__version__'])
 
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text()
+
 setup(
     name='specmatic-python',
     version=specmatic_python_version['__version__'],
     description='A Python module for using the Specmatic Library.',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     author='Specmatic Builders',
     author_email='info@specmatic.in',
     url='https://github.com/znsio/specmatic-python-extensions',
