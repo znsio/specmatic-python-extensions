@@ -8,6 +8,8 @@ from specmatic_python.utils import get_junit_report_file_path
 class Specmatic:
 
     def __init__(self):
+        self.stub_server_port = None
+        self.stub_server_host = None
         self.test_server_port = None
         self.test_server_host = None
         self.contract_file_path = ''
@@ -36,7 +38,12 @@ class Specmatic:
                         self.specmatic_json_file_path).run()
         PyTestGenerator(test_class, get_junit_report_file_path()).generate()
 
-    @classmethod
-    def create_stub(cls, stub_server_host: str = '0.0.0.1',
-                    stub_server_port: int = 9000, stub_contract_file_path: str = ''):
-        return SpecmaticStub(stub_server_host, stub_server_port, stub_contract_file_path)
+    def stub(self, stub_server_host: str = '0.0.0.1',
+             stub_server_port: int = 9000):
+        self.stub_server_host = stub_server_host
+        self.stub_server_port = stub_server_port
+        return self
+
+    def build(self):
+        return SpecmaticStub(self.stub_server_host, self.stub_server_port, self.specmatic_json_file_path,
+                             self.contract_file_path)

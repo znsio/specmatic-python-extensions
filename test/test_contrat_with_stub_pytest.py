@@ -1,4 +1,6 @@
+import json
 import subprocess
+from time import sleep
 
 import pytest
 
@@ -10,22 +12,27 @@ port = 5000
 
 
 class TestApiContract:
-    stub = None
-
     @classmethod
     def setupClass(cls):
-        cls.stub = Specmatic.create_stub("127.0.0.1", 8080)
-        cls.stub.start()
+        pass
 
     @classmethod
     def tearDownClass(cls):
-        cls.stub.stop()
+        pass
 
 
+stub = Specmatic()\
+    .stub("127.0.0.1", 8080)\
+    .with_specmatic_json_at(get_project_root() + '/specmatic.json')\
+    .build()
+stub.start()
+sleep(5)
+stub.set_expectation(get_project_root() + '/test/data/expectation.json')
 Specmatic() \
     .test(host, port) \
-    .with_specmatic_json_at(get_project_root() + '/specmatic.json')\
+    .with_specmatic_json_at(get_project_root() + '/specmatic.json') \
     .configure_py_tests(TestApiContract)
+stub.stop()
 
 if __name__ == '__main__':
     pytest.main()

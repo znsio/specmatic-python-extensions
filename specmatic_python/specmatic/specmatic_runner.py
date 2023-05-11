@@ -29,8 +29,9 @@ class SpecmaticRunner:
         ]
         if self.specmatic_json_file_path != '':
             cmd.append("--config=" + self.specmatic_json_file_path)
-        if self.contract_file_path != '':
-            cmd.append(self.contract_file_path)
+        else:
+            if self.contract_file_path != '':
+                cmd.append(self.contract_file_path)
 
         cmd += [
             "--junitReportDir=" + get_junit_report_dir_path(),
