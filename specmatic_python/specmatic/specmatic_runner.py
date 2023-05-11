@@ -25,9 +25,10 @@ class SpecmaticRunner:
             "java",
             "-jar",
             jar_path,
-            "test",
-            "--config=" + self.specmatic_json_file_path
+            "test"
         ]
+        if self.specmatic_json_file_path != '':
+            cmd.append("--config=" + self.specmatic_json_file_path)
         if self.contract_file_path != '':
             cmd.append(self.contract_file_path)
 
@@ -36,6 +37,9 @@ class SpecmaticRunner:
             '--host=' + self.host,
             "--port=" + str(self.port)
         ]
+
+        root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+        print("root:" + root_dir)
 
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
         output, error = process.communicate()

@@ -1,16 +1,19 @@
 from specmatic_python.generators.pytest_generator import PyTestGenerator
 from specmatic_python.generators.unittest_generator import UnitTestGenerator
 from specmatic_python.specmatic.specmatic_runner import SpecmaticRunner
+from specmatic_python.specmatic.specmatic_stub import SpecmaticStub
 from specmatic_python.utils import get_junit_report_file_path
 
 
 class Specmatic:
-    test_server_host = "127.0.0.1"
-    test_server_port = 5000
-    contract_file_path = ''
-    specmatic_json_file_path = ''
 
-    def with_api_under_test_at(self, test_server_host: str, test_server_port: int):
+    def __init__(self):
+        self.test_server_port = None
+        self.test_server_host = None
+        self.contract_file_path = ''
+        self.specmatic_json_file_path = ''
+
+    def test(self, test_server_host: str = "127.0.0.1", test_server_port: int = 5000):
         self.test_server_host = test_server_host
         self.test_server_port = test_server_port
         return self
@@ -32,3 +35,8 @@ class Specmatic:
         SpecmaticRunner(self.test_server_host, self.test_server_port, self.contract_file_path,
                         self.specmatic_json_file_path).run()
         PyTestGenerator(test_class, get_junit_report_file_path()).generate()
+
+    @classmethod
+    def create_stub(cls, stub_server_host: str = '0.0.0.1',
+                    stub_server_port: int = 9000, stub_contract_file_path: str = ''):
+        return SpecmaticStub(stub_server_host, stub_server_port, stub_contract_file_path)

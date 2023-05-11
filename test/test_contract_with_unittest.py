@@ -1,6 +1,6 @@
 import unittest
 
-from specmatic_python.specmatic.specmatic_server import Specmatic
+from specmatic_python.specmatic.specmatic import Specmatic
 from specmatic_python.utils import get_project_root
 
 host = "127.0.0.1"
@@ -18,7 +18,7 @@ class TestContractUnitTest(unittest.TestCase):
 
 
 Specmatic() \
-    .with_api_under_test_at(host, port) \
+    .test(host, port) \
     .with_contract_file(get_project_root() + '/order_api_spec.yaml') \
     .configure_unit_tests(TestContractUnitTest)
 
