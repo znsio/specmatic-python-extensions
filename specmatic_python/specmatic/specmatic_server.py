@@ -4,7 +4,7 @@ from specmatic_python.specmatic.specmatic_runner import SpecmaticRunner
 from specmatic_python.utils import get_junit_report_file_path
 
 
-class SpecmaticServer:
+class Specmatic:
     test_server_host = "127.0.0.1"
     test_server_port = 5000
     contract_file_path = ''
