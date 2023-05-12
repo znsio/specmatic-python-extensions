@@ -1,20 +1,17 @@
 import pytest
 
-from specmatic_python.specmatic.specmatic import Specmatic
+from specmatic_python.specmatic.decorators import specmatic_contract_test
 from specmatic_python.utils import get_project_root
 
 host = "127.0.0.1"
 port = 5000
+specmatic_json_file = get_project_root() + '/specmatic.json'
 
 
+@specmatic_contract_test(host, port, specmatic_json_file)
 class TestContract:
     pass
 
-
-Specmatic() \
-    .test(host, port) \
-    .with_specmatic_json_at(get_project_root() + '/specmatic.json') \
-    .configure_py_tests(TestContract)
 
 if __name__ == '__main__':
     pytest.main()

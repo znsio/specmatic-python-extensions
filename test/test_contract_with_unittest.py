@@ -1,26 +1,17 @@
 import unittest
 
-from specmatic_python.specmatic.specmatic import Specmatic
+from specmatic_python.specmatic.decorators import specmatic_contract_test
 from specmatic_python.utils import get_project_root
 
 host = "127.0.0.1"
 port = 5000
+specmatic_json_file = get_project_root() + '/specmatic.json'
 
 
+@specmatic_contract_test(host, port, specmatic_json_file)
 class TestContractUnitTest(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        pass
+    pass
 
-    @classmethod
-    def tearDownClass(cls):
-        pass
-
-
-Specmatic() \
-    .test(host, port) \
-    .with_contract_file(get_project_root() + '/order_api_spec.yaml') \
-    .configure_unit_tests(TestContractUnitTest)
 
 if __name__ == '__main__':
     unittest.main()

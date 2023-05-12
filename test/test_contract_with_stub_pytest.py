@@ -16,7 +16,7 @@ expectation_json_file = get_project_root() + '/test/data/expectation.json'
 
 
 @specmatic_contract_test(host, port, specmatic_json_file)
-@specmatic_stub(stub_host, stub_port, [expectation_json_file], specmatic_json_file,)
+@specmatic_stub(stub_host, stub_port, [expectation_json_file], specmatic_json_file)
 class TestApiContract:
     @classmethod
     def teardown_class(cls):
