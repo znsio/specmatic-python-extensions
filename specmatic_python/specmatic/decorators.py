@@ -1,22 +1,27 @@
+from flask import Flask
+
 from specmatic_python.server.flask_server import FlaskServer
 from specmatic_python.specmatic.specmatic import Specmatic
 
 
-def create_stub(host, port, specmatic_json_file='', expectation_json_file=''):
+def specmatic_stub(host: str, port: int, expectation_json_files=None, specmatic_json_file: str = ''):
+    if expectation_json_files is None:
+        expectation_json_files = []
+
     def decorator(cls):
         stub = Specmatic() \
             .stub(host, port) \
             .with_specmatic_json_at(specmatic_json_file) \
             .build()
         stub.start()
-        stub.set_expectation(expectation_json_file)
+        stub.set_expectations(expectation_json_files)
         cls.stub = stub
         return cls
 
     return decorator
 
 
-def run_specmatic(host, port, specmatic_json_file=''):
+def specmatic_contract_test(host: str, port: int, specmatic_json_file: str = ''):
     def decorator(cls):
         Specmatic() \
             .test(host, port) \
@@ -27,7 +32,7 @@ def run_specmatic(host, port, specmatic_json_file=''):
     return decorator
 
 
-def start_flask_app(app, host, port):
+def start_flask_app(app: Flask, host: str, port: int):
     def decorator(cls):
         flask_server = FlaskServer(app, host, port)
         flask_server.start()
