@@ -18,12 +18,11 @@ class SpecmaticStub:
     def start(self):
         stub_command = self._create_stub_process_command()
         self.process = subprocess.Popen(stub_command)
-        print(f"Specmatic stub started on {self.host}:{self.port}")
+        print(f"\n Starting specmatic stub server on {self.host}:{self.port}")
 
     def stop(self):
-        print(f"\n Shutting down specmatic stub on {self.host}:{self.port}, please wait ...")
+        print(f"\n Shutting down specmatic stub server on {self.host}:{self.port}, please wait ...")
         sleep(10)
-        # os.killpg(os.getpgid(self.process.pid), signal.SIGTERM)
         self.process.kill()
 
     def set_expectation(self, file_path: str):

@@ -1,3 +1,4 @@
+from specmatic_python.server.flask_server import FlaskServer
 from specmatic_python.specmatic.specmatic import Specmatic
 
 
@@ -21,6 +22,16 @@ def run_specmatic(host, port, specmatic_json_file=''):
             .test(host, port) \
             .with_specmatic_json_at(specmatic_json_file) \
             .configure_py_tests(cls)
+        return cls
+
+    return decorator
+
+
+def start_flask_app(app, host, port):
+    def decorator(cls):
+        flask_server = FlaskServer(app, host, port)
+        flask_server.start()
+        cls.flask_server = flask_server
         return cls
 
     return decorator
