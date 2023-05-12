@@ -3,7 +3,7 @@ import os
 import signal
 import subprocess
 import requests
-from specmatic_python.specmatic.specmatic_runner import SpecmaticRunner
+from time import sleep
 
 
 class SpecmaticStub:
@@ -21,13 +21,15 @@ class SpecmaticStub:
         print(f"Specmatic stub started on {self.host}:{self.port}")
 
     def stop(self):
-        print(f"Shutting down specmatic stub on {self.host}:{self.port}")
-        os.killpg(os.getpgid(self.process.pid), signal.SIGTERM)
+        print(f"\n Shutting down specmatic stub on {self.host}:{self.port}, please wait ...")
+        sleep(10)
+        # os.killpg(os.getpgid(self.process.pid), signal.SIGTERM)
+        self.process.kill()
 
     def set_expectation(self, file_path: str):
+        sleep(5)
         with open(file_path, 'r') as file:
             json_string = json.load(file)
-            print(json_string)
             headers = {
                 "Content-Type": "application/json"
             }
