@@ -1,10 +1,10 @@
 from flask import Flask
 
-from specmatic_python.server.flask_server import FlaskServer
-from specmatic_python.specmatic.specmatic import Specmatic
+from specmatic.server.flask_server import FlaskServer
+from specmatic.core.specmatic import Specmatic
 
 
-def specmatic_stub(host: str, port: int, expectation_json_files=None, specmatic_json_file: str = '', contract_file=''):
+def specmatic_stub(host: str, port: int, expectation_json_files=None, contract_file='', specmatic_json_file: str = ''):
     if expectation_json_files is None:
         expectation_json_files = []
 
@@ -22,7 +22,7 @@ def specmatic_stub(host: str, port: int, expectation_json_files=None, specmatic_
     return decorator
 
 
-def specmatic_contract_test(host: str, port: int, specmatic_json_file: str = '', contract_file=''):
+def specmatic_contract_test(host: str, port: int, contract_file='', specmatic_json_file: str = ''):
     def decorator(cls):
         Specmatic() \
             .test(host, port) \

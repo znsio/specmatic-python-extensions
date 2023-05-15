@@ -1,8 +1,8 @@
-from specmatic_python.generators.pytest_generator import PyTestGenerator
-from specmatic_python.generators.unittest_generator import UnitTestGenerator
-from specmatic_python.specmatic.specmatic_runner import SpecmaticRunner
-from specmatic_python.specmatic.specmatic_stub import SpecmaticStub
-from specmatic_python.utils import get_junit_report_file_path
+from specmatic.generators.pytest_generator import PyTestGenerator
+from specmatic.generators.unittest_generator import UnitTestGenerator
+from specmatic.core.specmatic_runner import SpecmaticRunner
+from specmatic.core.specmatic_stub import SpecmaticStub
+from specmatic.utils import get_junit_report_file_path
 
 
 class Specmatic:

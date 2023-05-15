@@ -1,4 +1,4 @@
-from specmatic_python.generators.test_generator_base import TestGeneratorBase
+from specmatic.generators.test_generator_base import TestGeneratorBase
 
 
 class UnitTestGenerator(TestGeneratorBase):

@@ -2,7 +2,7 @@ import os
 import pathlib
 import subprocess
 
-from specmatic_python.utils import get_junit_report_file_path, get_junit_report_dir_path
+from specmatic.utils import get_junit_report_file_path, get_junit_report_dir_path
 import shutil
 
 
@@ -42,7 +42,7 @@ class SpecmaticRunner:
         root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
         print("root:" + root_dir)
 
-        print(f"\n Running specmatic tests for api at {self.host}:{self.port}")
+        print(f"\n Running core tests for api at {self.host}:{self.port}")
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
         output, error = process.communicate()
 

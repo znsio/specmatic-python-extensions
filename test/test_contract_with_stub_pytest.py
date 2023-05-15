@@ -1,20 +1,18 @@
-import json
-import subprocess
-from time import sleep
-
 import pytest
 
-from specmatic_python.specmatic.decorators import specmatic_contract_test, specmatic_stub
-from specmatic_python.utils import get_project_root
+from specmatic.core.decorators import specmatic_contract_test, specmatic_stub
+from specmatic.utils import get_project_root
 
 host = "127.0.0.1"
 port = 5000
 stub_host = "127.0.0.1"
 stub_port = 8080
 expectation_json_file = get_project_root() + '/test/data/expectation.json'
+service_contract_file = get_project_root() + '/test/spec/product-search-bff-api.yaml'
+stub_contract_file = get_project_root() + '/test/spec/order_api_spec.yaml'
 
 
-@specmatic_contract_test(host, port)
+@specmatic_contract_test(host, port, )
 @specmatic_stub(stub_host, stub_port, [expectation_json_file])
 class TestApiContract:
     @classmethod

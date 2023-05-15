@@ -1,7 +1,10 @@
+import asyncio
 import json
 import os
 import signal
 import subprocess
+import threading
+
 import requests
 from time import sleep
 
@@ -15,20 +18,16 @@ class SpecmaticStub:
         self.specmatic_json_file_path = specmatic_json_file_path
         self.contract_file_path = contract_file_path
         self.expectation_api = f'http://{self.host}:{self.port}/_specmatic/expectations'
+        self.stub_running_success_message = f'Stub server is running on http://{self.host}:{self.port}'
 
     def start(self):
         stub_command = self._create_stub_process_command()
-        self.process = subprocess.Popen(stub_command)
         print(f"\n Starting specmatic stub server on {self.host}:{self.port}")
+        self.process = subprocess.Popen(stub_command)
 
     def stop(self):
-        print(f"\n Shutting down specmatic stub server on {self.host}:{self.port}, please wait ...")
-        sleep(10)
-        self._quick_stop()
-
-    def _quick_stop(self):
+        print(f"\n Shutting down core stub server on {self.host}:{self.port}, please wait ...")
         self.process.kill()
-
 
     def set_expectations(self, file_paths: list[str]):
         sleep(5)
@@ -40,7 +39,7 @@ class SpecmaticStub:
                 }
                 response = requests.post(self.expectation_api, json=json_string, headers=headers)
                 if response.status_code != 200:
-                    self._quick_stop()
+                    self.stop()
                     raise Exception(f"{response.content} received for expectation json file: {json_string}")
 
     def _create_stub_process_command(self):
