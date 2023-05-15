@@ -1,6 +1,6 @@
 from specmatic.generators.pytest_generator import PyTestGenerator
 from specmatic.generators.unittest_generator import UnitTestGenerator
-from specmatic.core.specmatic_runner import SpecmaticRunner
+from specmatic.core.specmatic_test import SpecmaticTest
 from specmatic.core.specmatic_stub import SpecmaticStub
 from specmatic.utils import get_junit_report_file_path
 
@@ -29,13 +29,13 @@ class Specmatic:
         return self
 
     def configure_unit_tests(self, test_class):
-        SpecmaticRunner(self.test_server_host, self.test_server_port, self.contract_file_path,
-                        self.specmatic_json_file_path).run()
+        SpecmaticTest(self.test_server_host, self.test_server_port, self.contract_file_path,
+                      self.specmatic_json_file_path).run()
         UnitTestGenerator(test_class, get_junit_report_file_path()).generate()
 
     def configure_py_tests(self, test_class):
-        SpecmaticRunner(self.test_server_host, self.test_server_port, self.contract_file_path,
-                        self.specmatic_json_file_path).run()
+        SpecmaticTest(self.test_server_host, self.test_server_port, self.contract_file_path,
+                      self.specmatic_json_file_path).run()
         PyTestGenerator(test_class, get_junit_report_file_path()).generate()
 
     def stub(self, stub_server_host: str = '0.0.0.1',

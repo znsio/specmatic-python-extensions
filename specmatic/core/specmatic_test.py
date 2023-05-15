@@ -6,7 +6,7 @@ from specmatic.utils import get_junit_report_file_path, get_junit_report_dir_pat
 import shutil
 
 
-class SpecmaticRunner:
+class SpecmaticTest:
     def __init__(self, host: str = "127.0.0.1", port: int = 5000, contract_file_path: str = '',
                  specmatic_json_file_path: str = ''):
         self.host = host
