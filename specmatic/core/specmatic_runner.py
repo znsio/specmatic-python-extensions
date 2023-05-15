@@ -39,9 +39,6 @@ class SpecmaticRunner:
             "--port=" + str(self.port)
         ]
 
-        root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-        print("root:" + root_dir)
-
         print(f"\n Running core tests for api at {self.host}:{self.port}")
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
         output, error = process.communicate()

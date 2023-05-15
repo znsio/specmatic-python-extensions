@@ -26,18 +26,21 @@ class SpecmaticStub:
         self.process = subprocess.Popen(stub_command)
 
     def stop(self):
-        print(f"\n Shutting down core stub server on {self.host}:{self.port}, please wait ...")
+        print(f"\n Shutting down specmatic stub server on {self.host}:{self.port}, please wait ...")
         self.process.kill()
 
     def set_expectations(self, file_paths: list[str]):
         sleep(5)
+        print("\n Uploading expectation json files:")
         for file_path in file_paths:
             with open(file_path, 'r') as file:
                 json_string = json.load(file)
                 headers = {
                     "Content-Type": "application/json"
                 }
+                print("\n Uploading expectation json file: " + str(json_string))
                 response = requests.post(self.expectation_api, json=json_string, headers=headers)
+                print("\n Response Code received: " + str(response.status_code))
                 if response.status_code != 200:
                     self.stop()
                     raise Exception(f"{response.content} received for expectation json file: {json_string}")

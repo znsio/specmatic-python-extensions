@@ -12,7 +12,7 @@ service_contract_file = get_project_root() + '/test/spec/product-search-bff-api.
 stub_contract_file = get_project_root() + '/test/spec/order_api_spec.yaml'
 
 
-@specmatic_contract_test(host, port, )
+@specmatic_contract_test(host, port)
 @specmatic_stub(stub_host, stub_port, [expectation_json_file])
 class TestApiContract:
     @classmethod

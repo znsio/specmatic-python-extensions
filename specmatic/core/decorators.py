@@ -9,14 +9,20 @@ def specmatic_stub(host: str, port: int, expectation_json_files=None, contract_f
         expectation_json_files = []
 
     def decorator(cls):
-        stub = Specmatic() \
-            .stub(host, port) \
-            .with_specmatic_json_at(specmatic_json_file) \
-            .with_contract_file(contract_file) \
-            .build()
-        stub.start()
-        stub.set_expectations(expectation_json_files)
-        cls.stub = stub
+        try:
+            stub = Specmatic() \
+                .stub(host, port) \
+                .with_specmatic_json_at(specmatic_json_file) \
+                .with_contract_file(contract_file) \
+                .build()
+            stub.start()
+            cls.stub = stub
+            stub.set_expectations(expectation_json_files)
+        except Exception as e:
+            if hasattr(cls, 'stub'):
+                cls.stub.stop()
+            print(f"An exception occurred: {e}")
+            raise e
         return cls
 
     return decorator
@@ -24,12 +30,18 @@ def specmatic_stub(host: str, port: int, expectation_json_files=None, contract_f
 
 def specmatic_contract_test(host: str, port: int, contract_file='', specmatic_json_file: str = ''):
     def decorator(cls):
-        Specmatic() \
-            .test(host, port) \
-            .with_specmatic_json_at(specmatic_json_file) \
-            .with_contract_file(contract_file) \
-            .configure_py_tests(cls)
-        return cls
+        try:
+            Specmatic() \
+                .test(host, port) \
+                .with_specmatic_json_at(specmatic_json_file) \
+                .with_contract_file(contract_file) \
+                .configure_py_tests(cls)
+            return cls
+        except Exception as e:
+            if hasattr(cls, 'stub'):
+                cls.stub.stop()
+            print(f"An exception occurred: {e}")
+            raise
 
     return decorator
 
