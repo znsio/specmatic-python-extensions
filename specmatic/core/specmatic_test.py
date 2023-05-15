@@ -40,11 +40,8 @@ class SpecmaticTest:
         ]
 
         print(f"\n Running core tests for api at {self.host}:{self.port}")
-        process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-        output, error = process.communicate()
+        subprocess.run(cmd)
 
-        # Print the output
-        print(output.decode('utf-8'))
 
     def run(self):
         self._delete_existing_report_if_exists()
