@@ -23,14 +23,18 @@ class SpecmaticStub:
     def start(self):
         stub_command = self._create_stub_process_command()
         print(f"\n Starting specmatic stub server on {self.host}:{self.port}")
-        self.process = subprocess.Popen(stub_command)
+        self.process = subprocess.Popen(stub_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        for line in iter(self.process.stdout.readline, ''):
+            line = line.strip()
+            print(line)
+            if self.stub_running_success_message in line:
+                break
 
     def stop(self):
         print(f"\n Shutting down specmatic stub server on {self.host}:{self.port}, please wait ...")
         self.process.kill()
 
     def set_expectations(self, file_paths: list[str]):
-        sleep(5)
         print("\n Uploading expectation json files:")
         for file_path in file_paths:
             with open(file_path, 'r') as file:
