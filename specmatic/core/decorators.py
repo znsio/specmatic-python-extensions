@@ -1,5 +1,4 @@
 from flask import Flask
-
 from specmatic.server.flask_server import FlaskServer
 from specmatic.core.specmatic import Specmatic
 
@@ -21,7 +20,7 @@ def specmatic_stub(host: str, port: int, expectation_json_files=None, contract_f
         except Exception as e:
             if hasattr(cls, 'stub'):
                 cls.stub.stop()
-            print(f"An exception occurred: {e}")
+            print(f"Error: {e}")
             raise e
         return cls
 
@@ -40,17 +39,23 @@ def specmatic_contract_test(host: str, port: int, contract_file='', specmatic_js
         except Exception as e:
             if hasattr(cls, 'stub'):
                 cls.stub.stop()
-            print(f"An exception occurred: {e}")
-            raise
+            print(f"Error: {e}")
+            raise e
 
     return decorator
 
 
 def start_flask_app(app: Flask, host: str, port: int):
     def decorator(cls):
-        flask_server = FlaskServer(app, host, port)
-        flask_server.start()
-        cls.flask_server = flask_server
-        return cls
+        try:
+            flask_server = FlaskServer(app, host, port)
+            flask_server.start()
+            cls.flask_server = flask_server
+            return cls
+        except Exception as e:
+            if hasattr(cls, 'stub'):
+                cls.stub.stop()
+            print(f"Error: {e}")
+            raise e
 
     return decorator

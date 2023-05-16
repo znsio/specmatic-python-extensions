@@ -1,9 +1,8 @@
 import os
-import pathlib
+import shutil
 import subprocess
 
-from specmatic.utils import get_junit_report_file_path, get_junit_report_dir_path
-import shutil
+from specmatic.utils import get_junit_report_dir_path
 
 
 class SpecmaticTest:
