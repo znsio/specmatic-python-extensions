@@ -9,7 +9,7 @@ stub_host = "127.0.0.1"
 stub_port = 8080
 expectation_json_file = get_project_root() + '/test/data/expectation.json'
 service_contract_file = get_project_root() + '/test/spec/product-search-bff-api.yaml'
-stub_contract_file = get_project_root() + '/test/spec/order_api_spec.yaml'
+stub_contract_file = get_project_root() + '/test/spec/api_order_v1.yaml'
 
 
 @specmatic_contract_test(host, port, service_contract_file)

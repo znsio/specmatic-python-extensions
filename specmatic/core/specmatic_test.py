@@ -38,7 +38,7 @@ class SpecmaticTest:
             "--port=" + str(self.port)
         ]
 
-        print(f"\n Running core tests for api at {self.host}:{self.port}")
+        print(f"\n Running specmatic tests for api at {self.host}:{self.port}")
         subprocess.run(cmd)
 
 
