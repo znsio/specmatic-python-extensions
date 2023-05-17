@@ -1,15 +1,13 @@
-This is a Python library to run the [Specmatic](https://specmatic.in) library.
+This is a Python library to run the [Specmatic](https://specmatic.in).  
 Specmatic is a contract driven development tool that allows us to turn OpenAPI contracts into executable specifications.
 
 
-- The specmatic python library is geared towards integrating Specmatic capabilities in PyTest tests.
-  It provides three main function:
+- The specmatic python library is geared towards integrating Specmatic capabilities in PyTest tests.  
+  It provides three main functions:
   - The ability to start and stop a python flask app in a test class
   - The ability to run specmatic in test mode against a local contract/spec file, or against a spec defined in a Central Contract Repository (as defined in specmatic.json).
   - The ability to stub out an api dependency using the specmatic stub feature.
 
-**NOTE**:
-    **If you are using an IDE like PyCharm to run tests, please edit the test configuration and set the working directory to your project root directory.**
 
 - To run Specmatic in test mode against a flask app, add the **start_flask_app** and **specmatic_contract_test** decorator functions on your test class:
     ``````
@@ -31,13 +29,14 @@ Specmatic is a contract driven development tool that allows us to turn OpenAPI c
        ``````pytest test -v -s``````  
       [Click here](https://specmatic.in/documentation/contract_tests.html) to learn more about Specmatic test mode.
    
-    
+**NOTE**:
+    **If you are using an IDE like PyCharm to run tests, please edit the test configuration and set the working directory to your project root directory.**
 
 - If you want to stub out a service dependency, add the **specmatic_stub** decorator on top of the **start_flask_app**.
     ``````
     @specmatic_contract_test(host, port)
-    @specmatic_stub(stub_host, stub_port, [expectation_json_file])
     @start_flask_app(app, host, port)
+    @specmatic_stub(stub_host, stub_port, [expectation_json_file])
     class TestApiContract:
         @classmethod
         def teardown_class(cls):
