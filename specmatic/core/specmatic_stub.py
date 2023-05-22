@@ -29,6 +29,12 @@ class SpecmaticStub:
         stdout_reader = threading.Thread(target=self.read_process_output, daemon=True)
         stdout_reader.start()
 
+    def wait_till_stub_has_started(self):
+        self.stub_started_event.wait()
+        if not self.error_queue.empty():
+            error = self.error_queue.get()
+            raise Exception(f"An exception occurred while reading the stub process output: {error}")
+
     def read_process_output(self):
         def signal_event_if_stub_has_started(line):
             if self.stub_running_success_message in line:
@@ -53,11 +59,6 @@ class SpecmaticStub:
         self.process.kill()
 
     def set_expectations(self, file_paths: list[str]):
-        self.stub_started_event.wait()
-        if not self.error_queue.empty():
-            error = self.error_queue.get()
-            raise Exception(f"An exception occurred while reading the stub process output: {error}")
-
         for file_path in file_paths:
             with open(file_path, 'r') as file:
                 json_string = json.load(file)
