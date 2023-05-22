@@ -1,5 +1,5 @@
 from flask import Flask
-from specmatic.server.flask_server import FlaskServer
+from specmatic.server.wsgi_server import WSGIServer
 from specmatic.core.specmatic import Specmatic
 
 
@@ -46,12 +46,12 @@ def specmatic_contract_test(host: str, port: int, contract_file='', specmatic_js
     return decorator
 
 
-def start_flask_app(app: Flask, host: str, port: int):
+def start_web_app(app, host: str, port: int):
     def decorator(cls):
         try:
-            flask_server = FlaskServer(app, host, port)
-            flask_server.start()
-            cls.flask_server = flask_server
+            web_app_server = WSGIServer(app, host, port)
+            web_app_server.start()
+            cls.web_app_server = web_app_server
             return cls
         except Exception as e:
             if hasattr(cls, 'stub'):
