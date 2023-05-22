@@ -38,16 +38,21 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        'blinker==1.6.2',
-        'click==8.1.3',
-        'Flask==2.3.2',
-        'iniconfig==2.0.0',
-        'itsdangerous==2.1.2',
-        'Jinja2==3.1.2',
-        'MarkupSafe==2.1.2',
-        'packaging==23.1',
-        'pluggy==1.0.0',
-        'pytest==7.3.1',
-        'Werkzeug==2.3.3'
+       'blinker==1.6.2',
+       'certifi==2023.5.7',
+       'charset-normalizer==3.1.0',
+       'click==8.1.3',
+       'Flask==2.3.2',
+       'idna==3.4',
+       'iniconfig==2.0.0',
+       'itsdangerous==2.1.2',
+       'Jinja2==3.1.2',
+       'MarkupSafe==2.1.2',
+       'packaging==23.1',
+       'pluggy==1.0.0',
+       'pytest==7.3.1',
+       'requests==2.30.0',
+       'urllib3==2.0.2',
+       'Werkzeug==2.3.3'
     ]
 )
