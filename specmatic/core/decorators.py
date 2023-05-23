@@ -4,9 +4,6 @@ from specmatic.core.specmatic import Specmatic
 
 
 def specmatic_stub(host: str, port: int, expectation_json_files=None, contract_file='', specmatic_json_file: str = ''):
-    if expectation_json_files is None:
-        expectation_json_files = []
-
     def decorator(cls):
         try:
             stub = Specmatic() \

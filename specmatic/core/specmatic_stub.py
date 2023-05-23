@@ -22,26 +22,39 @@ class SpecmaticStub:
         self.__error_queue = Queue()
 
     def start(self):
-        self.__stub_started_event = threading.Event()
-        self.__start_specmatic_stub_in_subprocess()
-        self.__start_reading_stub_output()
-        self.__wait_till_stub_has_started()
+        try:
+            self.__stub_started_event = threading.Event()
+            self.__start_specmatic_stub_in_subprocess()
+            self.__start_reading_stub_output()
+            self.__wait_till_stub_has_started()
+        except Exception as e:
+            self.stop()
+            print(f"Error: {e}")
+            raise e
 
     def stop(self):
         print(f"\n Shutting down specmatic stub server on {self.host}:{self.port}, please wait ...")
         self.__process.kill()
 
     def set_expectations(self, file_paths: list[str]):
-        for file_path in file_paths:
-            with open(file_path, 'r') as file:
-                json_string = json.load(file)
-                headers = {
-                    "Content-Type": "application/json"
-                }
-                response = requests.post(self.__expectation_api, json=json_string, headers=headers)
-                if response.status_code != 200:
-                    self.stop()
-                    raise Exception(f"{response.content} received for expectation json file: {json_string}")
+        if file_paths is None:
+            file_paths = []
+        try:
+            for file_path in file_paths:
+                with open(file_path, 'r') as file:
+                    json_string = json.load(file)
+                    headers = {
+                        "Content-Type": "application/json"
+                    }
+                    response = requests.post(self.__expectation_api, json=json_string, headers=headers)
+                    if response.status_code != 200:
+                        self.stop()
+                        raise Exception(f"{response.content} received for expectation json file: {json_string}")
+
+        except Exception as e:
+            self.stop()
+            print(f"Error: {e}")
+            raise e
 
     def __start_specmatic_stub_in_subprocess(self):
         stub_command = self.__create_stub_process_command()
