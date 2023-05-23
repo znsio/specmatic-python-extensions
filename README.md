@@ -26,10 +26,10 @@ Specmatic is a contract driven development tool that allows us to turn OpenAPI c
       [Click here](https://specmatic.in/documentation/contract_tests.html) to learn more about Specmatic test mode.
 
 
-- If you want to stub out a service dependency, add the **specmatic_stub** decorator on top of the **start_flask_app**.
+- If you want to stub out a service dependency, add the **specmatic_stub** decorator below the **start_app** decorator.
     ``````
     @specmatic_contract_test(PROJECT_ROOT, host, port)
-    @start_flask_app(app, host, port)
+    @start_app(app, host, port)
     @specmatic_stub(PROJECT_ROOT, stub_host, stub_port, [expectation_json_file])
     class TestApiContract:
        pass
