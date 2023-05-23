@@ -45,11 +45,13 @@ def specmatic_contract_test(host: str, port: int, contract_file='', specmatic_js
 def start_web_app(app, host: str, port: int):
     def decorator(cls):
         try:
-            web_app_server = WSGIServer(app, host, port)
-            web_app_server.start()
-            cls.web_app_server = web_app_server
+            web_app = WSGIServer(app, host, port)
+            web_app.start()
+            cls.web_app = web_app
             return cls
         except Exception as e:
+            if hasattr(cls, 'stub'):
+                cls.web_app.stop()
             if hasattr(cls, 'stub'):
                 cls.stub.stop()
             print(f"Error: {e}")
