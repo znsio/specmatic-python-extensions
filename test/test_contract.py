@@ -1,6 +1,6 @@
 import pytest
 
-from specmatic.core.decorators import specmatic_contract_test, specmatic_stub, start_web_app
+from specmatic.core.decorators import specmatic_contract_test, specmatic_stub, start_app
 from specmatic.utils import get_project_root
 from test.api import app
 
@@ -12,13 +12,10 @@ expectation_json_file = get_project_root() + '/test/data/expectation.json'
 
 
 @specmatic_contract_test(app_host, app_port)
-@start_web_app(app, app_host, app_port)
+@start_app(app, app_host, app_port)
 @specmatic_stub(stub_host, stub_port, [expectation_json_file])
 class TestApiContract:
-    @classmethod
-    def teardown_class(cls):
-        cls.web_app.stop()
-        cls.stub.stop()
+    pass
 
 
 if __name__ == '__main__':

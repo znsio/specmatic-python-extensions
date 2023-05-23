@@ -17,6 +17,8 @@ def specmatic_stub(host: str, port: int, expectation_json_files=None, contract_f
         except Exception as e:
             if hasattr(cls, 'stub'):
                 cls.stub.stop()
+            if hasattr(cls, 'app'):
+                cls.app.stop()
             print(f"Error: {e}")
             raise e
         return cls
@@ -36,24 +38,31 @@ def specmatic_contract_test(host: str, port: int, contract_file='', specmatic_js
         except Exception as e:
             if hasattr(cls, 'stub'):
                 cls.stub.stop()
+            if hasattr(cls, 'app'):
+                cls.app.stop()
             print(f"Error: {e}")
             raise e
+        finally:
+            if hasattr(cls, 'stub'):
+                cls.stub.stop()
+            if hasattr(cls, 'app'):
+                cls.app.stop()
 
     return decorator
 
 
-def start_web_app(app, host: str, port: int):
+def start_app(app, host: str, port: int):
     def decorator(cls):
         try:
-            web_app = WSGIServer(app, host, port)
-            web_app.start()
-            cls.web_app = web_app
+            wsgi_app = WSGIServer(app, host, port)
+            wsgi_app.start()
+            cls.app = wsgi_app
             return cls
         except Exception as e:
             if hasattr(cls, 'stub'):
-                cls.web_app.stop()
-            if hasattr(cls, 'stub'):
                 cls.stub.stop()
+            if hasattr(cls, 'app'):
+                cls.app.stop()
             print(f"Error: {e}")
             raise e
 
