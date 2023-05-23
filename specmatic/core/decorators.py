@@ -15,7 +15,6 @@ def specmatic_stub(host: str, port: int, expectation_json_files=None, contract_f
                 .with_contract_file(contract_file) \
                 .build()
             stub.start()
-            stub.wait_till_stub_has_started()
             cls.stub = stub
             stub.set_expectations(expectation_json_files)
         except Exception as e:
