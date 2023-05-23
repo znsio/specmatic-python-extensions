@@ -12,7 +12,7 @@ PROJECT_ROOT = get_project_root()
 expectation_json_file = PROJECT_ROOT + '/test/data/expectation.json'
 
 
-class TestApiContract:
+class TestContract:
     pass
 
 
@@ -22,10 +22,10 @@ stub.set_expectations([expectation_json_file])
 
 app = WSGIServer(app, app_host, app_port)
 app.start()
-Specmatic.run_tests(PROJECT_ROOT, TestApiContract, app_host, app_port)
+Specmatic.run_tests(PROJECT_ROOT, TestContract, app_host, app_port)
 
 app.stop()
 stub.stop()
 
 if __name__ == '__main__':
-    pytest.main(['v', 's'])
+    pytest.main()
