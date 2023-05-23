@@ -1,8 +1,10 @@
-from specmatic.server.server_thread import ServerThread
+import threading
+
+from specmatic.server.wsgi_server_thread import WSGIServerThread
 
 
 class WSGIServer:
-    server: ServerThread = None
+    server: WSGIServerThread = None
 
     def __init__(self, app, host: str, port: int):
         self.app = app
@@ -10,8 +12,9 @@ class WSGIServer:
         self.port = port
 
     def start(self):
-        self.server = ServerThread(self.app, self.host, self.port)
+        self.server = WSGIServerThread(self.app, self.host, self.port)
         self.server.start()
+        self.server.wait_for_start()
 
     def stop(self):
         self.server.shutdown()
