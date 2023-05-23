@@ -1,8 +1,9 @@
 import requests
+from test.api import app
 
 
 class Products:
-    products_api = 'http://127.0.0.1:8080/products'
+    products_api = f'http://{app.config["ORDER_API_HOST"]}:{app.config["ORDER_API_PORT"]}/products'
 
     def search(self, product_type: str):
         try:
