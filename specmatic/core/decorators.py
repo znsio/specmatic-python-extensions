@@ -3,14 +3,10 @@ from specmatic.server.wsgi_server import WSGIServer
 from specmatic.core.specmatic import Specmatic
 
 
-def specmatic_stub(host: str, port: int, expectation_json_files=None, contract_file='', specmatic_json_file: str = ''):
+def specmatic_stub(project_root: str, host: str, port: int, expectation_json_files=None, contract_file='', specmatic_json_file: str = ''):
     def decorator(cls):
         try:
-            stub = Specmatic() \
-                .stub(host, port) \
-                .with_specmatic_json_at(specmatic_json_file) \
-                .with_contract_file(contract_file) \
-                .build()
+            stub = Specmatic.create_stub(project_root, host, port, specmatic_json_file, contract_file)
             stub.start()
             cls.stub = stub
             stub.set_expectations(expectation_json_files)
@@ -26,14 +22,10 @@ def specmatic_stub(host: str, port: int, expectation_json_files=None, contract_f
     return decorator
 
 
-def specmatic_contract_test(host: str, port: int, contract_file='', specmatic_json_file: str = ''):
+def specmatic_contract_test(project_root: str, host: str, port: int, contract_file='', specmatic_json_file: str = ''):
     def decorator(cls):
         try:
-            Specmatic() \
-                .test(host, port) \
-                .with_specmatic_json_at(specmatic_json_file) \
-                .with_contract_file(contract_file) \
-                .configure_py_tests(cls)
+            Specmatic.run_tests(project_root, cls, host, port, specmatic_json_file, contract_file)
             return cls
         except Exception as e:
             if hasattr(cls, 'stub'):

@@ -10,9 +10,10 @@ import requests
 
 class SpecmaticStub:
 
-    def __init__(self, host: str, port: int, specmatic_json_file_path: str, contract_file_path: str):
+    def __init__(self, project_root:str, host: str, port: int, specmatic_json_file_path: str, contract_file_path: str):
         self.__stub_started_event = None
         self.__process = None
+        self.project_root = project_root
         self.host = host
         self.port = port
         self.specmatic_json_file_path = specmatic_json_file_path
@@ -103,6 +104,8 @@ class SpecmaticStub:
         else:
             if self.contract_file_path != '':
                 cmd.append(self.contract_file_path)
+            else:
+                cmd.append("--config=" + self.project_root + "/specmatic.json")
         cmd += [
             '--host=' + self.host,
             "--port=" + str(self.port)

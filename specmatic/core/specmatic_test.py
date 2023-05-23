@@ -6,8 +6,9 @@ from specmatic.utils import get_junit_report_dir_path
 
 
 class SpecmaticTest:
-    def __init__(self, host: str = "127.0.0.1", port: int = 5000, contract_file_path: str = '',
+    def __init__(self, project_root: str, host: str = "127.0.0.1", port: int = 5000, contract_file_path: str = '',
                  specmatic_json_file_path: str = ''):
+        self.project_root = project_root
         self.host = host
         self.port = port
         self.contract_file_path = contract_file_path
@@ -31,6 +32,8 @@ class SpecmaticTest:
         else:
             if self.contract_file_path != '':
                 cmd.append(self.contract_file_path)
+            else:
+                cmd.append("--config=" + self.project_root + "/specmatic.json")
 
         cmd += [
             "--junitReportDir=" + get_junit_report_dir_path(),
@@ -40,7 +43,6 @@ class SpecmaticTest:
 
         print(f"\n Running specmatic tests for api at {self.host}:{self.port}")
         subprocess.run(cmd)
-
 
     def run(self):
         self._delete_existing_report_if_exists()
