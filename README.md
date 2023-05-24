@@ -66,21 +66,23 @@ Specmatic is a contract driven development tool that allows us to turn OpenAPI c
   
   The above code can be broken down into three parts
   - **Stub setup:**  
-     Use the ``````Specmatic.start_stub()`````` method to create an start a  stub instance.
-     You can explicitly supply the host/port to run.
-     If no host/port is supplied, the stub will be started on http://127.0.0.1:5000
-     You can set expectations on the stub by calling the ``````set_expectations()`````` method and passing a list of expectation json files.
-     The stub has attributes:  ``````stub.host`````` and ``````stub.port`````` to tell us where it's running on.
+     Use the ``````Specmatic.start_stub()`````` method to create an start a  stub instance.  
+     You can explicitly supply the host/port to run.  
+     If no host/port is supplied, the stub will be started on http://127.0.0.1:9000  
+     You can set expectations on the stub by calling the ``````set_expectations()`````` method and passing a list of expectation json files.  
+     The stub has attributes:  ``````stub.host`````` and ``````stub.port`````` to tell us where it's running on.  
+  
   - **App Setup:**  
-    Create an instance of the ``````WSGIServer`````` class by passing it an instance of a WSGIApplication like a flask app and the host and port to run on.
-    If no host/port is supplied, then the app server will be started on a random freely available port.
-    The app_server also has  attributes:  ``````app_server.host`````` and ``````app_server.port`````` to tell us where it's running on.
-  - **Run Tests**
-    Call ``````Specmatic.test()`````` by passing it your root directory, an empty Test class and the host/port on which your app server is running.
-  - Here are some examples to demonstrate how the library can be used in different ways for WSGI apps:
-    ``````test\test_contract.py`````` : Running specmatic test, stub and a flask app using decorators.
-    ``````test\test_contract_using_api.py`````` : Running specmatic test, stub and a flask app using the api by explicitly defining all the hosts and ports.
-    ``````test\test_contract_using_api_implicit.py`````` : Running specmatic test, stub and a flask app using the api without setting explicit ports anywhere .
+    Create an instance of the ``````WSGIServer`````` class by passing it an instance of a WSGIApplication like a flask app and the host and port to run on.  
+    If no host/port is supplied, then the app server will be started on a random freely available port.  
+    The app_server also has  attributes:  ``````app_server.host`````` and ``````app_server.port`````` to tell us where it's running on.  
+  
+  - **Run Tests:**  
+    Call ``````Specmatic.test()`````` by passing it your root directory, an empty Test class and the host/port on which your app server is running.  
+  - Here are some examples to demonstrate how the library can be used in different ways for WSGI apps:  
+    ``````test\test_contract.py`````` : Running specmatic test, stub and a flask app using decorators.  
+    ``````test\test_contract_using_api.py`````` : Running specmatic test, stub and a flask app using the api by explicitly defining all the hosts and ports.  
+    ``````test\test_contract_using_api_implicit.py`````` : Running specmatic test, stub and a flask app using the api without setting explicit ports anywhere .  
         
 
     
