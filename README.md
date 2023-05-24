@@ -44,25 +44,34 @@ Specmatic is a contract driven development tool that allows us to turn OpenAPI c
       [Click here](https://specmatic.in/documentation/service_virtualization_tutorial.html) to learn more about Specmatic stub mode and using expectation json files.
 
 - Run specmatic using api against a flask app:
-  ``````
-  class TestContract:
+``````
+class TestContract:
     pass
 
 
-  stub = Specmatic.start_stub(PROJECT_ROOT, stub_host, stub_port)
-  stub.set_expectations([expectation_json_file])
+stub = None
+app_server = None
 
-  app_server = WSGIServer(app, app_host, app_port)
-  app_server.start()
+try:
+    stub = Specmatic.start_stub(PROJECT_ROOT, stub_host, stub_port)
+    stub.set_expectations([expectation_json_file])
 
-  Specmatic.test(PROJECT_ROOT, TestContract, app_host, app_port)
+    app_server = WSGIServer(app, app_host, app_port)
+    app_server.start()
 
-  app_server.stop()
-  stub.stop()
-  
-  if __name__ == '__main__':
+    Specmatic.test(PROJECT_ROOT, TestContract, app_host, app_port)
+except Exception as e:
+    print(f"Error: {e}")
+    raise e
+finally:
+    if app_server is not None:
+        app_server.stop()
+    if stub is not None:
+        stub.stop()
+
+if __name__ == '__main__':
     pytest.main()
-  ``````
+``````
   
   The above code can be broken down into three parts
   - **Stub setup:**  
@@ -82,25 +91,30 @@ Specmatic is a contract driven development tool that allows us to turn OpenAPI c
     
 - Run specmatic using api against a sanic app
    
-  ``````
-  class TestContract:
-    pass
+``````
+class TestContract:
+  pass
 
 
-  stub = Specmatic.start_stub(PROJECT_ROOT, stub_host, stub_port)
-  stub.set_expectations([expectation_json_file])
+stub = None
+app_server = None
+try:
+    stub = Specmatic.start_stub(PROJECT_ROOT, stub_host, stub_port)
+    stub.set_expectations([expectation_json_file])
 
-  app_server = ASGIServer(app, app_host, app_port)
-  app_server.start()
+    app_server = ASGIServer(app, app_host, app_port)
+    app_server.start()
 
-  Specmatic.test(PROJECT_ROOT, TestContract, app_host, app_port)
-
-  app_server.stop()
-  stub.stop()
-  
-  if __name__ == '__main__':
-    pytest.main()
-  ``````
+    Specmatic.test(PROJECT_ROOT, TestContract, app_host, app_port)
+except Exception as e:
+    print(f"Error: {e}")
+    raise e
+finally:
+    if app_server is not None:
+        app_server.stop()
+    if stub is not None:
+        stub.stop()
+``````
   
 - **Examples:**  
  Here are some examples to demonstrate how the library can be used in different ways for WSGI apps:  

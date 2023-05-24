@@ -16,16 +16,25 @@ class TestContract:
     pass
 
 
-stub = Specmatic.start_stub(PROJECT_ROOT, stub_host, stub_port)
-stub.set_expectations([expectation_json_file])
+stub = None
+app_server = None
 
-app_server = WSGIServer(app, app_host, app_port)
-app_server.start()
+try:
+    stub = Specmatic.start_stub(PROJECT_ROOT, stub_host, stub_port)
+    stub.set_expectations([expectation_json_file])
 
-Specmatic.test(PROJECT_ROOT, TestContract, app_host, app_port)
+    app_server = WSGIServer(app, app_host, app_port)
+    app_server.start()
 
-app_server.stop()
-stub.stop()
+    Specmatic.test(PROJECT_ROOT, TestContract, app_host, app_port)
+except Exception as e:
+    print(f"Error: {e}")
+    raise e
+finally:
+    if app_server is not None:
+        app_server.stop()
+    if stub is not None:
+        stub.stop()
 
 if __name__ == '__main__':
     pytest.main()
