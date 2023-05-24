@@ -1,11 +1,11 @@
 import os
 
-from flask import Flask
+from sanic import Sanic
 from dotenv import load_dotenv
 
 load_dotenv()
-app = Flask(__name__)
+app = Sanic("OrderBFF")
 app.config["ORDER_API_HOST"] = os.getenv("ORDER_API_HOST")
 app.config["ORDER_API_PORT"] = os.getenv("ORDER_API_PORT")
 
-from test.api.routes import *
+from test.sanic_app.routes import *

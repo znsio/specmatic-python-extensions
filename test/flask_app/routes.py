@@ -1,6 +1,6 @@
 from flask_restful import Api
-from test.api import app
-from test.api.models import Product, Order
+from test.flask_app import app
+from test.flask_app.models import Product, Order
 
 api = Api(app)
 

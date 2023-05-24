@@ -1,10 +1,9 @@
-from test.flask_app import app
 import requests
+from test.sanic_app import app
 
 
 class Products:
-    def __init__(self):
-        self.products_api = f'http://{app.config["ORDER_API_HOST"]}:{app.config["ORDER_API_PORT"]}/products'
+    products_api = f'http://{app.config["ORDER_API_HOST"]}:{app.config["ORDER_API_PORT"]}/products'
 
     def search(self, product_type: str):
         try:

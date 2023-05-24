@@ -2,7 +2,7 @@ import pytest
 from specmatic.core.specmatic import Specmatic
 from specmatic.server.wsgi_server import WSGIServer
 from specmatic.utils import get_project_root
-from test.api import app
+from test.flask_app import app
 
 app_host = "127.0.0.1"
 app_port = 5000
