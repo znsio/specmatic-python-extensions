@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from specmatic.core.specmatic import Specmatic
 from specmatic.server.wsgi_server import WSGIServer
@@ -30,6 +32,8 @@ except Exception as e:
     print(f"Error: {e}")
     raise e
 finally:
+    app.config["ORDER_API_HOST"] = os.getenv("ORDER_API_HOST")
+    app.config["ORDER_API_PORT"] = os.getenv("ORDER_API_PORT")
     if app_server is not None:
         app_server.stop()
     if stub is not None:

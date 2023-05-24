@@ -9,6 +9,7 @@ class WSGIServerThread(threading.Thread):
     def __init__(self, app, host: str, port: int):
         threading.Thread.__init__(self)
         logger = logging.getLogger("werkzeug")
+        logger.handlers.clear()
         logger.addHandler(logging.StreamHandler(sys.stdout))
         print("Starting web server")
         self.server = make_server(host, port, app)
