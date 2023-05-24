@@ -1,6 +1,5 @@
 import threading
 import uvicorn
-import logging
 
 
 class ASGIServerThread(threading.Thread):

@@ -15,16 +15,10 @@ class WSGIServerThread(threading.Thread):
         self.server.log_startup()
         self.ctx = app.app_context()
         self.ctx.push()
-        self.start_event = threading.Event()
-
-    def wait_for_start(self):
-        self.start_event.wait()
 
     def run(self):
         print("Web server started")
-        self.start_event.set()
         self.server.serve_forever()
-
 
     def shutdown(self):
         self.server.shutdown()
