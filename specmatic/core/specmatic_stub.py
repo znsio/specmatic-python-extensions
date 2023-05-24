@@ -1,16 +1,19 @@
 import json
 import os
+import re
 import subprocess
 import threading
 import traceback
 from queue import Queue
 
 import requests
+from urllib.parse import urlparse
 
 
 class SpecmaticStub:
 
-    def __init__(self, project_root:str, host: str, port: int, specmatic_json_file_path: str, contract_file_path: str):
+    def __init__(self, project_root: str, host: str = '127.0.0.1', port: int = 0, specmatic_json_file_path: str = '',
+                 contract_file_path: str = ''):
         self.__stub_started_event = None
         self.__process = None
         self.project_root = project_root
@@ -18,11 +21,11 @@ class SpecmaticStub:
         self.port = port
         self.specmatic_json_file_path = specmatic_json_file_path
         self.contract_file_path = contract_file_path
-        self.__expectation_api = f'http://{self.host}:{self.port}/_specmatic/expectations'
-        self.__stub_running_success_message = f'Stub server is running on http://{self.host}:{self.port}'
+        self.__stub_running_success_message = 'Stub server is running on '
         self.__error_queue = Queue()
+        self.__start()
 
-    def start(self):
+    def __start(self):
         try:
             self.__stub_started_event = threading.Event()
             self.__start_specmatic_stub_in_subprocess()
@@ -47,7 +50,7 @@ class SpecmaticStub:
                     headers = {
                         "Content-Type": "application/json"
                     }
-                    response = requests.post(self.__expectation_api, json=json_string, headers=headers)
+                    response = requests.post(self.__get_expectations_api_url(), json=json_string, headers=headers)
                     if response.status_code != 200:
                         self.stop()
                         raise Exception(f"{response.content} received for expectation json file: {json_string}")
@@ -57,9 +60,13 @@ class SpecmaticStub:
             print(f"Error: {e}")
             raise e
 
+    def __get_expectations_api_url(self):
+        return f'http://{self.host}:{self.port}/_specmatic/expectations'
+
     def __start_specmatic_stub_in_subprocess(self):
         stub_command = self.__create_stub_process_command()
-        print(f"\n Starting specmatic stub server on {self.host}:{self.port}")
+        if self.host != '' and self.port != 0:
+            print(f"\n Starting specmatic stub server on {self.host}:{self.port}")
         self.__process = subprocess.Popen(stub_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     def __start_reading_stub_output(self):
@@ -75,6 +82,8 @@ class SpecmaticStub:
     def __read_process_output(self):
         def signal_event_if_stub_has_started(line):
             if self.__stub_running_success_message in line:
+                if self.port == 0:
+                    self.port = line.split(self.host + ':')[1].split('.')[0]
                 self.__stub_started_event.set()
 
         def read_and_print_output_line_by_line():
@@ -108,6 +117,9 @@ class SpecmaticStub:
                 cmd.append("--config=" + self.project_root + "/specmatic.json")
         cmd += [
             '--host=' + self.host,
-            "--port=" + str(self.port)
         ]
+        if self.port != 0:
+            cmd += [
+                "--port=" + str(self.port)
+            ]
         return cmd

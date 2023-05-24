@@ -1,15 +1,16 @@
-from flask import Flask
+import os
+
 from specmatic.server.wsgi_server import WSGIServer
 from specmatic.core.specmatic import Specmatic
 
 
-def specmatic_stub(project_root: str, host: str, port: int, expectation_json_files=None, contract_file='', specmatic_json_file: str = ''):
+def specmatic_stub(project_root: str, host: str = '127.0.0.1', port: int = 0, expectations=None, contract_file='',
+                   specmatic_json_file: str = ''):
     def decorator(cls):
         try:
-            stub = Specmatic.create_stub(project_root, host, port, specmatic_json_file, contract_file)
-            stub.start()
+            stub = Specmatic.start_stub(project_root, host, port, specmatic_json_file, contract_file)
             cls.stub = stub
-            stub.set_expectations(expectation_json_files)
+            stub.set_expectations(expectations)
         except Exception as e:
             if hasattr(cls, 'stub'):
                 cls.stub.stop()
@@ -22,10 +23,19 @@ def specmatic_stub(project_root: str, host: str, port: int, expectation_json_fil
     return decorator
 
 
-def specmatic_contract_test(project_root: str, host: str, port: int, contract_file='', specmatic_json_file: str = ''):
+def specmatic_contract_test(project_root: str, host: str = '127.0.0,1', port: int = 0, contract_file='',
+                            specmatic_json_file: str = ''):
     def decorator(cls):
         try:
-            Specmatic.run_tests(project_root, cls, host, port, specmatic_json_file, contract_file)
+            test_host = host
+            test_port = port
+            if test_port == 0:
+                if hasattr(cls, 'app'):
+                    app = cls.app
+                    test_host = app.host
+                    test_port = app.port
+
+            Specmatic.test(project_root, cls, test_host, test_port, specmatic_json_file, contract_file)
             return cls
         except Exception as e:
             if hasattr(cls, 'stub'):
@@ -43,7 +53,7 @@ def specmatic_contract_test(project_root: str, host: str, port: int, contract_fi
     return decorator
 
 
-def start_app(app, host: str, port: int):
+def start_app(app, host: str = '127.0.0.1', port: int = 0):
     def decorator(cls):
         try:
             wsgi_app = WSGIServer(app, host, port)

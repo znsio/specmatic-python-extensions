@@ -4,8 +4,7 @@ from specmatic.server.wsgi_server import WSGIServer
 from specmatic.utils import get_project_root
 from test.api import app
 
-app_host = "127.0.0.1"
-app_port = 5000
+
 stub_host = "127.0.0.1"
 stub_port = 8080
 PROJECT_ROOT = get_project_root()
@@ -16,13 +15,15 @@ class TestContract:
     pass
 
 
-stub = Specmatic.start_stub(PROJECT_ROOT, stub_host, stub_port)
+stub = Specmatic.start_stub(PROJECT_ROOT)
 stub.set_expectations([expectation_json_file])
 
-app_server = WSGIServer(app, app_host, app_port)
+app.config['ORDER_API_HOST'] = stub.host
+app.config['ORDER_API_PORT'] = stub.port
+app_server = WSGIServer(app)
 app_server.start()
 
-Specmatic.test(PROJECT_ROOT, TestContract, app_host, app_port)
+Specmatic.test(PROJECT_ROOT, TestContract, app_server.host, app_server.port)
 
 app_server.stop()
 stub.stop()
