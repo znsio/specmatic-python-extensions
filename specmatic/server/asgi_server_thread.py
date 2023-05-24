@@ -11,8 +11,6 @@ class ASGIServerThread(threading.Thread):
         self.host = host
         self.port = port
         self.daemon = True
-        log_file_path = "uvicorn.log"  # Replace with the desired path for the log file
-        logging.basicConfig(filename=log_file_path)
         server = uvicorn.Server(uvicorn.Config(self.app, host=self.host, port=self.port, log_level="info"))
         self.server = server
 
