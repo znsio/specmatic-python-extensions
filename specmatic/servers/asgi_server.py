@@ -1,7 +1,7 @@
 import threading
 from time import sleep
 
-from specmatic.server.asgi_server_thread import ASGIServerThread
+from specmatic.servers.asgi_server_thread import ASGIServerThread
 from specmatic.utils import find_available_port
 
 

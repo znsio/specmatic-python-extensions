@@ -1,5 +1,5 @@
 from time import sleep
-from specmatic.server.wsgi_server_thread import WSGIServerThread
+from specmatic.servers.wsgi_server_thread import WSGIServerThread
 from specmatic.utils import find_available_port
 
 

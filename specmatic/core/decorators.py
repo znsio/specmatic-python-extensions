@@ -1,6 +1,3 @@
-import os
-
-from specmatic.server.wsgi_server import WSGIServer
 from specmatic.core.specmatic import Specmatic
 
 
@@ -8,9 +5,8 @@ def specmatic_stub(project_root: str, host: str = '127.0.0.1', port: int = 0, ex
                    specmatic_json_file: str = ''):
     def decorator(cls):
         try:
-            stub = Specmatic.start_stub(project_root, host, port, specmatic_json_file, contract_file)
-            cls.stub = stub
-            stub.set_expectations(expectations)
+            cls.stub = Specmatic.start_stub(project_root, host, port, specmatic_json_file, contract_file)
+            cls.stub.set_expectations(expectations)
         except Exception as e:
             if hasattr(cls, 'stub'):
                 cls.stub.stop()
@@ -56,9 +52,23 @@ def specmatic_contract_test(project_root: str, host: str = '127.0.0,1', port: in
 def start_app(app, host: str = '127.0.0.1', port: int = 0):
     def decorator(cls):
         try:
-            wsgi_app = WSGIServer(app, host, port)
-            wsgi_app.start()
-            cls.app = wsgi_app
+            cls.app = Specmatic.start_wsgi_app(app, host, port)
+            return cls
+        except Exception as e:
+            if hasattr(cls, 'stub'):
+                cls.stub.stop()
+            if hasattr(cls, 'app'):
+                cls.app.stop()
+            print(f"Error: {e}")
+            raise e
+
+    return decorator
+
+
+def start_asgi_app(app, host: str = '127.0.0.1', port: int = 0):
+    def decorator(cls):
+        try:
+            cls.app = Specmatic.start_asgi_app(app, host, port)
             return cls
         except Exception as e:
             if hasattr(cls, 'stub'):

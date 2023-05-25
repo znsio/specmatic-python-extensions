@@ -1,6 +1,6 @@
 import pytest
+
 from specmatic.core.specmatic import Specmatic
-from specmatic.server.wsgi_server import WSGIServer
 from specmatic.utils import get_project_root
 from test.flask_app import app
 
@@ -23,8 +23,7 @@ try:
     stub = Specmatic.start_stub(PROJECT_ROOT, stub_host, stub_port)
     stub.set_expectations([expectation_json_file])
 
-    app_server = WSGIServer(app, app_host, app_port)
-    app_server.start()
+    app_server = Specmatic.start_wsgi_app(app, app_host, app_port)
 
     Specmatic.test(PROJECT_ROOT, TestContract, app_host, app_port)
 except Exception as e:

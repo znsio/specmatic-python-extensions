@@ -17,4 +17,4 @@ class ASGIServerThread(threading.Thread):
         self.server.run()
 
     def shutdown(self):
-        self.server.shutdown()
+        self.server.should_exit = True
