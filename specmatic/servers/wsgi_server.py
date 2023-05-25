@@ -10,6 +10,7 @@ class WSGIServer:
         self.app = app
         self.host = host
         self.port = find_available_port() if port == 0 else port
+        self.daemon = True
 
     def start(self):
         self.server = WSGIServerThread(self.app, self.host, self.port)

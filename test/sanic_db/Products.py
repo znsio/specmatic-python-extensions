@@ -3,7 +3,8 @@ from test.sanic_app import app
 
 
 class Products:
-    products_api = f'http://{app.config["ORDER_API_HOST"]}:{app.config["ORDER_API_PORT"]}/products'
+    def __init__(self):
+        self.products_api = f'http://{app.config["ORDER_API_HOST"]}:{app.config["ORDER_API_PORT"]}/products'
 
     def search(self, product_type: str):
         try:
