@@ -65,10 +65,10 @@ def start_app(app, host: str = '127.0.0.1', port: int = 0):
     return decorator
 
 
-def start_asgi_app(app, host: str = '127.0.0.1', port: int = 0):
+def start_asgi_app(app_command: str, host: str = '127.0.0.1', port: int = 0):
     def decorator(cls):
         try:
-            cls.app = Specmatic.start_asgi_app(app, host, port)
+            cls.app = Specmatic.start_asgi_app(app_command, host, port)
             return cls
         except Exception as e:
             if hasattr(cls, 'stub'):

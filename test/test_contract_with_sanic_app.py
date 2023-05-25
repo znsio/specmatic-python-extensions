@@ -2,7 +2,6 @@ import pytest
 
 from specmatic.core.specmatic import Specmatic
 from specmatic.utils import get_project_root
-from test.sanic_app import app
 
 PROJECT_ROOT = get_project_root()
 
@@ -14,6 +13,7 @@ stub_port = 8080
 expectation_json_file = PROJECT_ROOT + '/test/data/expectation.json'
 service_contract_file = PROJECT_ROOT + '/test/spec/product-search-bff-api.yaml'
 stub_contract_file = PROJECT_ROOT + '/test/spec/api_order_v1.yaml'
+app_module = PROJECT_ROOT + '/test/sanic_app'
 
 
 class TestContract:
@@ -26,7 +26,8 @@ try:
     stub = Specmatic.start_stub(stub_host, stub_port, contract_file_path=stub_contract_file)
     stub.set_expectations([expectation_json_file])
 
-    app_server = Specmatic.start_asgi_app(app, app_host, app_port)
+    app_command = 'sanic test.sanic_app:app'
+    app_server = Specmatic.start_asgi_app(app_command, app_host, app_port)
 
     Specmatic.test(TestContract, app_host, app_port, contract_file_path=service_contract_file)
 except Exception as e:

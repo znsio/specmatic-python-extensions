@@ -1,7 +1,7 @@
 from specmatic.core.specmatic_stub import SpecmaticStub
 from specmatic.core.specmatic_test import SpecmaticTest
 from specmatic.generators.pytest_generator import PyTestGenerator
-from specmatic.servers.asgi_server import ASGIServer
+from specmatic.servers.app_server import AppServer
 from specmatic.servers.wsgi_server import WSGIServer
 from specmatic.utils import get_junit_report_file_path
 
@@ -48,10 +48,10 @@ class Specmatic:
             raise e
 
     @classmethod
-    def start_asgi_app(cls, app, host: str = '127.0.0.1', port: int = 0):
+    def start_asgi_app(cls, app_command, host: str = '127.0.0.1', port: int = 0):
         app_server = None
         try:
-            app_server = ASGIServer(app, host, port)
+            app_server = AppServer(app_command, host, port)
             app_server.start()
             return app_server
         except Exception as e:
