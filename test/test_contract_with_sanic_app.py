@@ -26,8 +26,7 @@ try:
     stub = Specmatic.start_stub(stub_host, stub_port, contract_file_path=stub_contract_file)
     stub.set_expectations([expectation_json_file])
 
-    app_command = 'sanic test.sanic_app:app'
-    app_server = Specmatic.start_asgi_app(app_command, app_host, app_port)
+    app_server = Specmatic.start_asgi_app('test.sanic_app:app', app_host, app_port)
 
     Specmatic.test(TestContract, app_host, app_port, contract_file_path=service_contract_file)
 except Exception as e:

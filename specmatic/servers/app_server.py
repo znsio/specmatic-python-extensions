@@ -7,12 +7,12 @@ from specmatic.utils import find_available_port
 
 class AppServer:
 
-    def __init__(self, app_command: str, host: str = '127.0.0.1', port: int = 0):
+    def __init__(self, app_module: str, host: str = '127.0.0.1', port: int = 0):
         self.__process = None
-        self.app_command = app_command
+        self.app_module = app_module
         self.host = host
         self.port = find_available_port() if port == 0 else port
-        self.__app_server_started_message = 'Starting worker'
+        self.__app_server_started_message = f'Uvicorn running on http://{self.host}:{self.port} (Press CTRL+C to quit)'
         self.__app_started_event = threading.Event()
         self.__error_queue = Queue()
 
@@ -22,9 +22,8 @@ class AppServer:
         self.__wait_till_app_has_started()
 
     def __start_app_in_subprocess(self):
-        cmd = self.app_command.split(' ')
-        cmd += ["--host=" + self.host, "--port=" + str(self.port)]
-        self.__process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+        cmd = ["uvicorn", self.app_module, "--host=" + self.host, "--port=" + str(self.port)]
+        self.__process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     def __wait_till_app_has_started(self):
         self.__app_started_event.wait()
