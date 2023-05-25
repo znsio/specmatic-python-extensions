@@ -9,15 +9,14 @@ app_port = 5000
 stub_host = "127.0.0.1"
 stub_port = 8080
 PROJECT_ROOT = get_project_root()
+APP_ROOT = PROJECT_ROOT + '/test'
 expectation_json_file = PROJECT_ROOT + '/test/data/expectation.json'
-service_contract_file = PROJECT_ROOT + '/test/spec/product-search-bff-api.yaml'
-stub_contract_file = PROJECT_ROOT + '/test/spec/api_order_v1.yaml'
 
 
-@specmatic_contract_test(PROJECT_ROOT, app_host, app_port, service_contract_file)
-@start_app(app, app_host, app_port)
-@specmatic_stub(PROJECT_ROOT, stub_host, stub_port, [expectation_json_file], stub_contract_file)
-class TestContractWithLocalSpecs:
+@specmatic_contract_test(project_root=PROJECT_ROOT)
+@start_app(app)
+@specmatic_stub(stub_host, stub_port, PROJECT_ROOT, [expectation_json_file])
+class TestContract:
     pass
 
 

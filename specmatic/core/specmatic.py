@@ -9,11 +9,12 @@ from specmatic.utils import get_junit_report_file_path
 class Specmatic:
 
     @classmethod
-    def start_stub(cls, project_root: str, host: str = '127.0.0.1', port: int = 0, specmatic_json_file_path: str = '',
-                   contract_file_path: str = ''):
+    def start_stub(cls, host: str = '127.0.0.1', port: int = 0, project_root: str = '', contract_file_path: str = '',
+                   specmatic_json_file_path: str = '',
+                   ):
         stub = None
         try:
-            stub = SpecmaticStub(project_root, host, port, specmatic_json_file_path, contract_file_path)
+            stub = SpecmaticStub(host, port, project_root, contract_file_path, specmatic_json_file_path)
             return stub
         except Exception as e:
             if stub is not None:
@@ -22,10 +23,12 @@ class Specmatic:
             raise e
 
     @classmethod
-    def test(cls, project_root: str, test_class, host: str, port: int, specmatic_json_file_path: str = '',
-             contract_file_path: str = ''):
+    def test(cls, test_class, host: str = '127.0.0.1', port: int = 0, project_root: str = '',
+             contract_file_path: str = '',
+             specmatic_json_file_path: str = ''
+             ):
         try:
-            SpecmaticTest(project_root, host, port, contract_file_path, specmatic_json_file_path).run()
+            SpecmaticTest(host, port, project_root, contract_file_path, specmatic_json_file_path).run()
             PyTestGenerator(test_class, get_junit_report_file_path()).generate()
         except Exception as e:
             print(f"Error: {e}")

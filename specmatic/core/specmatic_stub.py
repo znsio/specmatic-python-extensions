@@ -9,11 +9,14 @@ from queue import Queue
 import requests
 from urllib.parse import urlparse
 
+from specmatic.core.specmatic_base import SpecmaticBase
 
-class SpecmaticStub:
 
-    def __init__(self, project_root: str, host: str = '127.0.0.1', port: int = 0, specmatic_json_file_path: str = '',
-                 contract_file_path: str = ''):
+class SpecmaticStub(SpecmaticBase):
+
+    def __init__(self, host: str = '127.0.0.1', port: int = 0, project_root: str = '', contract_file_path: str = '',
+                 specmatic_json_file_path: str = ''):
+        super().__init__()
         self.__stub_started_event = None
         self.__process = None
         self.project_root = project_root
@@ -101,6 +104,7 @@ class SpecmaticStub:
             self.__stub_started_event.set()
 
     def __create_stub_process_command(self):
+        self.validate_mandatory_fields()
         jar_path = os.path.dirname(os.path.realpath(__file__)) + "/specmatic.jar"
         cmd = [
             "java",

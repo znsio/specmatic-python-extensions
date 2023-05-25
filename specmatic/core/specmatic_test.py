@@ -2,12 +2,14 @@ import os
 import shutil
 import subprocess
 
+from specmatic.core.specmatic_base import SpecmaticBase
 from specmatic.utils import get_junit_report_dir_path
 
 
-class SpecmaticTest:
-    def __init__(self, project_root: str, host: str = "127.0.0.1", port: int = 5000, contract_file_path: str = '',
+class SpecmaticTest(SpecmaticBase):
+    def __init__(self, host: str = "127.0.0.1", port: int = 5000, project_root: str = '', contract_file_path: str = '',
                  specmatic_json_file_path: str = ''):
+        super().__init__()
         self.project_root = project_root
         self.host = host
         self.port = port
@@ -20,6 +22,7 @@ class SpecmaticTest:
             shutil.rmtree(junit_report_dir_path)
 
     def _execute_specmatic(self):
+        self.validate_mandatory_fields()
         jar_path = os.path.dirname(os.path.realpath(__file__)) + "/specmatic.jar"
         cmd = [
             "java",

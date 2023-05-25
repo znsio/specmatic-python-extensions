@@ -12,6 +12,8 @@ stub_host = "127.0.0.1"
 stub_port = 8080
 
 expectation_json_file = PROJECT_ROOT + '/test/data/expectation.json'
+service_contract_file = PROJECT_ROOT + '/test/spec/product-search-bff-api.yaml'
+stub_contract_file = PROJECT_ROOT + '/test/spec/api_order_v1.yaml'
 
 
 class TestContract:
@@ -21,12 +23,12 @@ class TestContract:
 stub = None
 app_server = None
 try:
-    stub = Specmatic.start_stub(PROJECT_ROOT, stub_host, stub_port)
+    stub = Specmatic.start_stub(stub_host, stub_port, contract_file_path=stub_contract_file)
     stub.set_expectations([expectation_json_file])
 
     app_server = Specmatic.start_asgi_app(app, app_host, app_port)
 
-    Specmatic.test(PROJECT_ROOT, TestContract, app_host, app_port)
+    Specmatic.test(TestContract, app_host, app_port, contract_file_path=service_contract_file)
 except Exception as e:
     print(f"Error: {e}")
     raise e
