@@ -43,9 +43,7 @@ class SpecmaticStub(SpecmaticBase):
         print(f"\n Shutting down specmatic stub server on {self.host}:{self.port}, please wait ...")
         self.__process.kill()
 
-    def set_expectations(self, file_paths: list[str]):
-        if file_paths is None:
-            file_paths = []
+    def set_expectations(self, file_paths: []):
         try:
             for file_path in file_paths:
                 with open(file_path, 'r') as file:

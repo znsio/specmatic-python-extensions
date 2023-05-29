@@ -63,7 +63,7 @@ class Specmatic:
     @classmethod
     def test_wsgi_app(cls, app, test_class, project_root: str = '', app_contract_file: str = '',
                       stub_contract_file: str = '',
-                      expectation_files: list[str] = None, app_host: str = '127.0.0.1', app_port: int = 0,
+                      expectation_files: [] = None, app_host: str = '127.0.0.1', app_port: int = 0,
                       stub_host: str = '127.0.0.1', stub_port: int = 0, app_config_update_func=None):
 
         stub = None
@@ -89,7 +89,7 @@ class Specmatic:
     @classmethod
     def test_asgi_app(cls, app_module, test_class, project_root: str = '', app_contract_file: str = '',
                       stub_contract_file: str = '',
-                      expectation_files: list[str] = None, app_host: str = '127.0.0.1', app_port: int = 0,
+                      expectation_files: [] = None, app_host: str = '127.0.0.1', app_port: int = 0,
                       stub_host: str = '127.0.0.1', stub_port: int = 0):
 
         stub = None
