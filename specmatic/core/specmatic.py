@@ -61,7 +61,7 @@ class Specmatic:
             raise e
 
     @classmethod
-    def test_wsgi_app(cls, app, test_class, project_root: str = '', app_contracts=None,
+    def test_wsgi_app(cls, app, test_class, with_stub: bool = True, project_root: str = '', app_contracts=None,
                       stub_contracts=None,
                       expectation_files=None, app_host: str = '127.0.0.1', app_port: int = 0,
                       stub_host: str = '127.0.0.1', stub_port: int = 0, app_config_update_func=None):
@@ -70,10 +70,11 @@ class Specmatic:
         app_server = None
 
         try:
-            stub = Specmatic.start_stub(stub_host, stub_port, project_root, contract_file_paths=stub_contracts)
-            stub.set_expectations(expectation_files)
-            if app_config_update_func:
-                app_config_update_func(app, stub)
+            if with_stub:
+                stub = Specmatic.start_stub(stub_host, stub_port, project_root, contract_file_paths=stub_contracts)
+                stub.set_expectations(expectation_files)
+                if app_config_update_func:
+                    app_config_update_func(app, stub)
             app_server = Specmatic.start_wsgi_app(app, app_host, app_port)
             Specmatic.test(test_class, app_server.host, app_server.port, project_root,
                            contract_file_paths=app_contracts)
@@ -87,7 +88,7 @@ class Specmatic:
                 stub.stop()
 
     @classmethod
-    def test_asgi_app(cls, app_module, test_class, project_root: str = '', app_contracts=None,
+    def test_asgi_app(cls, app_module, test_class, with_stub: bool = True, project_root: str = '', app_contracts=None,
                       stub_contracts=None,
                       expectation_files=None, app_host: str = '127.0.0.1', app_port: int = 0,
                       stub_host: str = '127.0.0.1', stub_port: int = 0):
@@ -96,8 +97,9 @@ class Specmatic:
         app_server = None
 
         try:
-            stub = Specmatic.start_stub(stub_host, stub_port, project_root, contract_file_paths=stub_contracts)
-            stub.set_expectations(expectation_files)
+            if with_stub:
+                stub = Specmatic.start_stub(stub_host, stub_port, project_root, contract_file_paths=stub_contracts)
+                stub.set_expectations(expectation_files)
             app_server = Specmatic.start_asgi_app(app_module, app_host, app_port)
             Specmatic.test(test_class, app_server.host, app_server.port, project_root,
                            contract_file_paths=app_contracts)

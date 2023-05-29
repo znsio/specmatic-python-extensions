@@ -14,94 +14,60 @@ A contract test validates an open api specification against a running api servic
 The open api specification can be present either locally or in a [Central Contract Repository](https://specmatic.in/documentation/central_contract_repository.html)  
 [Click here](https://specmatic.in/documentation/contract_tests.html) to learn more about contract tests.  
 
-To run contract tests:  
+#### How to use
+- Create a file called test_contract.py in your test folder.  
+- Declare an empty class in it called 'TestContract'.
+  Specmatic will use this class to inject tests dynamically into it when you run it via say PyTest.
+
+#### To run contract tests with a stub for a wsgi app (like Flask):  
 ``````
 class TestContract:
     pass
     
-Specmatic.test(TestContract, app_host, app_port, contract_file_path=service_contract_file)
-``````
-- Create a file called test_contract.py in your test folder.  
-- Declare an empty class in it called 'TestContract'.  
-  Specmatic will use this class to inject tests dynamically into it when you run it via say PyTest.
-- The ``````Specmatic.test()`````` method accepts:
+Specmatic.test_wsgi_app(app,
+                        TestContract,
+                        app_contracts=[app_contract_file],
+                        stub_contracts=[stub_contract_file],
+                        app_host=app_host,
+                        app_port=app_port,
+                        stub_host=stub_host,
+                        stub_port=stub_port,
+                        expectation_files=[expectation_json_file])
+`````` 
+
+- The ``````Specmatic.test_wsgi_app()`````` method accepts:
+  - an instance of a wsgi app like class 
   - an empty test class 
-  - the host and port on which your app/service is currently running
-  - path to an open api spec file which defines and describes the service end points
+  - app_host, app_port: the host and port on which your app/service is currently running
+  - a list of open api spec file paths which define and describe your app end points
+  - stub_host, stub_port: the host and port on which your dependency service is currently running (which needs to be stubbed).  
+  - a list of open api spec file paths for the stubbed service.  
+  - An optional list of json files to set expectations on the stub.
 -  You can run this test from either your IDE or command line by pointing pytest to your test folder :
    ``````pytest test -v -s``````  
 - NOTE: Please ensure that you set the '-v' and '-s' flags while running pytest as otherwise pytest may swallow up the console output.
 
-
-#### Setting up Stubs
-In many cases, your app/service might require calling another api to perform its operations.  
-Specmatic provides you with an option of creating a stub for such service dependencies and setup expectations on it (like you would do in any of the mocking frameworks).  
-
-To create a stub:
+#### To run contract tests with a stub for an asgi app (like sanic):
 ``````
-stub = Specmatic.start_stub(stub_host, stub_port, contract_file_path=stub_contract_file)
-stub.set_expectations([expectation_json_file])
-# run tests ...
-stub.stop()
-``````    
-
-- The ``````Specmatic.start_stub()`````` method accepts:
-  - the host and port on which your app/service is currently running (which needs to be stubbed).  
-  - path to an open api spec file for the stubbed service.  
-  - An optional list of json files to set expectations on the stub.  
-- [Click here](https://specmatic.in/documentation/service_virtualization_tutorial.html) to learn more about stubbing/service virtualization.  
-
-#### Starting/Stopping a python web app
-If you wish to start/stop your python app as part of your tests, here's how you can do it:  
-- WSGI Apps:  
-  ``````app_server = Specmatic.start_wsgi_app(app, app_host, app_port)``````  
-
-- The ``````Specmatic.start_wsgi_app()`````` method accepts:
-  - an instance of a wsgi app like flask.  
-  - the host/port to run on  
-
-- ASGI Apps:  
-  ``````app_server = Specmatic.start_asgi_app('app:app', app_host, app_port)``````  
-
+Specmatic.test_asgi_app('main:app',
+                        TestContract,
+                        app_contracts=[app_contract_file],
+                        stub_contracts=[stub_contract_file],
+                        app_host=app_host,
+                        app_port=app_port,
+                        stub_host=stub_host,
+                        stub_port=stub_port,
+                        expectation_files=[expectation_json_file])
+``````
 - The ``````Specmatic.start_asgi_app()`````` method accepts:
   - a string in the 'module:app' format for your asgi app like sanic.
-  - the host/port to run on.  
+  - the rest of the arguments are similar to that of the ``````Specmatic.test_wsgi_app()`````` method.
 <br/>
-
-### Putting it all together
-This is how it looks when use all these in a single test:
-
-``````
-class TestContract:
-    pass
-
-
-stub = None
-app_server = None
-
-try:
-    stub = Specmatic.start_stub(stub_host, stub_port, contract_file_path=stub_contract_file)
-    stub.set_expectations([expectation_json_file])
-
-    app_server = Specmatic.start_wsgi_app(app, app_host, app_port)
-
-    Specmatic.test(TestContract, app_host, app_port, contract_file_path=service_contract_file)
-except Exception as e:
-    print(f"Error: {e}")
-    raise e
-finally:
-    if app_server is not None:
-        app_server.stop()
-    if stub is not None:
-        stub.stop()
-
-if __name__ == '__main__':
-    pytest.main()
-``````  
-
-
+<br/>
+- [Click here](https://specmatic.in/documentation/service_virtualization_tutorial.html) to learn more about stubbing/service virtualization.
 - [Check out the Specmatic Order BFF Python repo](https://github.com/znsio/specmatic-order-bff-python/) to see more examples of how to use specmatic with a Flask app.  
 - [Check out the Specmatic Order BFF Python Sanic repo](https://github.com/znsio/specmatic-order-bff-python-sanic/) to see more examples of how to use specmatic with a Sanic app.  
+- [Check out the Specmatic Order API Python repo](https://github.com/znsio/specmatic-order-api-python/) to see an examples of how to just run tests without using a stub.  
 
 
 
