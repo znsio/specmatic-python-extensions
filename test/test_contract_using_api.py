@@ -20,8 +20,8 @@ class TestContract:
 
 Specmatic.test_wsgi_app(app,
                         TestContract,
-                        app_contract_file=app_contract_file,
-                        stub_contract_file=stub_contract_file,
+                        app_contracts=[app_contract_file],
+                        stub_contracts=[stub_contract_file],
                         app_host=app_host,
                         app_port=app_port,
                         stub_host=stub_host,

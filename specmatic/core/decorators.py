@@ -1,11 +1,12 @@
 from specmatic.core.specmatic import Specmatic
 
 
-def specmatic_stub(host: str = '127.0.0.1', port: int = 0, project_root: str = '', expectations=None, contract_file='',
+def specmatic_stub(host: str = '127.0.0.1', port: int = 0, project_root: str = '', expectations=None,
+                   contract_files=None,
                    specmatic_json_file: str = ''):
     def decorator(cls):
         try:
-            cls.stub = Specmatic.start_stub(host, port, project_root, contract_file, specmatic_json_file)
+            cls.stub = Specmatic.start_stub(host, port, project_root, contract_files, specmatic_json_file)
             cls.stub.set_expectations(expectations)
         except Exception as e:
             if hasattr(cls, 'stub'):
@@ -19,7 +20,7 @@ def specmatic_stub(host: str = '127.0.0.1', port: int = 0, project_root: str = '
     return decorator
 
 
-def specmatic_contract_test(host: str = '127.0.0,1', port: int = 0, project_root: str = '', contract_file='',
+def specmatic_contract_test(host: str = '127.0.0,1', port: int = 0, project_root: str = '', contract_files=None,
                             specmatic_json_file: str = ''):
     def decorator(cls):
         try:
@@ -31,7 +32,7 @@ def specmatic_contract_test(host: str = '127.0.0,1', port: int = 0, project_root
                     test_host = app.host
                     test_port = app.port
 
-            Specmatic.test(cls, test_host, test_port, project_root, contract_file, specmatic_json_file)
+            Specmatic.test(cls, test_host, test_port, project_root, contract_files, specmatic_json_file)
             return cls
         except Exception as e:
             if hasattr(cls, 'stub'):
@@ -49,7 +50,7 @@ def specmatic_contract_test(host: str = '127.0.0,1', port: int = 0, project_root
     return decorator
 
 
-def start_app(app, host: str = '127.0.0.1', port: int = 0):
+def start_wsgi_app(app, host: str = '127.0.0.1', port: int = 0):
     def decorator(cls):
         try:
             cls.app = Specmatic.start_wsgi_app(app, host, port)

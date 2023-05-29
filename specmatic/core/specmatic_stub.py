@@ -1,29 +1,22 @@
 import json
 import os
-import re
 import subprocess
 import threading
 import traceback
 from queue import Queue
 
 import requests
-from urllib.parse import urlparse
 
 from specmatic.core.specmatic_base import SpecmaticBase
 
 
 class SpecmaticStub(SpecmaticBase):
 
-    def __init__(self, host: str = '127.0.0.1', port: int = 0, project_root: str = '', contract_file_path: str = '',
+    def __init__(self, host: str = '127.0.0.1', port: int = 0, project_root: str = '', contract_file_paths= None,
                  specmatic_json_file_path: str = ''):
-        super().__init__()
+        super().__init__(host, port, project_root, contract_file_paths, specmatic_json_file_path)
         self.__stub_started_event = None
         self.__process = None
-        self.project_root = project_root
-        self.host = host
-        self.port = port
-        self.specmatic_json_file_path = specmatic_json_file_path
-        self.contract_file_path = contract_file_path
         self.__stub_running_success_message = 'Stub server is running on '
         self.__error_queue = Queue()
         self.__start()
@@ -44,6 +37,8 @@ class SpecmaticStub(SpecmaticBase):
         self.__process.kill()
 
     def set_expectations(self, file_paths: []):
+        if file_paths is None:
+            file_paths = []
         try:
             for file_path in file_paths:
                 with open(file_path, 'r') as file:
@@ -103,25 +98,4 @@ class SpecmaticStub(SpecmaticBase):
 
     def __create_stub_process_command(self):
         self.validate_mandatory_fields()
-        jar_path = os.path.dirname(os.path.realpath(__file__)) + "/specmatic.jar"
-        cmd = [
-            "java",
-            "-jar",
-            jar_path,
-            "stub"
-        ]
-        if self.specmatic_json_file_path != '':
-            cmd.append("--config=" + self.specmatic_json_file_path)
-        else:
-            if self.contract_file_path != '':
-                cmd.append(self.contract_file_path)
-            else:
-                cmd.append("--config=" + self.project_root + "/specmatic.json")
-        cmd += [
-            '--host=' + self.host,
-        ]
-        if self.port != 0:
-            cmd += [
-                "--port=" + str(self.port)
-            ]
-        return cmd
+        return self.create_command_array('stub')
