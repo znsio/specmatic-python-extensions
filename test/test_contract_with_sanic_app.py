@@ -11,7 +11,7 @@ stub_host = "127.0.0.1"
 stub_port = 8080
 
 expectation_json_file = PROJECT_ROOT + '/test/data/expectation.json'
-service_contract_file = PROJECT_ROOT + '/test/spec/product-search-bff-api.yaml'
+app_contract_file = PROJECT_ROOT + '/test/spec/product-search-bff-api.yaml'
 stub_contract_file = PROJECT_ROOT + '/test/spec/api_order_v1.yaml'
 app_module = PROJECT_ROOT + '/test/sanic_app'
 
@@ -20,23 +20,15 @@ class TestContract:
     pass
 
 
-stub = None
-app_server = None
-try:
-    stub = Specmatic.start_stub(stub_host, stub_port, contract_file_path=stub_contract_file)
-    stub.set_expectations([expectation_json_file])
-
-    app_server = Specmatic.start_asgi_app('test.sanic_app:app', app_host, app_port)
-
-    Specmatic.test(TestContract, app_host, app_port, contract_file_path=service_contract_file)
-except Exception as e:
-    print(f"Error: {e}")
-    raise e
-finally:
-    if app_server is not None:
-        app_server.stop()
-    if stub is not None:
-        stub.stop()
+Specmatic.test_asgi_app('test.sanic_app:app',
+                        TestContract,
+                        app_contract_file=app_contract_file,
+                        stub_contract_file=stub_contract_file,
+                        app_host=app_host,
+                        app_port=app_port,
+                        stub_host=stub_host,
+                        stub_port=stub_port,
+                        expectation_files=[expectation_json_file])
 
 if __name__ == '__main__':
     pytest.main()

@@ -59,3 +59,53 @@ class Specmatic:
                 app_server.stop()
             print(f"Error: {e}")
             raise e
+
+    @classmethod
+    def test_wsgi_app(cls, app, test_class, project_root: str = '', app_contract_file: str = '',
+                      stub_contract_file: str = '',
+                      expectation_files: list[str] = None, app_host: str = '127.0.0.1', app_port: int = 0,
+                      stub_host: str = '127.0.0.1', stub_port: int = 0, app_config_update_func=None):
+
+        stub = None
+        app_server = None
+
+        try:
+            stub = Specmatic.start_stub(stub_host, stub_port, project_root, contract_file_path=stub_contract_file)
+            stub.set_expectations(expectation_files)
+            if app_config_update_func is not None:
+                app_config_update_func(app, stub)
+            app_server = Specmatic.start_wsgi_app(app, app_host, app_port)
+            Specmatic.test(test_class, app_server.host, app_server.port, project_root,
+                           contract_file_path=app_contract_file)
+        except Exception as e:
+            print(f"Error: {e}")
+            raise e
+        finally:
+            if app_server is not None:
+                app_server.stop()
+            if stub is not None:
+                stub.stop()
+
+    @classmethod
+    def test_asgi_app(cls, app_module, test_class, project_root: str = '', app_contract_file: str = '',
+                      stub_contract_file: str = '',
+                      expectation_files: list[str] = None, app_host: str = '127.0.0.1', app_port: int = 0,
+                      stub_host: str = '127.0.0.1', stub_port: int = 0):
+
+        stub = None
+        app_server = None
+
+        try:
+            stub = Specmatic.start_stub(stub_host, stub_port, project_root, contract_file_path=stub_contract_file)
+            stub.set_expectations(expectation_files)
+            app_server = Specmatic.start_asgi_app(app_module, app_host, app_port)
+            Specmatic.test(test_class, app_server.host, app_server.port, project_root,
+                           contract_file_path=app_contract_file)
+        except Exception as e:
+            print(f"Error: {e}")
+            raise e
+        finally:
+            if app_server is not None:
+                app_server.stop()
+            if stub is not None:
+                stub.stop()
