@@ -35,7 +35,7 @@ setup(
     author='Specmatic Builders',
     author_email='info@core.in',
     url='https://github.com/znsio/specmatic-python-extensions',
-    packages=find_packages(),
+    packages=find_packages(exclude=['test', 'test.*']),
     include_package_data=True,
     install_requires=[
        'pytest==7.3.1',
