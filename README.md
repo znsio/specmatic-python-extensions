@@ -36,14 +36,14 @@ Specmatic.test_wsgi_app(app,
 `````` 
 
 - The ``````Specmatic.test_wsgi_app()`````` method accepts:
-  - an instance of a wsgi app like class 
-  - an empty test class 
-  - app_host, app_port: the host and port on which your app/service is currently running
-  - a list of open api spec file paths which define and describe your app end points
+  - an instance of a wsgi app like Flask. 
+  - an empty test class.
+  - app_host, app_port: the host and port on which your app/service is currently running.
+  - a list of open api spec file paths which define and describe your app end points.
   - stub_host, stub_port: the host and port on which your dependency service is currently running (which needs to be stubbed).  
   - a list of open api spec file paths for the stubbed service.  
   - An optional list of json files to set expectations on the stub.
--  You can run this test from either your IDE or command line by pointing pytest to your test folder :
+-  You can run this test from either your IDE or command line by pointing pytest to your test folder:
    ``````pytest test -v -s``````  
 - NOTE: Please ensure that you set the '-v' and '-s' flags while running pytest as otherwise pytest may swallow up the console output.
 
@@ -62,8 +62,8 @@ Specmatic.test_asgi_app('main:app',
 - The ``````Specmatic.start_asgi_app()`````` method accepts:
   - a string in the 'module:app' format for your asgi app like sanic.
   - the rest of the arguments are similar to that of the ``````Specmatic.test_wsgi_app()`````` method.
-<br/>
-<br/>
+
+
 - [Click here](https://specmatic.in/documentation/service_virtualization_tutorial.html) to learn more about stubbing/service virtualization.
 - [Check out the Specmatic Order BFF Python repo](https://github.com/znsio/specmatic-order-bff-python/) to see more examples of how to use specmatic with a Flask app.  
 - [Check out the Specmatic Order BFF Python Sanic repo](https://github.com/znsio/specmatic-order-bff-python-sanic/) to see more examples of how to use specmatic with a Sanic app.  

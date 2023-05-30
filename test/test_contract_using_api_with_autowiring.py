@@ -16,9 +16,9 @@ class TestContract:
     pass
 
 
-def update_app_config_with_stub_info(app, stub):
-    app.config['ORDER_API_HOST'] = stub.host
-    app.config['ORDER_API_PORT'] = stub.port
+def update_app_config_with_stub_info(app, host: str, port: int):
+    app.config['ORDER_API_HOST'] = host
+    app.config['ORDER_API_PORT'] = str(port)
 
 
 def reset_app_config(app):
