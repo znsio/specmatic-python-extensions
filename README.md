@@ -69,6 +69,16 @@ Specmatic.test_asgi_app('main:app',
 - [Check out the Specmatic Order BFF Python Sanic repo](https://github.com/znsio/specmatic-order-bff-python-sanic/) to see more examples of how to use specmatic with a Sanic app.  
 - [Check out the Specmatic Order API Python repo](https://github.com/znsio/specmatic-order-api-python/) to see an examples of how to just run tests without using a stub.  
 
+### Common Issues
+- **'Error loading ASGI app'** error when running Specmatic.test_asgi_app()  
+   This error occurs due to incorrect module being specified in the app module parameter 'module:app' string.
+ 
+   #### Solutions:
+   - Try to identify the correct module in which your app variable is instantiated/imported.  
+     For example if your 'app' variable is declared in main.py, try passing 'main:app'.  
+   - Try running the app using uvicorn directly:  
+     `````` uvciron 'main:app' ``````  
+     If you are able to get the app started using uvicorn, it will work with specmatic too.
 
 
 
