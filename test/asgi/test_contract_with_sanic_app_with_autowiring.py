@@ -16,6 +16,8 @@ app_contract_file = PROJECT_ROOT + '/test/spec/product-search-bff-api.yaml'
 stub_contract_file = PROJECT_ROOT + '/test/spec/api_order_v1.yaml'
 app_module = PROJECT_ROOT + '/test/sanic_app'
 
+config_ini_path = get_project_root() + '/test/config.ini'
+
 
 class TestContract:
     pass
@@ -26,7 +28,7 @@ def update_app_config_with_stub_info(host: str, port: int):
     config.read('config.ini')
     config['dev']['ORDER_API_HOST'] = host
     config['dev']['ORDER_API_PORT'] = str(port)
-    with open('./../config.ini', 'w') as configfile:
+    with open(config_ini_path, 'w') as configfile:
         config.write(configfile)
 
 
@@ -35,7 +37,7 @@ def reset_app_config():
     config.read('config.ini')
     config['dev']['ORDER_API_HOST'] = '127.0.0.1'
     config['dev']['ORDER_API_PORT'] = '8080'
-    with open('./../config.ini', 'w') as configfile:
+    with open(config_ini_path, 'w') as configfile:
         config.write(configfile)
 
 
