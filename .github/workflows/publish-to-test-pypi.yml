@@ -19,7 +19,7 @@ jobs:
       - name: Run pip install
         run: pip install -r requirements.txt
       - name: Run contract as tests with Specmatic Python
-        run: pytest test -v -s --junitxml contract-test-reports/TEST-junit-jupiter.xml
+        run: pytest test/test_contract_with_sanic_app.py -v -s --junitxml contract-test-reports/TEST-junit-jupiter.xml
       - name: Publish contract test report
         uses: mikepenz/action-junit-report@v3
         if: always()
