@@ -2,24 +2,10 @@ import os
 from pathlib import Path
 
 from setuptools import setup, find_packages
-import urllib.request
 
+from build_utils import get_version, download_specmatic_jar
 
-def download_specmatic_jar(version):
-    file_url = f'https://github.com/znsio/specmatic/releases/download/{version}/specmatic.jar'
-    file_path = 'specmatic/core/specmatic.jar'
-    print(f"Downloading core jar from: {file_url}")
-    urllib.request.urlretrieve(file_url, file_path)
-
-
-def get_version():
-    version = {}
-    with open(os.path.join('specmatic', 'version.py')) as file:
-        exec(file.read(), version)
-    return version
-
-
-version = get_version()
+version = get_version(os.path.join('specmatic', 'version.py'))
 
 download_specmatic_jar(version['__specmatic_version__'])
 
@@ -38,9 +24,9 @@ setup(
     packages=find_packages(exclude=['test', 'test.*']),
     include_package_data=True,
     install_requires=[
-       'pytest==7.3.1',
-       'requests>=2.0.0',
-       'Werkzeug==2.3.3',
-       'uvicorn>=0.18.0'
+        'pytest==7.3.1',
+        'requests>=2.0.0',
+        'Werkzeug==2.3.3',
+        'uvicorn>=0.18.0'
     ]
 )
