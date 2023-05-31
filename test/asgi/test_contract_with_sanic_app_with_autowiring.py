@@ -25,7 +25,7 @@ class TestContract:
 
 def update_app_config_with_stub_info(host: str, port: int):
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    config.read(config_ini_path)
     config['dev']['ORDER_API_HOST'] = host
     config['dev']['ORDER_API_PORT'] = str(port)
     with open(config_ini_path, 'w') as configfile:
@@ -34,7 +34,7 @@ def update_app_config_with_stub_info(host: str, port: int):
 
 def reset_app_config():
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    config.read(config_ini_path)
     config['dev']['ORDER_API_HOST'] = '127.0.0.1'
     config['dev']['ORDER_API_PORT'] = '8080'
     with open(config_ini_path, 'w') as configfile:
