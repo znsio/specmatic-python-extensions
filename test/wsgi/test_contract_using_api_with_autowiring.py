@@ -5,6 +5,7 @@ import pytest
 from specmatic.core.specmatic import Specmatic
 from specmatic.utils import get_project_root
 from test.flask_app import app
+from test.utils import download_specmatic_jar_if_does_not_exist
 
 stub_host = "127.0.0.1"
 stub_port = 8080
@@ -25,6 +26,8 @@ def reset_app_config(app):
     app.config["ORDER_API_HOST"] = os.getenv("ORDER_API_HOST")
     app.config["ORDER_API_PORT"] = os.getenv("ORDER_API_PORT")
 
+
+download_specmatic_jar_if_does_not_exist()
 
 Specmatic.test_wsgi_app(app,
                         TestContract,

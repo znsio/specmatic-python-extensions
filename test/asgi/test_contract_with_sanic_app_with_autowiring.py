@@ -3,6 +3,7 @@ import configparser
 
 from specmatic.core.specmatic import Specmatic
 from specmatic.utils import get_project_root
+from test.utils import download_specmatic_jar_if_does_not_exist
 
 PROJECT_ROOT = get_project_root()
 
@@ -40,6 +41,8 @@ def reset_app_config():
     with open(config_ini_path, 'w') as configfile:
         config.write(configfile)
 
+
+download_specmatic_jar_if_does_not_exist()
 
 Specmatic.test_asgi_app('test.sanic_app:app',
                         TestContract,
