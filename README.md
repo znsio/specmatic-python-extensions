@@ -19,6 +19,8 @@ The open api specification can be present either locally or in a [Central Contra
 - Declare an empty class in it called 'TestContract'.
   Specmatic will use this class to inject tests dynamically into it when you run it via say PyTest.
 
+## WSGI Apps
+
 #### To run contract tests with a stub for a wsgi app (like Flask):  
 ``````
 class TestContract:
@@ -47,6 +49,34 @@ Specmatic.test_wsgi_app(app,
    ``````pytest test -v -s``````  
 - NOTE: Please ensure that you set the '-v' and '-s' flags while running pytest as otherwise pytest may swallow up the console output.
 
+#### To run contract tests using a central contract repository:
+
+``````
+Specmatic.test_wsgi_app(app,
+                        TestContract,
+                        project_root=PROJECT_ROOT,
+                        stub_host=stub_host,
+                        stub_port=stub_port,
+                        expectation_files=[expectation_json_file])
+``````                        
+
+- When using a [central contract repository](https://specmatic.in/documentation/central_contract_repository.html), provide the absolute path to the root folder
+  of your application in the 'project_root' parameter.
+- You would need to have a specmatic.json file in your project root directory. [Click here](https://specmatic.in/documentation/central_contract_repository.html#specmaticjson) to learn
+  more about the specmatic.json file.
+
+
+#### To run contract tests without a stub, set the 'with_stub' parameter as False:
+
+``````
+Specmatic.test_wsgi_app(app,
+                        TestContract,
+                        with_stub=False,
+                        project_root=ROOT_DIR)
+``````                        
+
+## ASGI Apps
+
 #### To run contract tests with a stub for an asgi app (like sanic):
 ``````
 Specmatic.test_asgi_app('main:app',
@@ -64,12 +94,7 @@ Specmatic.test_asgi_app('main:app',
   - the rest of the arguments are similar to that of the ``````Specmatic.test_wsgi_app()`````` method.
 
 
-- [Click here](https://specmatic.in/documentation/service_virtualization_tutorial.html) to learn more about stubbing/service virtualization.
-- [Check out the Specmatic Order BFF Python repo](https://github.com/znsio/specmatic-order-bff-python/) to see more examples of how to use specmatic with a Flask app.  
-- [Check out the Specmatic Order BFF Python Sanic repo](https://github.com/znsio/specmatic-order-bff-python-sanic/) to see more examples of how to use specmatic with a Sanic app.  
-- [Check out the Specmatic Order API Python repo](https://github.com/znsio/specmatic-order-api-python/) to see an examples of how to just run tests without using a stub.  
-
-### Common Issues
+## Common Issues
 - **'Error loading ASGI app'** error when running Specmatic.test_asgi_app()  
    This error occurs due to incorrect module being specified in the app module parameter 'module:app' string.
  
@@ -78,7 +103,14 @@ Specmatic.test_asgi_app('main:app',
      For example if your 'app' variable is declared in main.py, try passing 'main:app'.  
    - Try running the app using uvicorn directly:  
      `````` uvciron 'main:app' ``````  
-     If you are able to get the app started using uvicorn, it will work with specmatic too.
+     If you are able to get the app started using uvicorn, it will work with specmatic too.  
+
+## Sample Projects
+- [Click here](https://specmatic.in/documentation/service_virtualization_tutorial.html) to learn more about stubbing/service virtualization.
+- [Check out the Specmatic Order BFF Python repo](https://github.com/znsio/specmatic-order-bff-python/) to see more examples of how to use specmatic with a Flask app.  
+- [Check out the Specmatic Order BFF Python Sanic repo](https://github.com/znsio/specmatic-order-bff-python-sanic/) to see more examples of how to use specmatic with a Sanic app.  
+- [Check out the Specmatic Order API Python repo](https://github.com/znsio/specmatic-order-api-python/) to see an examples of how to just run tests without using a stub.  
+
 
 
 
