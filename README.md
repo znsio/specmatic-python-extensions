@@ -48,6 +48,7 @@ Specmatic.test_wsgi_app(app,
 -  You can run this test from either your IDE or command line by pointing pytest to your test folder:
    ``````pytest test -v -s``````  
 - NOTE: Please ensure that you set the '-v' and '-s' flags while running pytest as otherwise pytest may swallow up the console output.
+- [Click here](https://specmatic.in/documentation/service_virtualization_tutorial.html) to learn more about stubbing/service virtualization.  
 
 #### To run contract tests using a central contract repository:
 
@@ -106,7 +107,6 @@ Specmatic.test_asgi_app('main:app',
      If you are able to get the app started using uvicorn, it will work with specmatic too.  
 
 ## Sample Projects
-- [Click here](https://specmatic.in/documentation/service_virtualization_tutorial.html) to learn more about stubbing/service virtualization.
 - [Check out the Specmatic Order BFF Python repo](https://github.com/znsio/specmatic-order-bff-python/) to see more examples of how to use specmatic with a Flask app.  
 - [Check out the Specmatic Order BFF Python Sanic repo](https://github.com/znsio/specmatic-order-bff-python-sanic/) to see more examples of how to use specmatic with a Sanic app.  
 - [Check out the Specmatic Order API Python repo](https://github.com/znsio/specmatic-order-api-python/) to see an examples of how to just run tests without using a stub.  
