@@ -3,6 +3,7 @@ import os
 import pytest
 
 from specmatic.core.specmatic import Specmatic
+from specmatic.servers.wsgi_app_server import WSGIAppServer
 from specmatic.utils import get_project_root
 from test.flask_app import app
 from test.utils import download_specmatic_jar_if_does_not_exist
@@ -29,13 +30,15 @@ def reset_app_config(app):
 
 download_specmatic_jar_if_does_not_exist()
 
-Specmatic.test_wsgi_app(app,
-                        TestContract,
-                        project_root=PROJECT_ROOT,
-                        expectation_files=[expectation_json_file],
-                        app_config_update_func=update_app_config_with_stub_info)
-
-reset_app_config(app)
+app_server = WSGIAppServer(app, set_app_config_func=update_app_config_with_stub_info,
+                           reset_app_config_func=reset_app_config)
+Specmatic() \
+    .with_project_root(PROJECT_ROOT) \
+    .with_test_class(TestContract) \
+    .stub(expectations=[expectation_json_file]) \
+    .app(app_server) \
+    .test() \
+    .run()
 
 if __name__ == '__main__':
     pytest.main()

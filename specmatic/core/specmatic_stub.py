@@ -12,9 +12,9 @@ from specmatic.core.specmatic_base import SpecmaticBase
 
 class SpecmaticStub(SpecmaticBase):
 
-    def __init__(self, host: str = '127.0.0.1', port: int = 0, project_root: str = '', contract_file_paths= None,
+    def __init__(self, host: str = '127.0.0.1', port: int = 0, project_root: str = '',
                  specmatic_json_file_path: str = ''):
-        super().__init__(host, port, project_root, contract_file_paths, specmatic_json_file_path)
+        super().__init__(host, port, project_root, specmatic_json_file_path)
         self.__stub_started_event = None
         self.__process = None
         self.__stub_running_success_message = 'Stub server is running on '
@@ -33,8 +33,9 @@ class SpecmaticStub(SpecmaticBase):
             raise e
 
     def stop(self):
-        print(f"\n Shutting down specmatic stub server on {self.host}:{self.port}, please wait ...")
-        self.__process.kill()
+        if self.__process is not None:
+            print(f"\n Shutting down specmatic stub server on {self.host}:{self.port}, please wait ...")
+            self.__process.kill()
 
     def set_expectations(self, file_paths: []):
         if file_paths is None:

@@ -2,6 +2,7 @@ import pytest
 import configparser
 
 from specmatic.core.specmatic import Specmatic
+from specmatic.servers.asgi_app_server import ASGIAppServer
 from specmatic.utils import get_project_root
 from test.utils import download_specmatic_jar_if_does_not_exist
 
@@ -44,13 +45,14 @@ def reset_app_config():
 
 download_specmatic_jar_if_does_not_exist()
 
-Specmatic.test_asgi_app('test.sanic_app:app',
-                        TestContract,
-                        project_root=PROJECT_ROOT,
-                        expectation_files=[expectation_json_file],
-                        app_config_update_func=update_app_config_with_stub_info)
-
-reset_app_config()
+app_server = ASGIAppServer('test.sanic_app:app', app_host, app_port, update_app_config_with_stub_info, reset_app_config)
+Specmatic() \
+    .with_project_root(PROJECT_ROOT) \
+    .with_test_class(TestContract) \
+    .stub(expectations=[expectation_json_file]) \
+    .app(app_server) \
+    .test() \
+    .run()
 
 if __name__ == '__main__':
     pytest.main()

@@ -1,12 +1,16 @@
-from specmatic.core.specmatic import Specmatic
+from specmatic.core.specmatic_stub import SpecmaticStub
+from specmatic.core.specmatic_test import SpecmaticTest
+from specmatic.generators.pytest_generator import PyTestGenerator
+from specmatic.servers.asgi_app_server import ASGIAppServer
+from specmatic.servers.wsgi_app_server import WSGIAppServer
+from specmatic.utils import get_junit_report_file_path
 
 
 def specmatic_stub(host: str = '127.0.0.1', port: int = 0, project_root: str = '', expectations=None,
-                   contract_files=None,
                    specmatic_json_file: str = ''):
     def decorator(cls):
         try:
-            cls.stub = Specmatic.start_stub(host, port, project_root, contract_files, specmatic_json_file)
+            cls.stub = SpecmaticStub(host, port, project_root, specmatic_json_file)
             cls.stub.set_expectations(expectations)
         except Exception as e:
             if hasattr(cls, 'stub'):
@@ -20,7 +24,7 @@ def specmatic_stub(host: str = '127.0.0.1', port: int = 0, project_root: str = '
     return decorator
 
 
-def specmatic_contract_test(host: str = '127.0.0,1', port: int = 0, project_root: str = '', contract_files=None,
+def specmatic_contract_test(host: str = '127.0.0,1', port: int = 0, project_root: str = '',
                             specmatic_json_file: str = ''):
     def decorator(cls):
         try:
@@ -32,7 +36,8 @@ def specmatic_contract_test(host: str = '127.0.0,1', port: int = 0, project_root
                     test_host = app.host
                     test_port = app.port
 
-            Specmatic.test(cls, test_host, test_port, project_root, contract_files, specmatic_json_file)
+            SpecmaticTest(test_host, test_port, project_root, specmatic_json_file).run()
+            PyTestGenerator(cls, get_junit_report_file_path()).generate()
             return cls
         except Exception as e:
             if hasattr(cls, 'stub'):
@@ -53,7 +58,8 @@ def specmatic_contract_test(host: str = '127.0.0,1', port: int = 0, project_root
 def start_wsgi_app(app, host: str = '127.0.0.1', port: int = 0):
     def decorator(cls):
         try:
-            cls.app = Specmatic.start_wsgi_app(app, host, port)
+            cls.app = WSGIAppServer(app, host, port)
+            cls.app.start()
             return cls
         except Exception as e:
             if hasattr(cls, 'stub'):
@@ -69,7 +75,8 @@ def start_wsgi_app(app, host: str = '127.0.0.1', port: int = 0):
 def start_asgi_app(app_module: str, host: str = '127.0.0.1', port: int = 0):
     def decorator(cls):
         try:
-            cls.app = Specmatic.start_asgi_app(app_module, host, port)
+            cls.app = ASGIAppServer(app_module, host, port)
+            cls.app.start()
             return cls
         except Exception as e:
             if hasattr(cls, 'stub'):

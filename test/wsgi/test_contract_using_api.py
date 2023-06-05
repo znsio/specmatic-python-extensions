@@ -1,6 +1,8 @@
 import pytest
 
 from specmatic.core.specmatic import Specmatic
+from specmatic.core.specmatic import Specmatic
+from specmatic.servers.wsgi_app_server import WSGIAppServer
 from specmatic.utils import get_project_root
 from test.flask_app import app
 from test.utils import download_specmatic_jar_if_does_not_exist
@@ -21,15 +23,14 @@ class TestContract:
 
 download_specmatic_jar_if_does_not_exist()
 
-Specmatic.test_wsgi_app(app,
-                        TestContract,
-                        app_contracts=[app_contract_file],
-                        stub_contracts=[stub_contract_file],
-                        app_host=app_host,
-                        app_port=app_port,
-                        stub_host=stub_host,
-                        stub_port=stub_port,
-                        expectation_files=[expectation_json_file])
+app_server = WSGIAppServer(app, app_host, app_port)
+Specmatic() \
+    .with_project_root(PROJECT_ROOT) \
+    .with_test_class(TestContract) \
+    .stub(stub_host, stub_port, [expectation_json_file]) \
+    .app(app_server) \
+    .test() \
+    .run()
 
 if __name__ == '__main__':
     pytest.main()
