@@ -56,8 +56,8 @@ class Specmatic:
             if self.run_stub:
                 stub = SpecmaticStub(self.stub_host, self.stub_port, self.project_root, self.specmatic_json_file_path)
                 stub.set_expectations(self.expectations)
+                self.app_server.set_app_config(stub.host, stub.port)
             if self.run_app:
-                self.app_server.set_app_config(stub.host, stub.port, )
                 self.app_server.start()
                 self.test_host = self.app_server.host
                 self.test_port = self.app_server.port
