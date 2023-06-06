@@ -36,10 +36,9 @@ class TestContract:
 app_server = WSGIAppServer(app, app_host, app_port)
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
-    .with_test_class(TestContract) \
     .stub(stub_host, stub_port, [expectation_json_file]) \
     .app(app_server) \
-    .test() \
+    .test(TestContract) \
     .run()
 `````` 
 
@@ -65,9 +64,8 @@ class TestContract:
 app_server = WSGIAppServer(app, app_host, app_port)
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
-    .with_test_class(TestContract) \
     .app(app_server) \
-    .test() \
+    .test(TestContract) \
     .run()
 ``````                        
 
@@ -85,9 +83,9 @@ class TestContract:
 app_server = ASGIAppServer('test.apps.sanic_app:app', app_host, app_port)
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
-    .with_test_class(TestContract) \
     .stub(stub_host, stub_port, [expectation_json_file]) \
     .app(app_server) \
+    .with_test_class(TestContract) \
     .test() \
     .run()
 ``````

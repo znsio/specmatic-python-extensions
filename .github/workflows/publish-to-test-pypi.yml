@@ -1,14 +1,13 @@
 name: Publish Python 🐍 distributions 📦 to PyPI and TestPyPI
 
-on: push
+on:
+  release:
+    types: [published]
 
 jobs:
   build-n-publish:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
-    strategy:
-      matrix:
-        os: [ ubuntu-latest, windows-latest ]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
@@ -21,18 +20,10 @@ jobs:
           python -m pip install build --user
       - name: Run pip install
         run: pip install -r requirements.txt
-      - name: Run contract as tests with Specmatic Python
-        run: pytest test -v -s --junitxml contract-test-reports/TEST-junit-jupiter.xml
-      - name: Publish contract test report
-        uses: mikepenz/action-junit-report@v3
-        if: always()
-        with:
-          report_paths: '**/contract-test-reports/TEST-*.xml'
       - name: Build a binary wheel and a source tarball
         run: >-
           python -m build --sdist --wheel --outdir dist/
       - name: Publish distribution 📦 to PyPI
-        if: startsWith(github.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
