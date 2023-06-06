@@ -85,6 +85,8 @@ class SpecmaticStub(SpecmaticBase):
 
         def read_and_print_output_line_by_line():
             for line in iter(self.__process.stdout.readline, ''):
+                if self.__process.poll() is not None:
+                    raise Exception('Stub process terminated due to an error')
                 if line:
                     line = line.decode().rstrip()
                     print(line)

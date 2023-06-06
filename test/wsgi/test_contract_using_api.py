@@ -25,10 +25,9 @@ download_specmatic_jar_if_does_not_exist()
 app_server = WSGIAppServer(app, app_host, app_port)
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
-    .with_test_class(TestContract) \
     .stub(stub_host, stub_port, [expectation_json_file]) \
     .app(app_server) \
-    .test() \
+    .test(TestContract) \
     .run()
 
 if __name__ == '__main__':

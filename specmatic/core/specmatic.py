@@ -28,10 +28,6 @@ class Specmatic:
         self.specmatic_json_file_path = specmatic_json_file_path
         return self
 
-    def with_test_class(self, test_class):
-        self.test_class = test_class
-        return self
-
     def stub(self, stub_host: str = '127.0.0.1', stub_port: int = 0, expectations=None):
         self.stub_host = stub_host
         self.stub_port = stub_port
@@ -44,7 +40,8 @@ class Specmatic:
         self.run_app = True
         return self
 
-    def test(self, test_host: str = '127.0.0.1', test_port: int = 0):
+    def test(self, test_class, test_host: str = '127.0.0.1', test_port: int = 0):
+        self.test_class = test_class
         self.test_host = test_host
         self.test_port = test_port
         self.run_tests = True

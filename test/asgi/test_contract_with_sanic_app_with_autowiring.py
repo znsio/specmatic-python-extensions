@@ -48,10 +48,9 @@ download_specmatic_jar_if_does_not_exist()
 app_server = ASGIAppServer('test.apps.sanic_app:app', app_host, app_port, update_app_config_with_stub_info, reset_app_config)
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
-    .with_test_class(TestContract) \
     .stub(expectations=[expectation_json_file]) \
     .app(app_server) \
-    .test() \
+    .test(TestContract) \
     .run()
 
 if __name__ == '__main__':

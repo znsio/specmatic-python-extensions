@@ -34,10 +34,9 @@ app_server = WSGIAppServer(app, set_app_config_func=update_app_config_with_stub_
                            reset_app_config_func=reset_app_config)
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
-    .with_test_class(TestContract) \
     .stub(expectations=[expectation_json_file]) \
     .app(app_server) \
-    .test() \
+    .test(TestContract) \
     .run()
 
 if __name__ == '__main__':
