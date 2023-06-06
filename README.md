@@ -22,81 +22,78 @@ The open api specification can be present either locally or in a [Central Contra
 ## WSGI Apps
 
 #### To run contract tests with a stub for a wsgi app (like Flask):  
+- Create an instance of a WSGIAppServer by passing it your app object, host, port:  
+``````app_server = WSGIAppServer(app, app_host, app_port)``````
+- Note:
+  - The host and port are optional. If they are not specified, the app will be started on a random available port on 127.0.0.1.
+  - You would need a [specmatic.json](https://specmatic.in/documentation/specmatic_json.html) file to be present in the root directory of your project.
+- To run tests using a stub for your dependencies:
 ``````
 class TestContract:
     pass
     
-Specmatic.test_wsgi_app(app,
-                        TestContract,
-                        app_contracts=[app_contract_file],
-                        stub_contracts=[stub_contract_file],
-                        app_host=app_host,
-                        app_port=app_port,
-                        stub_host=stub_host,
-                        stub_port=stub_port,
-                        expectation_files=[expectation_json_file])
+    
+app_server = WSGIAppServer(app, app_host, app_port)
+Specmatic() \
+    .with_project_root(PROJECT_ROOT) \
+    .with_test_class(TestContract) \
+    .stub(stub_host, stub_port, [expectation_json_file]) \
+    .app(app_server) \
+    .test() \
+    .run()
 `````` 
 
-- The ``````Specmatic.test_wsgi_app()`````` method accepts:
-  - an instance of a wsgi app like Flask. 
+- In this, we are passing:
+  - an instance of the WSGIAppServer class. 
   - an empty test class.
-  - app_host, app_port: the host and port on which your app/service is currently running.
-  - a list of open api spec file paths which define and describe your app end points.
-  - stub_host, stub_port: the host and port on which your dependency service is currently running (which needs to be stubbed).  
-  - a list of open api spec file paths for the stubbed service.  
-  - An optional list of json files to set expectations on the stub.
+  - stub_host, stub_port, optional list of json files to set expectations on the stub.  
+    The stub_host, stub_port will be used to run the specmatic stub server.   
+    If they are not supplied, the stub will be started on a random available port on 127.0.0.1.    
+    [Click here](https://specmatic.in/documentation/service_virtualization_tutorial.html) to learn more about stubbing/service virtualization.
 -  You can run this test from either your IDE or command line by pointing pytest to your test folder:
    ``````pytest test -v -s``````  
 - NOTE: Please ensure that you set the '-v' and '-s' flags while running pytest as otherwise pytest may swallow up the console output.
-- [Click here](https://specmatic.in/documentation/service_virtualization_tutorial.html) to learn more about stubbing/service virtualization.  
+  
 
-#### To run contract tests using a central contract repository:
-
-``````
-Specmatic.test_wsgi_app(app,
-                        TestContract,
-                        project_root=PROJECT_ROOT,
-                        stub_host=stub_host,
-                        stub_port=stub_port,
-                        expectation_files=[expectation_json_file])
-``````                        
-
-- When using a [central contract repository](https://specmatic.in/documentation/central_contract_repository.html), provide the absolute path to the root folder
-  of your application in the 'project_root' parameter.
-- You would need to have a specmatic.json file in your project root directory. [Click here](https://specmatic.in/documentation/central_contract_repository.html#specmaticjson) to learn
-  more about the specmatic.json file.
-
-
-#### To run contract tests without a stub, set the 'with_stub' parameter as False:
+#### To run contract tests without a stub:
 
 ``````
-Specmatic.test_wsgi_app(app,
-                        TestContract,
-                        with_stub=False,
-                        project_root=ROOT_DIR)
+class TestContract:
+    pass
+    
+    
+app_server = WSGIAppServer(app, app_host, app_port)
+Specmatic() \
+    .with_project_root(PROJECT_ROOT) \
+    .with_test_class(TestContract) \
+    .app(app_server) \
+    .test() \
+    .run()
 ``````                        
 
 ## ASGI Apps
 
 #### To run contract tests with a stub for an asgi app (like sanic):
+- Create an instance of a ASGIAppServer by passing it a string in the 'module:app' format for your asgi app, host, port:  
+``````app_server = ASGIAppServer('main:app', app_host, app_port)``````
+- You can now use the ASGIAppServer object to run tests just like we do it for WSGI apps:
 ``````
-Specmatic.test_asgi_app('main:app',
-                        TestContract,
-                        app_contracts=[app_contract_file],
-                        stub_contracts=[stub_contract_file],
-                        app_host=app_host,
-                        app_port=app_port,
-                        stub_host=stub_host,
-                        stub_port=stub_port,
-                        expectation_files=[expectation_json_file])
+class TestContract:
+    pass
+    
+    
+app_server = ASGIAppServer('test.apps.sanic_app:app', app_host, app_port)
+Specmatic() \
+    .with_project_root(PROJECT_ROOT) \
+    .with_test_class(TestContract) \
+    .stub(stub_host, stub_port, [expectation_json_file]) \
+    .app(app_server) \
+    .test() \
+    .run()
 ``````
-- The ``````Specmatic.start_asgi_app()`````` method accepts:
-  - a string in the 'module:app' format for your asgi app like sanic.
-  - the rest of the arguments are similar to that of the ``````Specmatic.test_wsgi_app()`````` method.
-
 
 ## Common Issues
-- **'Error loading ASGI app'** error when running Specmatic.test_asgi_app()  
+- **'Error loading ASGI app'** 
    This error occurs due to incorrect module being specified in the app module parameter 'module:app' string.
  
    #### Solutions:

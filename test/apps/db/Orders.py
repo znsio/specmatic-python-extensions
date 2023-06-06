@@ -1,5 +1,5 @@
 import requests
-from test.flask_app import app
+from test.apps.flask_app import app
 
 
 class Orders:

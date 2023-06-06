@@ -39,12 +39,14 @@ class Specmatic:
         self.expectations = expectations
         return self
 
-    def app(self, app_server:AppServer):
+    def app(self, app_server: AppServer):
         self.app_server = app_server
         self.run_app = True
         return self
 
-    def test(self):
+    def test(self, test_host: str = '127.0.0.1', test_port: int = 0):
+        self.test_host = test_host
+        self.test_port = test_port
         self.run_tests = True
         return self
 
@@ -57,8 +59,11 @@ class Specmatic:
             if self.run_app:
                 self.app_server.set_app_config(stub.host, stub.port, )
                 self.app_server.start()
+                self.test_host = self.app_server.host
+                self.test_port = self.app_server.port
             if self.run_tests:
-                SpecmaticTest(self.app_server.host, self.app_server.port, self.project_root, self.specmatic_json_file_path).run()
+                SpecmaticTest(self.test_host, self.test_port, self.project_root,
+                              self.specmatic_json_file_path).run()
                 PyTestGenerator(self.test_class, get_junit_report_file_path()).generate()
         except Exception as e:
             print(f"Error: {e}")
@@ -69,6 +74,3 @@ class Specmatic:
                 self.app_server.reset_app_config()
             if stub is not None:
                 stub.stop()
-
-
-

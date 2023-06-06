@@ -1,10 +1,9 @@
 import pytest
 
 from specmatic.core.specmatic import Specmatic
-from specmatic.core.specmatic import Specmatic
 from specmatic.servers.wsgi_app_server import WSGIAppServer
 from specmatic.utils import get_project_root
-from test.flask_app import app
+from test.apps.flask_app import app
 from test.utils import download_specmatic_jar_if_does_not_exist
 
 app_host = "127.0.0.1"

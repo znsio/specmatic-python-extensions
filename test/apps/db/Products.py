@@ -1,5 +1,5 @@
+from test.apps.flask_app import app
 import requests
-from test.sanic_app import app
 
 
 class Products:
