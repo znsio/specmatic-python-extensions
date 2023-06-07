@@ -90,6 +90,22 @@ Specmatic() \
     .run()
 ``````
 
+### Passing extra agruments to stub/test
+- To pass arguments like '--strict', '--testBaseUrl', pass them as a list to the 'args' parameter:
+``````
+class TestContract:
+    pass
+
+
+app_server = WSGIAppServer(app, app_host, app_port)
+Specmatic() \
+    .with_project_root(PROJECT_ROOT) \
+    .stub(stub_host, stub_port, [expectation_json_file], ['--strict']) \
+    .app(app_server) \
+    .test(TestContract, args=['--testBaseURL=http://localhost:5000']) \
+    .run()
+``````
+
 ## Common Issues
 - **'Error loading ASGI app'** 
    This error occurs due to incorrect module being specified in the app module parameter 'module:app' string.
