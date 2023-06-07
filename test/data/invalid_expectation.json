@@ -1,0 +1,29 @@
+{
+  "http-request": {
+    "method": "GET",
+    "path": "/products",
+    "query": {
+      "type": "test"
+    }
+  },
+  "http-response": {
+    "status": 200,
+    "body": [
+      {
+        "id": 1,
+        "inventory": 10,
+        "type": "gadget"
+      },
+      {
+        "id": 2,
+        "inventory": 40,
+        "type": "gadget"
+      },
+      {
+        "id": 31,
+        "inventory": 20,
+        "type": "gadget"
+      }
+    ]
+  }
+}

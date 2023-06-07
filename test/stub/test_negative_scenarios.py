@@ -16,8 +16,7 @@ stub_host = "127.0.0.1"
 stub_port = 8080
 
 expectation_json_file = PROJECT_ROOT + '/test/data/expectation.json'
-app_contract_file = PROJECT_ROOT + '/test/spec/product-search-bff-api.yaml'
-stub_contract_file = PROJECT_ROOT + '/test/spec/api_order_v1.yaml'
+invalid_expectation_json_file = PROJECT_ROOT + '/test/data/invalid_expectation.json'
 app_module = PROJECT_ROOT + '/test/sanic_app'
 
 download_specmatic_jar_if_does_not_exist()
@@ -57,6 +56,17 @@ class TestNegativeScenarios:
                 .run()
             sock.close()
         assert f"{exception.value}".find('Stub process terminated due to an error') != -1
+
+    def test_throws_exception_when_expectation_json_is_invalid(self):
+        with pytest.raises(Exception) as exception:
+            app_server = ASGIAppServer('test.apps.sanic_app:app')
+            Specmatic() \
+                .with_project_root(PROJECT_ROOT) \
+                .stub(expectations=[invalid_expectation_json_file]) \
+                .app(app_server) \
+                .test(TestNegativeScenarios) \
+                .run()
+        assert f"{exception.value}".find('No match was found') != -1
 
 
 if __name__ == '__main__':
