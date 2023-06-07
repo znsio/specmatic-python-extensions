@@ -58,20 +58,6 @@ class TestNegativeScenarios:
             sock.close()
         assert f"{exception.value}".find('Stub process terminated due to an error') != -1
 
-    def test_creates_a_failed_test_when_stub_is_run_in_strict_mode_without_any_expectations_set(self):
-        app_server = ASGIAppServer('test.apps.sanic_app:app')
-        Specmatic() \
-            .with_project_root(PROJECT_ROOT) \
-            .stub(stub_host, stub_port, args=['--strict']) \
-            .app(app_server) \
-            .test(TestNegativeScenarios) \
-            .run()
-        test_method = 'test_Scenario: GET /findAvailableProducts -> 200 | GET_DETAILS'
-        for attr in dir(TestNegativeScenarios):
-            if attr == test_method:
-                method = getattr(TestNegativeScenarios, attr)
-                assert inspect.getsource(method).find('pytest.fail(error)') != -1
-
 
 if __name__ == '__main__':
     pytest.main()

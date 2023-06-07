@@ -25,7 +25,7 @@ Specmatic() \
     .with_project_root(PROJECT_ROOT) \
     .stub(stub_host, stub_port, [expectation_json_file], ['--strict']) \
     .app(app_server) \
-    .test(TestContract) \
+    .test(TestContract, args=['--testBaseURL=http://localhost:5000']) \
     .run()
 
 if __name__ == '__main__':
