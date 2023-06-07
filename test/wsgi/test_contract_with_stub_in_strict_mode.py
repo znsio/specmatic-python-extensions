@@ -23,7 +23,7 @@ download_specmatic_jar_if_does_not_exist()
 app_server = WSGIAppServer(app, app_host, app_port)
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
-    .stub(stub_host, stub_port, [expectation_json_file]) \
+    .stub(stub_host, stub_port, [expectation_json_file], ['--strict']) \
     .app(app_server) \
     .test(TestContract) \
     .run()

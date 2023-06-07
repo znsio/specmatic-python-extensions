@@ -14,8 +14,6 @@ stub_host = "127.0.0.1"
 stub_port = 8080
 
 expectation_json_file = PROJECT_ROOT + '/test/data/expectation.json'
-app_contract_file = PROJECT_ROOT + '/test/spec/product-search-bff-api.yaml'
-stub_contract_file = PROJECT_ROOT + '/test/spec/api_order_v1.yaml'
 app_module = PROJECT_ROOT + '/test/sanic_app'
 
 config_ini_path = get_project_root() + '/test/config.ini'
@@ -45,7 +43,8 @@ def reset_app_config():
 
 download_specmatic_jar_if_does_not_exist()
 
-app_server = ASGIAppServer('test.apps.sanic_app:app', app_host, app_port, update_app_config_with_stub_info, reset_app_config)
+app_server = ASGIAppServer('test.apps.sanic_app:app', app_host, app_port, update_app_config_with_stub_info,
+                           reset_app_config)
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
     .stub(expectations=[expectation_json_file]) \

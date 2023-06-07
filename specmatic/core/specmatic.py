@@ -7,6 +7,8 @@ from specmatic.utils import get_junit_report_file_path
 
 class Specmatic:
     def __init__(self):
+        self.test_args = None
+        self.stub_args = None
         self.test_class = None
         self.test_port = None
         self.test_host = None
@@ -28,11 +30,12 @@ class Specmatic:
         self.specmatic_json_file_path = specmatic_json_file_path
         return self
 
-    def stub(self, stub_host: str = '127.0.0.1', stub_port: int = 0, expectations=None):
+    def stub(self, stub_host: str = '127.0.0.1', stub_port: int = 0, expectations=None, args=None):
         self.stub_host = stub_host
         self.stub_port = stub_port
         self.run_stub = True
         self.expectations = expectations
+        self.stub_args = args
         return self
 
     def app(self, app_server: AppServer):
@@ -40,10 +43,11 @@ class Specmatic:
         self.run_app = True
         return self
 
-    def test(self, test_class, test_host: str = '127.0.0.1', test_port: int = 0):
+    def test(self, test_class, test_host: str = '127.0.0.1', test_port: int = 0, args=None):
         self.test_class = test_class
         self.test_host = test_host
         self.test_port = test_port
+        self.test_args = args
         self.run_tests = True
         return self
 
@@ -51,7 +55,7 @@ class Specmatic:
         stub = None
         try:
             if self.run_stub:
-                stub = SpecmaticStub(self.stub_host, self.stub_port, self.project_root, self.specmatic_json_file_path)
+                stub = SpecmaticStub(self.stub_host, self.stub_port, self.project_root, self.specmatic_json_file_path, self.stub_args)
                 stub.set_expectations(self.expectations)
                 self.app_server.set_app_config(stub.host, stub.port)
             if self.run_app:
@@ -60,7 +64,7 @@ class Specmatic:
                 self.test_port = self.app_server.port
             if self.run_tests:
                 SpecmaticTest(self.test_host, self.test_port, self.project_root,
-                              self.specmatic_json_file_path).run()
+                              self.specmatic_json_file_path, self.test_args).run()
                 PyTestGenerator(self.test_class, get_junit_report_file_path()).generate()
         except Exception as e:
             print(f"Error: {e}")

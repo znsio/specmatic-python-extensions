@@ -3,7 +3,7 @@ import os
 
 class SpecmaticBase:
     def __init__(self, host: str = '127.0.0.1', port: int = 0, project_root: str = '',
-                 specmatic_json_file_path: str = ''):
+                 specmatic_json_file_path: str = '', args=None):
         self.specmatic_json_file_path = None
         self.contract_file_paths = None
         self.project_root = None
@@ -11,6 +11,7 @@ class SpecmaticBase:
         self.host = host
         self.port = port
         self.specmatic_json_file_path = specmatic_json_file_path
+        self.args = [] if args is None else args
 
     def validate_mandatory_fields(self):
         if self.project_root == '' and self.specmatic_json_file_path == '':
@@ -34,4 +35,6 @@ class SpecmaticBase:
             cmd += ["--port=" + str(self.port)]
         if junitDirPath != '':
             cmd += ["--junitReportDir=" + junitDirPath]
+        for arg in self.args:
+            cmd += [arg]
         return cmd
