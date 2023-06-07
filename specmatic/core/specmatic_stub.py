@@ -26,6 +26,7 @@ class SpecmaticStub(SpecmaticBase):
             self.__stub_started_event = threading.Event()
             self.__start_specmatic_stub_in_subprocess()
             self.__start_reading_stub_output()
+            self.__start_reading_stub_error_output()
             self.__wait_till_stub_has_started()
         except Exception as e:
             self.stop()
@@ -64,17 +65,21 @@ class SpecmaticStub(SpecmaticBase):
         stub_command = self.__create_stub_process_command()
         if self.host != '' and self.port != 0:
             print(f"\n Starting specmatic stub server on {self.host}:{self.port}")
-        self.__process = subprocess.Popen(stub_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        self.__process = subprocess.Popen(stub_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     def __start_reading_stub_output(self):
         stdout_reader = threading.Thread(target=self.__read_process_output, daemon=True)
         stdout_reader.start()
 
+    def __start_reading_stub_error_output(self):
+        error_reader = threading.Thread(target=self.__read_process_error_output, daemon=True)
+        error_reader.start()
+
     def __wait_till_stub_has_started(self):
         self.__stub_started_event.wait()
         if not self.__error_queue.empty():
             error = self.__error_queue.get()
-            raise Exception(f"An exception occurred while reading the stub process output: {error}")
+            raise Exception(f"An exception occurred while starting the stub: {error}")
 
     def __read_process_output(self):
         def signal_event_if_stub_has_started(line):
@@ -85,8 +90,6 @@ class SpecmaticStub(SpecmaticBase):
 
         def read_and_print_output_line_by_line():
             for line in iter(self.__process.stdout.readline, ''):
-                if self.__process.poll() is not None:
-                    raise Exception('Stub process terminated due to an error')
                 if line:
                     line = line.decode().rstrip()
                     print(line)
@@ -94,6 +97,18 @@ class SpecmaticStub(SpecmaticBase):
 
         try:
             read_and_print_output_line_by_line()
+        except Exception:
+            tb = traceback.format_exc()
+            self.__error_queue.put(tb)
+            self.__stub_started_event.set()
+
+    def __read_process_error_output(self):
+        try:
+            for line in iter(self.__process.stderr.readline, ''):
+                if line or self.__process.poll() is not None:
+                    line = line.decode().rstrip()
+                    print(line)
+                    raise Exception('Stub process terminated due to an error ' + line)
         except Exception:
             tb = traceback.format_exc()
             self.__error_queue.put(tb)
