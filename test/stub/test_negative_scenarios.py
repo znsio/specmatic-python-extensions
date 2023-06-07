@@ -19,6 +19,8 @@ app_contract_file = PROJECT_ROOT + '/test/spec/product-search-bff-api.yaml'
 stub_contract_file = PROJECT_ROOT + '/test/spec/api_order_v1.yaml'
 app_module = PROJECT_ROOT + '/test/sanic_app'
 
+download_specmatic_jar_if_does_not_exist()
+
 
 class TestNegativeScenarios:
 
