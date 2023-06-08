@@ -3,7 +3,6 @@ import os
 import pytest
 
 from specmatic.core.specmatic import Specmatic
-from specmatic.servers.wsgi_app_server import WSGIAppServer
 from specmatic.utils import get_project_root
 from test.apps.flask_app import app
 from test.utils import download_specmatic_jar_if_does_not_exist
@@ -18,7 +17,7 @@ class TestContract:
     pass
 
 
-def update_app_config_with_stub_info(app, host: str, port: int):
+def set_app_config(app, host: str, port: int):
     app.config['ORDER_API_HOST'] = host
     app.config['ORDER_API_PORT'] = str(port)
 
@@ -30,12 +29,12 @@ def reset_app_config(app):
 
 download_specmatic_jar_if_does_not_exist()
 
-app_server = WSGIAppServer(app, set_app_config_func=update_app_config_with_stub_info,
-                           reset_app_config_func=reset_app_config)
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
-    .stub(expectations=[expectation_json_file]) \
-    .app(app_server) \
+    .with_stub(expectations=[expectation_json_file]) \
+    .with_app(app) \
+    .with_set_app_config_func(set_app_config) \
+    .with_reset_app_config_func(reset_app_config) \
     .test(TestContract) \
     .run()
 

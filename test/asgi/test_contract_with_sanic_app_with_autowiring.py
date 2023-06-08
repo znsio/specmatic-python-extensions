@@ -23,7 +23,7 @@ class TestContract:
     pass
 
 
-def update_app_config_with_stub_info(host: str, port: int):
+def set_app_config(host: str, port: int):
     config = configparser.ConfigParser()
     config.read(config_ini_path)
     config['dev']['ORDER_API_HOST'] = host
@@ -43,12 +43,13 @@ def reset_app_config():
 
 download_specmatic_jar_if_does_not_exist()
 
-app_server = ASGIAppServer('test.apps.sanic_app:app', app_host, app_port, update_app_config_with_stub_info,
-                           reset_app_config)
+
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
-    .stub(expectations=[expectation_json_file]) \
-    .app(app_server) \
+    .with_stub(expectations=[expectation_json_file]) \
+    .with_app_module('test.apps.sanic_app:app') \
+    .with_set_app_config_func(set_app_config) \
+    .with_reset_app_config_func(reset_app_config) \
     .test(TestContract) \
     .run()
 
