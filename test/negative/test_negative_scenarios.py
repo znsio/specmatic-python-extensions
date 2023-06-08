@@ -65,6 +65,16 @@ class TestNegativeScenarios:
                 .run()
         assert f"{exception.value}".find('No match was found') != -1
 
+    def test_throws_exception_when_app_module_is_invalid(self):
+        with pytest.raises(Exception) as exception:
+            Specmatic() \
+                .with_project_root(PROJECT_ROOT) \
+                .with_stub(expectations=[expectation_json_file]) \
+                .with_app_module('main:app') \
+                .test(TestNegativeScenarios) \
+                .run()
+        assert f"{exception.value}".find('App process terminated due to an error') != -1
+
 
 if __name__ == '__main__':
     pytest.main()

@@ -43,6 +43,9 @@ class ASGIAppServer(AppServer):
     def __read_process_output(self):
         try:
             for line in iter(self.__process.stdout.readline, ''):
+                if self.__process.poll() is not None:
+                    line = line.decode()
+                    raise Exception('App process terminated due to an error ' + line)
                 if line:
                     line = line.decode().rstrip()
                     print(line)
