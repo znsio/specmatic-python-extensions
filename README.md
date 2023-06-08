@@ -1,5 +1,5 @@
 # Specmatic Python
-This is a Python library to run [Specmatic](https://specmatic.in).  
+This is a Python library to run [Specmatic](https://specmatic.in).
 Specmatic is a contract driven development tool that allows us to turn OpenAPI contracts into executable specifications.
 <br/>Click below to learn more about Specmatic and Contract Driven Development<br/><br/>
 [![Specmatic - Contract Driven Development](https://img.youtube.com/vi/3HPgpvd8MGg/0.jpg)](https://www.youtube.com/watch?v=3HPgpvd8MGg "Specmatic - Contract Driven Development")
@@ -16,8 +16,18 @@ The open api specification can be present either locally or in a [Central Contra
 
 #### How to use
 - Create a file called test_contract.py in your test folder.  
-- Declare an empty class in it called 'TestContract'.
-  Specmatic will use this class to inject tests dynamically into it when you run it via say PyTest.
+- Declare an empty class in it called 'TestContract'.  
+  This is could either be a normal class like:
+  ``````
+  class TestContract:
+    pass
+  ``````
+  Or you could also have a class which inherits from unittest.TestCase:
+  ``````
+  class TestContract(unittest.TestCase):
+    pass
+  ``````
+  Specmatic will use this class to inject tests dynamically into it when you run it via PyTest or UnitTest.
 
 ## WSGI Apps
 

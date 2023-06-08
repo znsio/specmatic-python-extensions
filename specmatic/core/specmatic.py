@@ -1,6 +1,9 @@
+import unittest
+
 from specmatic.core.specmatic_stub import SpecmaticStub
 from specmatic.core.specmatic_test import SpecmaticTest
 from specmatic.generators.pytest_generator import PyTestGenerator
+from specmatic.generators.unittest_generator import UnitTestGenerator
 from specmatic.servers.app_server import AppServer
 from specmatic.utils import get_junit_report_file_path
 
@@ -65,7 +68,12 @@ class Specmatic:
             if self.run_tests:
                 SpecmaticTest(self.test_host, self.test_port, self.project_root,
                               self.specmatic_json_file_path, self.test_args).run()
-                PyTestGenerator(self.test_class, get_junit_report_file_path()).generate()
+                if issubclass(self.test_class,  unittest.TestCase):
+                    print("Injecting unittest methods")
+                    UnitTestGenerator(self.test_class, get_junit_report_file_path()).generate()
+                else:
+                    print("Injecting pytest methods")
+                    PyTestGenerator(self.test_class, get_junit_report_file_path()).generate()
         except Exception as e:
             print(f"Error: {e}")
             raise e
