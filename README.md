@@ -32,28 +32,26 @@ The open api specification can be present either locally or in a [Central Contra
 ## WSGI Apps
 
 #### To run contract tests with a stub for a wsgi app (like Flask):  
-- Create an instance of a ``````WSGIAppServer`````` by passing it your app object, host, port:  
-``````app_server = WSGIAppServer(app, app_host, app_port)``````
-- Note:
-  - The host and port are optional. If they are not specified, the app will be started on a random available port on 127.0.0.1.
-  - You would need a [specmatic.json](https://specmatic.in/documentation/specmatic_json.html) file to be present in the root directory of your project.
-- To run tests using a stub for your dependencies:
+
 ``````
 class TestContract:
     pass
     
     
-app_server = WSGIAppServer(app, app_host, app_port)
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
-    .stub(stub_host, stub_port, [expectation_json_file]) \
-    .app(app_server) \
+    .with_stub(stub_host, stub_port, [expectation_json_file]) \
+    .with_app(app) \
+    .with_app_host(app_host)\
+    .with_app_port(app_port)\
     .test(TestContract) \
     .run()
 `````` 
 
 - In this, we are passing:
-  - an instance of the WSGIAppServer class. 
+  - an instance of your asgi app like flask 
+  - app_host and app_port. If they are not specified, the app will be started on a random available port on 127.0.0.1.
+  - You would need a [specmatic.json](https://specmatic.in/documentation/specmatic_json.html) file to be present in the root directory of your project.
   - an empty test class.
   - stub_host, stub_port, optional list of json files to set expectations on the stub.  
     The stub_host, stub_port will be used to run the specmatic stub server.   
@@ -70,11 +68,11 @@ Specmatic() \
 class TestContract:
     pass
     
-    
-app_server = WSGIAppServer(app, app_host, app_port)
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
-    .app(app_server) \
+    .with_app(app) \
+    .with_app_host(app_host)\
+    .with_app_port(app_port)\
     .test(TestContract) \
     .run()
 ``````                        
@@ -82,20 +80,18 @@ Specmatic() \
 ## ASGI Apps
 
 #### To run contract tests with a stub for an asgi app (like sanic):
-- Create an instance of a ``````ASGIAppServer`````` by passing it a string in the 'module:app' format for your asgi app, host, port:  
-``````app_server = ASGIAppServer('main:app', app_host, app_port)``````  
- If host and port are not specified, the app will be started on a random available port on 127.0.0.1.
-- You can now use the ``````ASGIAppServer`````` object to run tests just like we do it for WSGI apps:
+- If you are using an asgi app like sanic, fastapi, use the ``````with_app_module`````` function and pass it a string in the 'module:app' format.
 ``````
 class TestContract:
     pass
     
     
-app_server = ASGIAppServer('main:app', app_host, app_port)
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
-    .stub(stub_host, stub_port, [expectation_json_file]) \
-    .app(app_server) \
+    .with_stub(stub_host, stub_port, [expectation_json_file]) \
+    .with_app_module('main:app') \
+    .with_app_host(app_host) \
+    .with_app_port(app_port) \
     .test(TestContract) \
     .run()
 ``````
@@ -107,11 +103,11 @@ class TestContract:
     pass
 
 
-app_server = WSGIAppServer(app, app_host, app_port)
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
-    .stub(stub_host, stub_port, [expectation_json_file], ['--strict']) \
-    .app(app_server) \
+    .with_stub(stub_host, stub_port, [expectation_json_file], ['--strict']) \
+    .with_app(app) \
+    .with_app_port(app_port) \
     .test(TestContract, args=['--testBaseURL=http://localhost:5000']) \
     .run()
 ``````
