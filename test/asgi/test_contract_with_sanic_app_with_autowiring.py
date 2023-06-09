@@ -4,7 +4,6 @@ import pytest
 
 from specmatic.core.specmatic import Specmatic
 from specmatic.utils import get_project_root
-from test.utils import download_specmatic_jar_if_does_not_exist
 
 PROJECT_ROOT = get_project_root()
 
@@ -41,15 +40,11 @@ def reset_app_config():
         config.write(configfile)
 
 
-download_specmatic_jar_if_does_not_exist()
-
-
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
     .with_stub(expectations=[expectation_json_file]) \
-    .with_app_module('test.apps.sanic_app:app') \
-    .with_set_app_config_func(set_app_config) \
-    .with_reset_app_config_func(reset_app_config) \
+    .with_asgi_app('test.apps.sanic_app:app', set_app_config_func=set_app_config,
+                   reset_app_config_func=reset_app_config) \
     .test(TestContract) \
     .run()
 

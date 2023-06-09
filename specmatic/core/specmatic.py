@@ -59,30 +59,24 @@ class Specmatic:
         self.run_app = True
         return self
 
-    def with_app(self, app):
+    def with_wsgi_app(self, app, host: str = '127.0.0.1', port: int = 0, set_app_config_func=None,
+                      reset_app_config_func=None):
         self.app = app
-        self.run_app = True
-        return self
-
-    def with_app_module(self, app_module: str):
-        self.app_module = app_module
-        self.run_app = True
-        return self
-
-    def with_app_host(self, host: str):
         self.app_host = host
-        return self
-
-    def with_app_port(self, port: int):
         self.app_port = port
-        return self
-
-    def with_set_app_config_func(self, set_app_config_func):
         self.set_app_config_func = set_app_config_func
+        self.reset_app_config_func = reset_app_config_func
+        self.run_app = True
         return self
 
-    def with_reset_app_config_func(self, reset_app_config_func):
+    def with_asgi_app(self, app_module: str, host: str = '127.0.0.1', port: int = 0, set_app_config_func=None,
+                      reset_app_config_func=None):
+        self.app_module = app_module
+        self.app_host = host
+        self.app_port = port
+        self.set_app_config_func = set_app_config_func
         self.reset_app_config_func = reset_app_config_func
+        self.run_app = True
         return self
 
     def test(self, test_class, test_host: str = '127.0.0.1', test_port: int = 0, args=None):

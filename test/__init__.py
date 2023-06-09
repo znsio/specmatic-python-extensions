@@ -1,0 +1,3 @@
+from test.utils import download_specmatic_jar_if_does_not_exist
+
+download_specmatic_jar_if_does_not_exist()

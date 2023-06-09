@@ -3,7 +3,6 @@ import pytest
 from specmatic.core.specmatic import Specmatic
 from specmatic.utils import get_project_root
 from test.apps.flask_app import app
-from test.utils import download_specmatic_jar_if_does_not_exist
 
 app_host = "127.0.0.1"
 app_port = 5000
@@ -17,14 +16,10 @@ class TestContract:
     pass
 
 
-download_specmatic_jar_if_does_not_exist()
-
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
     .with_stub(stub_host, stub_port, [expectation_json_file]) \
-    .with_app(app) \
-    .with_app_host(app_host)\
-    .with_app_port(app_port)\
+    .with_wsgi_app(app, app_host, app_port) \
     .test(TestContract) \
     .run()
 
