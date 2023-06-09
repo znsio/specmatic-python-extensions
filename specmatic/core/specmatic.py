@@ -12,26 +12,31 @@ from specmatic.utils import get_junit_report_file_path
 
 class Specmatic:
     def __init__(self):
-        self.reset_app_config_func = None
-        self.set_app_config_func = None
+        self.app = None
+        self.app_module = ''
         self.app_host = '127.0.0.1'
         self.app_port = 0
-        self.app_module = ''
-        self.app = None
-        self.test_args = None
-        self.stub_args = None
-        self.test_class = None
-        self.test_port = None
-        self.test_host = None
+        self.reset_app_config_func = None
+        self.set_app_config_func = None
         self.app_server = None
-        self.expectations = None
-        self.stub_port = None
+
         self.stub_host = None
+        self.stub_port = None
+        self.expectations = None
+        self.stub_args = None
+        self.stub = None
+
+        self.test_class = None
+        self.test_host = None
+        self.test_port = None
+        self.test_args = None
+
+        self.project_root = ''
+        self.specmatic_json_file_path = ''
+
         self.run_stub = False
         self.run_app = False
         self.run_tests = False
-        self.project_root = ''
-        self.specmatic_json_file_path = ''
 
     def with_project_root(self, project_root):
         self.project_root = project_root
@@ -88,38 +93,46 @@ class Specmatic:
         self.run_tests = True
         return self
 
+    def __init_app_server(self):
+        if self.run_app:
+            if self.app is None and self.app_module == '':
+                raise Exception('Please specify either an app or an app_module.')
+            if self.app is not None and self.app_module != '':
+                raise Exception('Please specify only one of app or app_module, and not both.')
+            if self.app is not None:
+                self.app_server = WSGIAppServer(self.app, self.app_host, self.app_port, self.set_app_config_func,
+                                                self.reset_app_config_func)
+            else:
+                self.app_server = ASGIAppServer(self.app_module, self.app_host, self.app_port, self.set_app_config_func,
+                                                self.reset_app_config_func)
+
+    def __start_stub(self):
+        if self.run_stub:
+            self.stub = SpecmaticStub(self.stub_host, self.stub_port, self.project_root, self.specmatic_json_file_path,
+                                      self.stub_args)
+            self.stub.set_expectations(self.expectations)
+            self.app_server.set_app_config(self.stub.host, self.stub.port)
+
+    def __execute_tests(self):
+        if self.run_tests:
+            if self.app_server is not None:
+                self.app_server.start()
+                self.test_host = self.app_server.host
+                self.test_port = self.app_server.port
+            SpecmaticTest(self.test_host, self.test_port, self.project_root,
+                          self.specmatic_json_file_path, self.test_args).run()
+            if issubclass(self.test_class, unittest.TestCase):
+                print("Injecting unittest methods")
+                UnitTestGenerator(self.test_class, get_junit_report_file_path()).generate()
+            else:
+                print("Injecting pytest methods")
+                PyTestGenerator(self.test_class, get_junit_report_file_path()).generate()
+
     def run(self):
-        stub = None
         try:
-            if self.run_app:
-                if self.app is None and self.app_module == '':
-                    raise Exception('Please specify either app or app_module.')
-                if self.app is not None and self.app_module != '':
-                    raise Exception('Please specify only one of app or app_module, and not both.')
-                if self.app is not None:
-                    self.app_server = WSGIAppServer(self.app, self.app_host, self.app_port, self.set_app_config_func,
-                                                    self.reset_app_config_func)
-                else:
-                    self.app_server = ASGIAppServer(self.app_module, self.app_host, self.app_port, self.set_app_config_func,
-                                                    self.reset_app_config_func)
-            if self.run_stub:
-                stub = SpecmaticStub(self.stub_host, self.stub_port, self.project_root, self.specmatic_json_file_path,
-                                     self.stub_args)
-                stub.set_expectations(self.expectations)
-                self.app_server.set_app_config(stub.host, stub.port)
-            if self.run_tests:
-                if self.app_server is not None:
-                    self.app_server.start()
-                    self.test_host = self.app_server.host
-                    self.test_port = self.app_server.port
-                SpecmaticTest(self.test_host, self.test_port, self.project_root,
-                              self.specmatic_json_file_path, self.test_args).run()
-                if issubclass(self.test_class, unittest.TestCase):
-                    print("Injecting unittest methods")
-                    UnitTestGenerator(self.test_class, get_junit_report_file_path()).generate()
-                else:
-                    print("Injecting pytest methods")
-                    PyTestGenerator(self.test_class, get_junit_report_file_path()).generate()
+            self.__init_app_server()
+            self.__start_stub()
+            self.__execute_tests()
         except Exception as e:
             print(f"Error: {e}")
             raise e
@@ -127,5 +140,5 @@ class Specmatic:
             if self.app_server is not None:
                 self.app_server.stop()
                 self.app_server.reset_app_config()
-            if stub is not None:
-                stub.stop()
+            if self.stub is not None:
+                self.stub.stop()

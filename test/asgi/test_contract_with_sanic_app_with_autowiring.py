@@ -1,8 +1,8 @@
-import pytest
 import configparser
 
+import pytest
+
 from specmatic.core.specmatic import Specmatic
-from specmatic.servers.asgi_app_server import ASGIAppServer
 from specmatic.utils import get_project_root
 from test.utils import download_specmatic_jar_if_does_not_exist
 
