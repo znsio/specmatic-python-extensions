@@ -15,7 +15,6 @@ class TestContract:
     pass
 
 
-
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
     .with_stub(stub_host, stub_port, [expectation_json_file], ['--strict']) \

@@ -41,9 +41,7 @@ class TestContract:
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
     .with_stub(stub_host, stub_port, [expectation_json_file]) \
-    .with_app(app) \
-    .with_app_host(app_host)\
-    .with_app_port(app_port)\
+    .with_wsgi_app(app, app_host, app_port) \
     .test(TestContract) \
     .run()
 `````` 
@@ -70,9 +68,7 @@ class TestContract:
     
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
-    .with_app(app) \
-    .with_app_host(app_host)\
-    .with_app_port(app_port)\
+    .with_wsgi_app(app, app_host, app_port) \
     .test(TestContract) \
     .run()
 ``````                        
@@ -80,7 +76,7 @@ Specmatic() \
 ## ASGI Apps
 
 #### To run contract tests with a stub for an asgi app (like sanic):
-- If you are using an asgi app like sanic, fastapi, use the ``````with_app_module`````` function and pass it a string in the 'module:app' format.
+- If you are using an asgi app like sanic, fastapi, use the ``````with_asgi_app`````` function and pass it a string in the 'module:app' format.
 ``````
 class TestContract:
     pass
@@ -89,9 +85,7 @@ class TestContract:
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
     .with_stub(stub_host, stub_port, [expectation_json_file]) \
-    .with_app_module('main:app') \
-    .with_app_host(app_host) \
-    .with_app_port(app_port) \
+    .with_asgi_app('main:app', app_host, app_port) \
     .test(TestContract) \
     .run()
 ``````
@@ -106,15 +100,14 @@ class TestContract:
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
     .with_stub(stub_host, stub_port, [expectation_json_file], ['--strict']) \
-    .with_app(app) \
-    .with_app_port(app_port) \
+    .with_wsgi_app(app, port=app_port) \
     .test(TestContract, args=['--testBaseURL=http://localhost:5000']) \
     .run()
 ``````
 
 ## Common Issues
 - **'Error loading ASGI app'** 
-   This error occurs due to incorrect module being specified in the app module parameter 'module:app' string.
+   This error occurs when an incorrect app module string is passed to the ``````with_asgi_app`````` function.  
  
    #### Solutions:
    - Try to identify the correct module in which your app variable is instantiated/imported.  

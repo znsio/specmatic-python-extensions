@@ -37,7 +37,8 @@ There are two builds as of now:
 - A CI build named: 'Run tests on different Python 🐍 versions and operating systems.' which is run on every checkin into the main branch.
 - A 'publish' build named: 'Publish Python 🐍 distributions 📦 to PyPI and TestPyPI' which creates a python distribution for the current release and uploads it to PyPI.
 ### To create a new release:
-1. Update the `````__version__````` property in `````specmatic/version.py````` file to the required version and check it in.
+1. Update the `````__version__````` property in `````specmatic/version.py````` file to the required version and check it in.  
+   If the specmatic jar version is to updated, change the `````__specmatic_version__````` property in `````specmatic/version.py````` file accordingly.
 2. Ensure that the subsequent CI build is green.
 3. Navigate to the 'Releases' page: https://github.com/znsio/specmatic-python-extensions/releases
 4. Click on 'Draft a new release'
