@@ -105,7 +105,8 @@ class Specmatic:
             self.stub = SpecmaticStub(self.stub_host, self.stub_port, self.project_root, self.specmatic_json_file_path,
                                       self.stub_args)
             self.stub.set_expectations(self.expectations)
-            self.app_server.set_app_config(self.stub.host, self.stub.port)
+            if self.app_server is not None:
+                self.app_server.set_app_config(self.stub.host, self.stub.port)
 
     def __execute_tests(self):
         if self.run_tests:
