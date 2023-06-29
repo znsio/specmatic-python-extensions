@@ -3,7 +3,7 @@
     "method": "GET",
     "path": "/products",
     "query": {
-      "type": "test"
+      "type": "gadget"
     }
   },
   "http-response": {

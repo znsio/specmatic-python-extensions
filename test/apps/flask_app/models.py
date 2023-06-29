@@ -17,7 +17,7 @@ class Product(Resource):
 
         product_list = json.loads(response.content)
 
-        products = [{"id": product["id"], "name": product["name"]} for product in product_list]
+        products = [{"id": product["id"], "name": product["name"],"type": product["type"], "inventory": product["inventory"]} for product in product_list]
         return products
 
 

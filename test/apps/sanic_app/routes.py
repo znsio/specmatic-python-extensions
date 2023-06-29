@@ -16,5 +16,5 @@ async def get_products(request):
 
     product_list = jsonp.loads(response.content)
 
-    products = [{"id": product["id"], "name": product["name"]} for product in product_list]
+    products = [{"id": product["id"], "name": product["name"], "type": product["type"], "inventory": product["inventory"]} for product in product_list]
     return json(products)
