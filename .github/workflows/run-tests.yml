@@ -33,7 +33,6 @@ jobs:
         with:
           report_paths: '**/contract-test-reports/TEST-*.xml'
       - name: Generate coverage report
-        working-directory: main
         run: coverage html -d coverage-report
       - name: Upload coverage report
         uses: actions/upload-artifact@v2
