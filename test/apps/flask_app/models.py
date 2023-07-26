@@ -5,7 +5,7 @@ from flask import request
 import json
 
 
-class Product(Resource):
+class ProductList(Resource):
     def get(self):
         product_type = request.args.get('type')
         if product_type is None:
@@ -17,8 +17,16 @@ class Product(Resource):
 
         product_list = json.loads(response.content)
 
-        products = [{"id": product["id"], "name": product["name"],"type": product["type"], "inventory": product["inventory"]} for product in product_list]
+        products = [
+            {"id": product["id"], "name": product["name"], "type": product["type"], "inventory": product["inventory"]}
+            for product in product_list]
         return products
+
+
+class Product(Resource):
+    # Dummy route for actuator testing
+    def get(self, product_id):
+        return {"id": product_id, "name": "Product", "type": "gadget", "inventory": 10}
 
 
 class Order(Resource):

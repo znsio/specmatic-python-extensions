@@ -1,11 +1,14 @@
 import unittest
 
+from specmatic.actuator.app_route_adapter import AppRouteAdapter
+from specmatic.actuator.flask_app_route_adapter import FlaskAppRouteAdapter
 from specmatic.core.specmatic_stub import SpecmaticStub
 from specmatic.core.specmatic_test import SpecmaticTest
 from specmatic.generators.pytest_generator import PyTestGenerator
 from specmatic.generators.unittest_generator import UnitTestGenerator
 from specmatic.servers.app_server import AppServer
 from specmatic.servers.asgi_app_server import ASGIAppServer
+from specmatic.servers.coverage_server import CoverageServer
 from specmatic.servers.wsgi_app_server import WSGIAppServer
 from specmatic.utils import get_junit_report_file_path
 
@@ -37,6 +40,11 @@ class Specmatic:
         self.run_stub = False
         self.run_app = False
         self.run_tests = False
+
+        self.with_coverage = False
+        self.app_route_adapter = None
+        self.coverage_server = None
+        self.endpoints_api = ""
 
     def with_project_root(self, project_root):
         self.project_root = project_root
@@ -79,12 +87,33 @@ class Specmatic:
         self.run_app = True
         return self
 
+    def with_endpoints_api(self, endpoints_api):
+        self.endpoints_api = endpoints_api
+        return self
+
     def test(self, test_class, test_host: str = '127.0.0.1', test_port: int = 0, args=None):
+        self.__setup_test_configuration(test_class, None, test_host, test_port, args)
+        return self
+
+    def test_with_flask_app_coverage(self, test_class, test_host: str = '127.0.0.1',
+                                     test_port: int = 0, args=None):
+        return self.test_with_coverage(test_class, FlaskAppRouteAdapter(self.app), test_host, test_port, args)
+
+    def test_with_coverage(self, test_class, app_route_adapter: AppRouteAdapter, test_host: str = '127.0.0.1',
+                           test_port: int = 0, args=None):
+        self.__setup_test_configuration(test_class, app_route_adapter, test_host, test_port, args)
+        self.with_coverage = True
+        return self
+
+    def __setup_test_configuration(self, test_class, app_route_adapter: AppRouteAdapter = None,
+                                   test_host: str = '127.0.0.1',
+                                   test_port: int = 0, args=None):
         self.test_class = test_class
         self.test_host = test_host
         self.test_port = test_port
         self.test_args = args
         self.run_tests = True
+        self.app_route_adapter = app_route_adapter
         return self
 
     def __init_app_server(self):
@@ -100,6 +129,10 @@ class Specmatic:
                 self.app_server = ASGIAppServer(self.app_module, self.app_host, self.app_port, self.set_app_config_func,
                                                 self.reset_app_config_func)
 
+    def __init_coverage_server(self):
+        if self.with_coverage:
+            self.coverage_server = CoverageServer(self.app_route_adapter)
+
     def __start_stub(self):
         if self.run_stub:
             self.stub = SpecmaticStub(self.stub_host, self.stub_port, self.project_root, self.specmatic_json_file_path,
@@ -114,8 +147,15 @@ class Specmatic:
                 self.app_server.start()
                 self.test_host = self.app_server.host
                 self.test_port = self.app_server.port
+
+            if self.endpoints_api != "":
+                if self.coverage_server is not None:
+                    self.coverage_server.start()
+                    self.endpoints_api = self.coverage_server.endpoints_api
+
             SpecmaticTest(self.test_host, self.test_port, self.project_root,
-                          self.specmatic_json_file_path, self.test_args).run()
+                          self.specmatic_json_file_path, self.test_args, self.endpoints_api).run()
+
             if issubclass(self.test_class, unittest.TestCase):
                 print("Injecting unittest methods")
                 UnitTestGenerator(self.test_class, get_junit_report_file_path()).generate()
@@ -126,12 +166,15 @@ class Specmatic:
     def run(self):
         try:
             self.__init_app_server()
+            self.__init_coverage_server()
             self.__start_stub()
             self.__execute_tests()
         except Exception as e:
             print(f"Error: {e}")
             raise e
         finally:
+            if self.coverage_server is not None:
+                self.coverage_server.stop()
             if self.app_server is not None:
                 self.app_server.stop()
                 self.app_server.reset_app_config()
