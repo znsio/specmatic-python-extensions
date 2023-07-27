@@ -16,5 +16,19 @@ async def get_products(request):
 
     product_list = jsonp.loads(response.content)
 
-    products = [{"id": product["id"], "name": product["name"], "type": product["type"], "inventory": product["inventory"]} for product in product_list]
+    products = [
+        {"id": product["id"], "name": product["name"], "type": product["type"], "inventory": product["inventory"]} for
+        product in product_list]
     return json(products)
+
+
+# Dummy route for actuator testing
+@app.route("/orders", methods=["POST"])
+async def create_order(request):
+    pass
+
+
+# Dummy route for actuator testing
+@app.route("/orders/<order_id:int>", methods=["GET"])
+async def get_order(request):
+    pass
