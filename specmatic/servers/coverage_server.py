@@ -3,7 +3,7 @@ from typing import List
 from flask import Flask, jsonify
 
 from specmatic.actuator.app_route_adapter import AppRouteAdapter
-from specmatic.actuator.spring_actuator_route import SpringActuatorRoute
+from specmatic.actuator.actuator_route import ActuatorRoute
 from specmatic.servers.wsgi_app_server import WSGIAppServer
 
 
