@@ -10,10 +10,9 @@ class AppRouteAdapter(ABC):
         pass
 
     def process_route(self, route_url, methods) -> ActuatorRoute:
-        print(f"\nStarted adapting route: {route_url} with methods: {methods}")
         methods = [method for method in methods if method != 'OPTIONS']
         if len(methods) > 1 and 'HEAD' in methods:
             methods = [method for method in methods if method != 'HEAD']
         if methods:
-            print(f"Result: url: {route_url}, methods: [" + " ".join(methods) + "]")
+            print(f"Adapter result: url: {route_url}, methods: [" + " ".join(methods) + "]")
             return ActuatorRoute(route_url, methods)

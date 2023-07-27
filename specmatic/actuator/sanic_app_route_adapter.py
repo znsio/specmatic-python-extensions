@@ -14,6 +14,7 @@ class SanicAppRouteAdapter(AppRouteAdapter):
         for route in self.app.router.routes_all.values():
             route_url = self.convert_to_spring_actuator_format(route.uri)
             methods = route.methods
+            print(f"\nStarted adapting route: {route_url} with methods: {methods}")
             routes.append(self.process_route(route_url, methods))
         return routes
 

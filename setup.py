@@ -3,7 +3,7 @@ from pathlib import Path
 
 from setuptools import setup, find_packages
 
-from build_utils import get_version, download_specmatic_jar
+from specmatic.build_utils import get_version, download_specmatic_jar
 
 version = get_version(os.path.join('specmatic', 'version.py'))
 
