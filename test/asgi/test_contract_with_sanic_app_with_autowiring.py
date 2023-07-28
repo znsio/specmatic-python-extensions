@@ -43,7 +43,7 @@ def reset_app_config():
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
     .with_stub(expectations=[expectation_json_file]) \
-    .with_asgi_app('test.apps.sanic_app:app', set_app_config_func=set_app_config,
+    .with_asgi_app('test.apps.sanic:app', set_app_config_func=set_app_config,
                    reset_app_config_func=reset_app_config) \
     .test(TestContract) \
     .run()

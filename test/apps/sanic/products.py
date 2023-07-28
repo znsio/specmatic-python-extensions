@@ -1,5 +1,5 @@
 import requests
-from test.apps.sanic_app import app
+from test.apps.sanic import app
 
 
 class Products:

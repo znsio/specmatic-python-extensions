@@ -5,7 +5,7 @@ from specmatic.core.specmatic import Specmatic
 from specmatic.servers.coverage_server import CoverageServer
 from specmatic.servers.wsgi_app_server import WSGIAppServer
 from specmatic.utils import get_project_root
-from test.apps.flask_app import app
+from test.apps.flask import app
 
 app_host = "127.0.0.1"
 app_port = 5000

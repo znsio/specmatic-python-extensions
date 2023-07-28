@@ -5,7 +5,7 @@ from specmatic.core.specmatic import Specmatic
 from specmatic.servers.asgi_app_server import ASGIAppServer
 from specmatic.servers.coverage_server import CoverageServer
 from specmatic.utils import get_project_root
-from test.apps.sanic_app import app
+from test.apps.sanic import app
 
 PROJECT_ROOT = get_project_root()
 
@@ -17,7 +17,7 @@ stub_port = 8080
 expectation_json_file = PROJECT_ROOT + '/test/data/expectation.json'
 app_module = PROJECT_ROOT + '/test/sanic_app'
 
-app_server = ASGIAppServer('test.apps.sanic_app:app', app_host, app_port)
+app_server = ASGIAppServer('test.apps.sanic:app', app_host, app_port)
 coverage_server = CoverageServer(SanicAppRouteAdapter(app))
 
 app_server.start()

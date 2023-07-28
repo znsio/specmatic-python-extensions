@@ -2,7 +2,7 @@ import unittest
 
 from specmatic.core.specmatic import Specmatic
 from specmatic.utils import get_project_root
-from test.apps.flask_app import app
+from test.apps.flask import app
 
 stub_host = "127.0.0.1"
 stub_port = 8080

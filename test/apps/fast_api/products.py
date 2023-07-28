@@ -1,5 +1,5 @@
 import requests
-from test.apps.fast_api_app import configuration
+from test.apps.fast_api import configuration
 
 
 class Products:

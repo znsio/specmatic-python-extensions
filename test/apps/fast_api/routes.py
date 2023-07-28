@@ -3,8 +3,8 @@ from typing import List
 from fastapi import HTTPException
 from fastapi.params import Query
 
-from test.apps.fast_api_app import app
-from test.apps.fast_api_app.products import Products
+from test.apps.fast_api import app
+from test.apps.fast_api.products import Products
 
 import json as jsonp
 
