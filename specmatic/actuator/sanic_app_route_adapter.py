@@ -6,9 +6,6 @@ from specmatic.actuator.actuator_route import ActuatorRoute
 
 
 class SanicAppRouteAdapter(AppRouteAdapter):
-    def __init__(self, app):
-        self.app = app
-
     def to_actuator_routes(self) -> List[ActuatorRoute]:
         routes = []
         for route in self.app.router.routes_all.values():

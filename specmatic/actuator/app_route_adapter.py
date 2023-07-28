@@ -5,6 +5,9 @@ from specmatic.actuator.actuator_route import ActuatorRoute
 
 
 class AppRouteAdapter(ABC):
+    def __init__(self, app):
+        self.app = app
+
     @abstractmethod
     def to_actuator_routes(self) -> List[ActuatorRoute]:
         pass

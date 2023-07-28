@@ -7,10 +7,6 @@ from specmatic.actuator.app_route_adapter import AppRouteAdapter
 
 
 class FastApiAppRouteAdapter(AppRouteAdapter):
-
-    def __init__(self, app):
-        self.app = app
-
     def to_actuator_routes(self) -> List[ActuatorRoute]:
         routes = []
         for route in self.app.routes:
