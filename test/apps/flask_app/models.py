@@ -1,5 +1,5 @@
-from test.apps.db.Orders import Orders
-from test.apps.db.Products import Products
+from test.apps.db.orders import Orders
+from test.apps.db.products import Products
 from flask_restful import Resource
 from flask import request
 import json

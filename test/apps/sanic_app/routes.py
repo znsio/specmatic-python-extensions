@@ -2,7 +2,7 @@ from test.apps.sanic_app import app
 from sanic.response import json
 import json as jsonp
 
-from test.apps.sanic_db.Products import Products
+from test.apps.sanic_db.products import Products
 
 
 @app.route("/findAvailableProducts", methods=["GET"])
