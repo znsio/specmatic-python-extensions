@@ -1,6 +1,7 @@
 import unittest
 
 from specmatic.actuator.app_route_adapter import AppRouteAdapter
+from specmatic.actuator.fastapi_app_route_adapter import FastApiAppRouteAdapter
 from specmatic.actuator.flask_app_route_adapter import FlaskAppRouteAdapter
 from specmatic.actuator.sanic_app_route_adapter import SanicAppRouteAdapter
 from specmatic.core.specmatic_stub import SpecmaticStub
@@ -103,6 +104,10 @@ class Specmatic:
     def test_with_sanic_app_coverage(self,test_class, app, test_host: str = '127.0.0.1',
                                      test_port: int = 0, args=None):
         return self.test_with_coverage(test_class, SanicAppRouteAdapter(app), test_host, test_port, args)
+
+    def test_with_fastapi_app_coverage(self,test_class, app, test_host: str = '127.0.0.1',
+                                     test_port: int = 0, args=None):
+        return self.test_with_coverage(test_class, FastApiAppRouteAdapter(app), test_host, test_port, args)
 
     def test_with_coverage(self, test_class, app_route_adapter: AppRouteAdapter, test_host: str = '127.0.0.1',
                            test_port: int = 0, args=None):

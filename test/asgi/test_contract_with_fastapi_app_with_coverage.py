@@ -2,6 +2,7 @@ import pytest
 
 from specmatic.core.specmatic import Specmatic
 from specmatic.utils import get_project_root
+from test.apps.fast_api import app
 
 PROJECT_ROOT = get_project_root()
 
@@ -22,7 +23,7 @@ Specmatic() \
     .with_project_root(PROJECT_ROOT) \
     .with_stub(stub_host, stub_port, [expectation_json_file]) \
     .with_asgi_app('test.apps.fast_api:app', app_host, app_port) \
-    .test(TestContract) \
+    .test_with_fastapi_app_coverage(TestContract, app) \
     .run()
 
 if __name__ == '__main__':
