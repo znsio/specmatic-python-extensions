@@ -1,9 +1,8 @@
 import pytest
 
-from specmatic.actuator.sanic_app_route_adapter import SanicAppRouteAdapter
 from specmatic.core.specmatic import Specmatic
 from specmatic.servers.asgi_app_server import ASGIAppServer
-from specmatic.servers.coverage_server import CoverageServer
+from specmatic.servers.coverage.sanic_app_coverage_server import SanicAppCoverageServer
 from specmatic.utils import get_project_root
 from test.apps.sanic import app
 
@@ -18,10 +17,11 @@ expectation_json_file = PROJECT_ROOT + '/test/data/expectation.json'
 app_module = PROJECT_ROOT + '/test/sanic_app'
 
 app_server = ASGIAppServer('test.apps.sanic:app', app_host, app_port)
-coverage_server = CoverageServer(SanicAppRouteAdapter(app))
+coverage_server = SanicAppCoverageServer(app)
 
 app_server.start()
 coverage_server.start()
+
 
 class TestContract:
     pass

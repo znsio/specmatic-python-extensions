@@ -1,8 +1,7 @@
 import pytest
 
-from specmatic.actuator.flask_app_route_adapter import FlaskAppRouteAdapter
 from specmatic.core.specmatic import Specmatic
-from specmatic.servers.coverage_server import CoverageServer
+from specmatic.servers.coverage.flask_app_coverage_server import FlaskAppCoverageServer
 from specmatic.servers.wsgi_app_server import WSGIAppServer
 from specmatic.utils import get_project_root
 from test.apps.flask import app
@@ -20,7 +19,7 @@ class TestContract:
 
 
 app_server = WSGIAppServer(app, app_host, app_port)
-coverage_server = CoverageServer(FlaskAppRouteAdapter(app))
+coverage_server = FlaskAppCoverageServer(app)
 
 app_server.start()
 coverage_server.start()

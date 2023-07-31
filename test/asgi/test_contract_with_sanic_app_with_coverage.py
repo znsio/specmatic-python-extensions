@@ -1,8 +1,6 @@
 import pytest
 
-from specmatic.actuator.sanic_app_route_adapter import SanicAppRouteAdapter
 from specmatic.core.specmatic import Specmatic
-from specmatic.servers.coverage_server import CoverageServer
 from specmatic.utils import get_project_root
 from test.apps.sanic import app
 

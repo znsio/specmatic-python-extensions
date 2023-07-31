@@ -1,9 +1,8 @@
 import pytest
 
-from specmatic.actuator.fastapi_app_route_adapter import FastApiAppRouteAdapter
 from specmatic.core.specmatic import Specmatic
 from specmatic.servers.asgi_app_server import ASGIAppServer
-from specmatic.servers.coverage_server import CoverageServer
+from specmatic.servers.coverage.fastapi_app_coverage_server import FastApiAppCoverageServer
 from specmatic.utils import get_project_root
 from test.apps.fast_api import app
 
@@ -18,7 +17,7 @@ expectation_json_file = PROJECT_ROOT + '/test/data/expectation.json'
 app_module = PROJECT_ROOT + '/test/sanic_app'
 
 app_server = ASGIAppServer('test.apps.fast_api:app', app_host, app_port)
-coverage_server = CoverageServer(FastApiAppRouteAdapter(app))
+coverage_server = FastApiAppCoverageServer(app)
 
 app_server.start()
 coverage_server.start()

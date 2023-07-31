@@ -1,16 +1,16 @@
 import unittest
 
 from specmatic.actuator.app_route_adapter import AppRouteAdapter
-from specmatic.actuator.fastapi_app_route_adapter import FastApiAppRouteAdapter
-from specmatic.actuator.flask_app_route_adapter import FlaskAppRouteAdapter
-from specmatic.actuator.sanic_app_route_adapter import SanicAppRouteAdapter
 from specmatic.core.specmatic_stub import SpecmaticStub
 from specmatic.core.specmatic_test import SpecmaticTest
 from specmatic.generators.pytest_generator import PyTestGenerator
 from specmatic.generators.unittest_generator import UnitTestGenerator
 from specmatic.servers.app_server import AppServer
 from specmatic.servers.asgi_app_server import ASGIAppServer
-from specmatic.servers.coverage_server import CoverageServer
+from specmatic.servers.coverage.coverage_server import CoverageServer
+from specmatic.servers.coverage.fastapi_app_coverage_server import FastApiAppCoverageServer
+from specmatic.servers.coverage.flask_app_coverage_server import FlaskAppCoverageServer
+from specmatic.servers.coverage.sanic_app_coverage_server import SanicAppCoverageServer
 from specmatic.servers.wsgi_app_server import WSGIAppServer
 from specmatic.utils import get_junit_report_file_path
 
@@ -43,8 +43,6 @@ class Specmatic:
         self.run_app = False
         self.run_tests = False
 
-        self.with_coverage = False
-        self.app_route_adapter = None
         self.coverage_server = None
         self.endpoints_api = ""
 
@@ -99,23 +97,22 @@ class Specmatic:
 
     def test_with_flask_app_coverage(self, test_class, test_host: str = '127.0.0.1',
                                      test_port: int = 0, args=None):
-        return self.test_with_coverage(test_class, FlaskAppRouteAdapter(self.app), test_host, test_port, args)
+        return self.__setup_test_configuration(test_class, FlaskAppCoverageServer(self.app), test_host, test_port, args)
 
-    def test_with_sanic_app_coverage(self,test_class, app, test_host: str = '127.0.0.1',
+    def test_with_sanic_app_coverage(self, test_class, app, test_host: str = '127.0.0.1',
                                      test_port: int = 0, args=None):
-        return self.test_with_coverage(test_class, SanicAppRouteAdapter(app), test_host, test_port, args)
+        return self.__setup_test_configuration(test_class, SanicAppCoverageServer(app), test_host, test_port, args)
 
-    def test_with_fastapi_app_coverage(self,test_class, app, test_host: str = '127.0.0.1',
-                                     test_port: int = 0, args=None):
-        return self.test_with_coverage(test_class, FastApiAppRouteAdapter(app), test_host, test_port, args)
+    def test_with_fastapi_app_coverage(self, test_class, app, test_host: str = '127.0.0.1',
+                                       test_port: int = 0, args=None):
+        return self.__setup_test_configuration(test_class, FastApiAppCoverageServer(app), test_host, test_port, args)
 
     def test_with_coverage(self, test_class, app_route_adapter: AppRouteAdapter, test_host: str = '127.0.0.1',
                            test_port: int = 0, args=None):
-        self.__setup_test_configuration(test_class, app_route_adapter, test_host, test_port, args)
-        self.with_coverage = True
+        self.__setup_test_configuration(test_class, CoverageServer(app_route_adapter), test_host, test_port, args)
         return self
 
-    def __setup_test_configuration(self, test_class, app_route_adapter: AppRouteAdapter = None,
+    def __setup_test_configuration(self, test_class, coverage_server: CoverageServer = None,
                                    test_host: str = '127.0.0.1',
                                    test_port: int = 0, args=None):
         self.test_class = test_class
@@ -123,7 +120,7 @@ class Specmatic:
         self.test_port = test_port
         self.test_args = args
         self.run_tests = True
-        self.app_route_adapter = app_route_adapter
+        self.coverage_server = coverage_server
         return self
 
     def __init_app_server(self):
@@ -138,10 +135,6 @@ class Specmatic:
             else:
                 self.app_server = ASGIAppServer(self.app_module, self.app_host, self.app_port, self.set_app_config_func,
                                                 self.reset_app_config_func)
-
-    def __init_coverage_server(self):
-        if self.with_coverage:
-            self.coverage_server = CoverageServer(self.app_route_adapter)
 
     def __start_stub(self):
         if self.run_stub:
@@ -176,7 +169,6 @@ class Specmatic:
     def run(self):
         try:
             self.__init_app_server()
-            self.__init_coverage_server()
             self.__start_stub()
             self.__execute_tests()
         except Exception as e:
