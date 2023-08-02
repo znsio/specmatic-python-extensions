@@ -1,16 +1,16 @@
 import unittest
 
-from specmatic.actuator.app_route_adapter import AppRouteAdapter
+from specmatic.coverage.app_route_adapter import AppRouteAdapter
 from specmatic.core.specmatic_stub import SpecmaticStub
 from specmatic.core.specmatic_test import SpecmaticTest
 from specmatic.generators.pytest_generator import PyTestGenerator
 from specmatic.generators.unittest_generator import UnitTestGenerator
 from specmatic.servers.app_server import AppServer
 from specmatic.servers.asgi_app_server import ASGIAppServer
-from specmatic.servers.coverage.coverage_server import CoverageServer
-from specmatic.servers.coverage.fastapi_app_coverage_server import FastApiAppCoverageServer
-from specmatic.servers.coverage.flask_app_coverage_server import FlaskAppCoverageServer
-from specmatic.servers.coverage.sanic_app_coverage_server import SanicAppCoverageServer
+from specmatic.coverage.servers.coverage_server import CoverageServer
+from specmatic.coverage.servers.fastapi_app_coverage_server import FastApiAppCoverageServer
+from specmatic.coverage.servers.flask_app_coverage_server import FlaskAppCoverageServer
+from specmatic.coverage.servers.sanic_app_coverage_server import SanicAppCoverageServer
 from specmatic.servers.wsgi_app_server import WSGIAppServer
 from specmatic.utils import get_junit_report_file_path
 

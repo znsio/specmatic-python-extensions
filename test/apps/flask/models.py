@@ -24,7 +24,7 @@ class ProductList(Resource):
 
 
 class Product(Resource):
-    # Dummy route for actuator testing
+    # Dummy route for coverage testing
     def get(self, product_id):
         return {"id": product_id, "name": "Product", "type": "gadget", "inventory": 10}
 

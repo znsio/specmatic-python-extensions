@@ -1,7 +1,7 @@
 import pytest
 
 from specmatic.core.specmatic import Specmatic
-from specmatic.servers.coverage.flask_app_coverage_server import FlaskAppCoverageServer
+from specmatic.coverage.servers.flask_app_coverage_server import FlaskAppCoverageServer
 from specmatic.servers.wsgi_app_server import WSGIAppServer
 from specmatic.utils import get_project_root
 from test.apps.flask import app

@@ -2,7 +2,7 @@ import pytest
 
 from specmatic.core.specmatic import Specmatic
 from specmatic.servers.asgi_app_server import ASGIAppServer
-from specmatic.servers.coverage.fastapi_app_coverage_server import FastApiAppCoverageServer
+from specmatic.coverage.servers.fastapi_app_coverage_server import FastApiAppCoverageServer
 from specmatic.utils import get_project_root
 from test.apps.fast_api import app
 

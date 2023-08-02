@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from specmatic.actuator.actuator_route import ActuatorRoute
+from specmatic.coverage.coverage_route import CoverageRoute
 
 
 class AppRouteAdapter(ABC):
@@ -9,13 +9,13 @@ class AppRouteAdapter(ABC):
         self.app = app
 
     @abstractmethod
-    def to_actuator_routes(self) -> List[ActuatorRoute]:
+    def to_coverage_routes(self) -> List[CoverageRoute]:
         pass
 
-    def process_route(self, route_url, methods) -> ActuatorRoute:
+    def process_route(self, route_url, methods) -> CoverageRoute:
         methods = [method for method in methods if method != 'OPTIONS']
         if len(methods) > 1 and 'HEAD' in methods:
             methods = [method for method in methods if method != 'HEAD']
         if methods:
             print(f"Adapter result: url: {route_url}, methods: [" + " ".join(methods) + "]")
-            return ActuatorRoute(route_url, methods)
+            return CoverageRoute(route_url, methods)

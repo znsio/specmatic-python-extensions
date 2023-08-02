@@ -2,14 +2,14 @@ from typing import List
 
 from flask import Flask, jsonify
 
-from specmatic.actuator.app_route_adapter import AppRouteAdapter
-from specmatic.actuator.actuator_route import ActuatorRoute
+from specmatic.coverage.app_route_adapter import AppRouteAdapter
+from specmatic.coverage.coverage_route import CoverageRoute
 from specmatic.servers.wsgi_app_server import WSGIAppServer
 
 
 class CoverageServer:
     def __init__(self, app_route_adapter: AppRouteAdapter):
-        self.routes = app_route_adapter.to_actuator_routes()
+        self.routes = app_route_adapter.to_coverage_routes()
         self.coverage_server_url = ""
         app = self.setup_coverage_flask_app()
         self.app_server = WSGIAppServer(app)
@@ -40,7 +40,7 @@ class CoverageServer:
                         }
                     }
                 })
-            print("\nResponse from actuator route:")
+            print("\nResponse of /actuator/mappings route:")
             print(response)
             return jsonify(response)
 

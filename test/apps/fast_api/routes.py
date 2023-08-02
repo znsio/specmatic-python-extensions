@@ -25,13 +25,13 @@ def find_available_products(type: str = Query(None, description="Filter by produ
     return products
 
 
-# Dummy route for actuator testing
+# Dummy route for coverage testing
 @app.post("/orders", response_model=int)
 async def create_order(request):
     pass
 
 
-# Dummy route for actuator testing
+# Dummy route for coverage testing
 @app.get("/orders/{order_id}", response_model=dict)
 def get_order(request):
     pass

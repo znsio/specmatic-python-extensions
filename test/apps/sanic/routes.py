@@ -22,13 +22,13 @@ async def get_products(request):
     return json(products)
 
 
-# Dummy route for actuator testing
+# Dummy route for coverage testing
 @app.route("/orders", methods=["POST"])
 async def create_order(request):
     pass
 
 
-# Dummy route for actuator testing
+# Dummy route for coverage testing
 @app.route("/orders/<order_id:int>", methods=["GET"])
 async def get_order(request):
     pass
