@@ -17,9 +17,6 @@ stub_port = 8080
 expectation_json_file = PROJECT_ROOT + '/test/data/expectation.json'
 app_module = PROJECT_ROOT + '/test/sanic_app'
 
-app_server = ASGIAppServer('test.apps.sanic:app', app_host, app_port)
-app_server.start()
-
 
 class TestContract:
     pass
@@ -28,10 +25,9 @@ class TestContract:
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
     .with_stub(stub_host, stub_port, [expectation_json_file]) \
-    .test_with_coverage(TestContract, SanicAppRouteAdapter(app), app_host, app_port) \
+    .with_asgi_app('test.apps.sanic:app', app_host, app_port) \
+    .test_with_coverage(TestContract, SanicAppRouteAdapter(app)) \
     .run()
-
-app_server.stop()
 
 if __name__ == '__main__':
     pytest.main()
