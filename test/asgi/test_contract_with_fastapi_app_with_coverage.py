@@ -23,7 +23,7 @@ Specmatic() \
     .with_project_root(PROJECT_ROOT) \
     .with_stub(stub_host, stub_port, [expectation_json_file]) \
     .with_asgi_app('test.apps.fast_api:app', app_host, app_port) \
-    .test_with_fastapi_app_coverage(TestContract, app) \
+    .test_with_fastapi_app_api_coverage(TestContract, app) \
     .run()
 
 if __name__ == '__main__':
