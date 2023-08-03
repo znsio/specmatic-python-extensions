@@ -3,6 +3,7 @@
 .specmatic/*
 junit_report
 .pytest_cache
+__pycache__
 specmatic.jar
 specmatic_python.egg-info/*
 dist/*
