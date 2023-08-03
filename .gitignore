@@ -1,6 +1,6 @@
 .DS_Store
 *.idea
-.specmatic/*
+.specmatic
 junit_report
 .pytest_cache
 __pycache__
