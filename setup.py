@@ -24,9 +24,12 @@ setup(
     packages=find_packages(exclude=['test', 'test.*']),
     include_package_data=True,
     install_requires=[
-        'pytest==7.3.1',
-        'requests>=2.0.0',
-        'Werkzeug==2.3.3',
-        'uvicorn>=0.18.0'
+        'pytest>=7.3.1',
+        'requests>=2.25.0',
+        'Werkzeug>=2.3.3',
+        'uvicorn>=0.18.0',
+        'fastapi>=0.70.0',
+        'flask>=2.0.0',
+        'sanic>=22.12.0'
     ]
 )
