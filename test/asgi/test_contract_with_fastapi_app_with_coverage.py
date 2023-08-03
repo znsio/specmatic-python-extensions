@@ -1,6 +1,7 @@
 import pytest
 
 from specmatic.core.specmatic import Specmatic
+from specmatic.coverage.fastapi_app_route_adapter import FastApiAppRouteAdapter
 from specmatic.utils import get_project_root
 from test.apps.fast_api import app
 
@@ -23,7 +24,7 @@ Specmatic() \
     .with_project_root(PROJECT_ROOT) \
     .with_stub(stub_host, stub_port, [expectation_json_file]) \
     .with_asgi_app('test.apps.fast_api:app', app_host, app_port) \
-    .test_with_fastapi_app_coverage(TestContract, app) \
+    .test_with_coverage(TestContract, FastApiAppRouteAdapter(app)) \
     .run()
 
 if __name__ == '__main__':
