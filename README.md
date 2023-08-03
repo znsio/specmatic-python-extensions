@@ -90,7 +90,7 @@ Specmatic() \
     .run()
 ``````
 
-### Passing extra agruments to stub/test
+### Passing extra arguments to stub/test
 - To pass arguments like '--strict', '--testBaseUrl', pass them as a list to the 'args' parameter:
 ``````
 class TestContract:
@@ -103,6 +103,107 @@ Specmatic() \
     .with_wsgi_app(app, port=app_port) \
     .test(TestContract, args=['--testBaseURL=http://localhost:5000']) \
     .run()
+``````
+
+## Coverage
+Specmatic can generate a coverage summary report which will list out all the apis exposed by your app/service with a status next to it indicating if it has been covered in your contract tests.
+
+### Enabling api coverage for Flask apps
+
+``````
+class TestContract:
+    pass
+
+
+Specmatic() \
+    .with_project_root(PROJECT_ROOT) \
+    .with_stub(stub_host, stub_port, [expectation_json_file]) \
+    .with_wsgi_app(app, app_host, app_port) \
+    .test_with_flask_app_api_coverage(TestContract) \
+    .run()
+``````
+
+### Enabling api coverage for Sanic apps
+
+``````
+class TestContract:
+    pass
+
+
+Specmatic() \
+    .with_project_root(PROJECT_ROOT) \
+    .with_stub(stub_host, stub_port, [expectation_json_file]) \
+    .with_asgi_app('test.apps.sanic:app', app_host, app_port) \
+    .test_with_sanic_app_api_coverage(TestContract, app) \
+    .run()
+``````
+
+### Enabling api coverage for FastApi apps
+
+``````
+class TestContract:
+    pass
+
+
+Specmatic() \
+    .with_project_root(PROJECT_ROOT) \
+    .with_stub(stub_host, stub_port, [expectation_json_file]) \
+    .with_asgi_app('test.apps.fast_api:app', app_host, app_port) \
+    .test_with_fastapi_app_api_coverage(TestContract, app) \
+    .run()
+``````
+
+### Enabling api coverage for any other type of app
+For any app other than Flask, Sanic, and FastApi, you would need to implement an ``````AppRouteAdapter`````` class.  
+The idea is to implement ``````to_coverage_routes`````` method, which returns a list of ``````CoverageRoute`````` objects corresponding to all the routes defined in your app.  
+The ``````CoverageRoute`````` class has two properties:  
+``````url`````` : This represents your route url in this format: `````` /orders/{order_id}``````  
+``````method`````` : A list of HTTP methods supported on the route, for instance : ``````['GET', 'POST']``````  
+
+You can then enable coverage by passing your adapter like this:  
+
+``````
+Specmatic() \
+    .with_project_root(PROJECT_ROOT) \
+    .with_stub(stub_host, stub_port, [expectation_json_file]) \
+    .with_asgi_app('main:app', app_host, app_port) \
+    .test_with_api_coverage(TestContract, MyAppRouteAdapter(app)) \
+    .run()
+``````
+
+### Enabling api coverage by setting the EndPointsApi property
+You can also start your coverage server externally and use the EndPointsApi method to enable coverage.  
+We have provided ready to use Coverage Server classes for:  
+Flask: ``````FlaskAppCoverageServer``````  
+Sanic: ``````SanicAppCoverageServer``````  
+FastApi ``````FastApiAppCoverageServer``````  
+
+You can also easily implement your own coverage server if you have written a custom implementation of the ``````AppRouteAdapter`````` class.
+The only point to remember in mind is that the EndPointsApi url should return a list of routes in the format used buy Spring Actuator's ```````/actuator/mappings``````` endpoint
+as described [here](https://docs.spring.io/spring-boot/docs/current/actuator-api/htmlsingle/#mappings).  
+
+Here's an example where we start both our FastApi app and coverage server outside the specmatic api call.  
+``````
+app_server = ASGIAppServer('test.apps.fast_api:app', app_host, app_port)
+coverage_server = FastApiAppCoverageServer(app)
+
+app_server.start()
+coverage_server.start()
+
+
+class TestContract:
+    pass
+
+
+Specmatic() \
+    .with_project_root(PROJECT_ROOT) \
+    .with_stub(stub_host, stub_port, [expectation_json_file]) \
+    .with_endpoints_api(coverage_server.endpoints_api) \
+    .test(TestContract, app_host, app_port) \
+    .run()
+
+app_server.stop()
+coverage_server.stop()
 ``````
 
 ## Common Issues
