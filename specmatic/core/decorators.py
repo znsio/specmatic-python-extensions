@@ -1,6 +1,11 @@
+import unittest
+
 from specmatic.core.specmatic_stub import SpecmaticStub
 from specmatic.core.specmatic_test import SpecmaticTest
+from specmatic.coverage.app_route_adapter import AppRouteAdapter
+from specmatic.coverage.servers.coverage_server import CoverageServer
 from specmatic.generators.pytest_generator import PyTestGenerator
+from specmatic.generators.unittest_generator import UnitTestGenerator
 from specmatic.servers.asgi_app_server import ASGIAppServer
 from specmatic.servers.wsgi_app_server import WSGIAppServer
 from specmatic.utils import get_junit_report_file_path
@@ -24,26 +29,41 @@ def specmatic_stub(host: str = '127.0.0.1', port: int = 0, project_root: str = '
     return decorator
 
 
-def specmatic_contract_test(host: str = '127.0.0,1', port: int = 0, project_root: str = '',
-                            specmatic_json_file: str = ''):
+def specmatic_contract_test(host: str = '127.0.0,1', port: int = 0,
+                                              project_root: str = '',
+                                              specmatic_json_file: str = '', args=None, appRouteAdapter: AppRouteAdapter=None,):
     def decorator(cls):
         try:
             test_host = host
             test_port = port
+            endpoints_api = ""
             if test_port == 0:
                 if hasattr(cls, 'app'):
                     app = cls.app
                     test_host = app.host
                     test_port = app.port
+            if appRouteAdapter:
+                cls.coverage_server = CoverageServer(appRouteAdapter)
+                cls.coverage_server.start()
+                endpoints_api = cls.coverage_server.endpoints_api
 
-            SpecmaticTest(test_host, test_port, project_root, specmatic_json_file).run()
-            PyTestGenerator(cls, get_junit_report_file_path()).generate()
+            SpecmaticTest(test_host, test_port, project_root, specmatic_json_file, args,
+                          endpoints_api).run()
+
+            if issubclass(cls, unittest.TestCase):
+                print("Injecting unittest methods")
+                UnitTestGenerator(cls, get_junit_report_file_path()).generate()
+            else:
+                print("Injecting pytest methods")
+                PyTestGenerator(cls, get_junit_report_file_path()).generate()
             return cls
         except Exception as e:
-            if hasattr(cls, 'stub'):
-                cls.stub.stop()
             if hasattr(cls, 'app'):
                 cls.app.stop()
+            if hasattr(cls, 'stub'):
+                cls.stub.stop()
+            if hasattr(cls, 'coverage_server'):
+                cls.coverage_server.stop()
             print(f"Error: {e}")
             raise e
         finally:
@@ -51,6 +71,8 @@ def specmatic_contract_test(host: str = '127.0.0,1', port: int = 0, project_root
                 cls.stub.stop()
             if hasattr(cls, 'app'):
                 cls.app.stop()
+            if hasattr(cls, 'coverage_server'):
+                cls.coverage_server.stop()
 
     return decorator
 
