@@ -29,7 +29,7 @@ setup(
         'Werkzeug>=2.3.3',
         'uvicorn>=0.18.0',
         'fastapi>=0.70.0',
-        'flask>=2.2.0',
+        'flask>=2.2.5',
         'sanic>=22.12.0'
     ]
 )
