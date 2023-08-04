@@ -20,7 +20,7 @@ Specmatic() \
     .with_project_root(PROJECT_ROOT) \
     .with_stub(stub_host, stub_port, [expectation_json_file]) \
     .with_wsgi_app(app, app_host, app_port) \
-    .test_with_flask_app_api_coverage(TestContract) \
+    .test_with_api_coverage_for_flask_app(TestContract) \
     .run()
 
 if __name__ == '__main__':

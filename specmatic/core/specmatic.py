@@ -95,16 +95,16 @@ class Specmatic:
         self.__setup_test_configuration(test_class, None, test_host, test_port, args)
         return self
 
-    def test_with_flask_app_api_coverage(self, test_class, test_host: str = '127.0.0.1',
-                                         test_port: int = 0, args=None):
+    def test_with_api_coverage_for_flask_app(self, test_class, test_host: str = '127.0.0.1',
+                                             test_port: int = 0, args=None):
         return self.__setup_test_configuration(test_class, FlaskAppCoverageServer(self.app), test_host, test_port, args)
 
-    def test_with_sanic_app_api_coverage(self, test_class, app, test_host: str = '127.0.0.1',
-                                         test_port: int = 0, args=None):
+    def test_with_api_coverage_for_sanic_app(self, test_class, app, test_host: str = '127.0.0.1',
+                                             test_port: int = 0, args=None):
         return self.__setup_test_configuration(test_class, SanicAppCoverageServer(app), test_host, test_port, args)
 
-    def test_with_fastapi_app_api_coverage(self, test_class, app, test_host: str = '127.0.0.1',
-                                           test_port: int = 0, args=None):
+    def test_with_api_coverage_for_fastapi_app(self, test_class, app, test_host: str = '127.0.0.1',
+                                               test_port: int = 0, args=None):
         return self.__setup_test_configuration(test_class, FastApiAppCoverageServer(app), test_host, test_port, args)
 
     def test_with_api_coverage(self, test_class, app_route_adapter: AppRouteAdapter, test_host: str = '127.0.0.1',

@@ -119,7 +119,7 @@ Specmatic() \
     .with_project_root(PROJECT_ROOT) \
     .with_stub(stub_host, stub_port, [expectation_json_file]) \
     .with_wsgi_app(app, app_host, app_port) \
-    .test_with_flask_app_api_coverage(TestContract) \
+    .test_with_api_coverage_for_flask_app(TestContract) \
     .run()
 ``````
 
@@ -133,8 +133,8 @@ class TestContract:
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
     .with_stub(stub_host, stub_port, [expectation_json_file]) \
-    .with_asgi_app('test.apps.sanic:app', app_host, app_port) \
-    .test_with_sanic_app_api_coverage(TestContract, app) \
+    .with_asgi_app('main:app', app_host, app_port) \
+    .test_with_api_coverage_for_sanic_app(TestContract, app) \
     .run()
 ``````
 
@@ -148,8 +148,8 @@ class TestContract:
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
     .with_stub(stub_host, stub_port, [expectation_json_file]) \
-    .with_asgi_app('test.apps.fast_api:app', app_host, app_port) \
-    .test_with_fastapi_app_api_coverage(TestContract, app) \
+    .with_asgi_app('main:app', app_host, app_port) \
+    .test_with_api_coverage_for_fastapi_app(TestContract, app) \
     .run()
 ``````
 
