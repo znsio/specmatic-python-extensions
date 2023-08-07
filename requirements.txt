@@ -2,7 +2,7 @@ pytest==7.3.1
 requests>=2.26
 Werkzeug==2.3.3
 uvicorn==0.18.0
-fastapi==0.70.0
+fastapi==0.101.0
 flask==2.2.5
 sanic==22.12.0
 
