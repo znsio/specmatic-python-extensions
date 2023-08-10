@@ -18,22 +18,35 @@ The open api specification can be present either locally or in a [Central Contra
 - Create a file called test_contract.py in your test folder.  
 - Declare an empty class in it called 'TestContract'.  
   This is could either be a normal class like:
-  ``````
+  ``````python
   class TestContract:
     pass
   ``````
   Or you could also have a class which inherits from unittest.TestCase:
-  ``````
+  ``````python
   class TestContract(unittest.TestCase):
     pass
   ``````
-  Specmatic will use this class to inject tests dynamically into it when you run it via PyTest or UnitTest.
+  
+#### How does it work
+- Specmatic uses the TestContract class defined above to inject tests dynamically into it when you run it via PyTest or UnitTest.  
+- The Specmatic Python package, invokes the Specmatic executable jar (via command line) in a separate process to start stubs and run tests.  
+- It is the specmatic jar which runs the contract tests and generates a JUnit test summary report.  
+- The Specmatic Python package ingests the JUnit test summary report and generates test methods corresponding to every contract test.  
+- These dynamic test methods are added to the  ```TestContract``` class and hence we seem them reported seamlessly by PyTest/Unittest like this:
+
+```python
+test/test_contract_with_coverage.py::TestContract::test_Scenario: GET /products -> 200 | SEARCH_2 PASSED
+test/test_contract_with_coverage.py::TestContract::test_Scenario: GET /products -> 500 | SEARCH_ERROR PASSED
+test/test_contract_with_coverage.py::TestContract::test_Scenario: GET /products -> 200 | SEARCH_1 PASSED
+```
+
 
 ## WSGI Apps
 
 #### To run contract tests with a stub for a wsgi app (like Flask):  
 
-``````
+``````python
 class TestContract:
     pass
     
@@ -44,6 +57,10 @@ Specmatic() \
     .with_wsgi_app(app, app_host, app_port) \
     .test(TestContract) \
     .run()
+ 
+ 
+if __name__ == '__main__':
+pytest.main()
 `````` 
 
 - In this, we are passing:
@@ -62,7 +79,7 @@ Specmatic() \
 
 #### To run contract tests without a stub:
 
-``````
+``````python
 class TestContract:
     pass
     
@@ -77,7 +94,7 @@ Specmatic() \
 
 #### To run contract tests with a stub for an asgi app (like sanic):
 - If you are using an asgi app like sanic, fastapi, use the ``````with_asgi_app`````` function and pass it a string in the 'module:app' format.
-``````
+``````python
 class TestContract:
     pass
     
@@ -92,7 +109,7 @@ Specmatic() \
 
 ### Passing extra arguments to stub/test
 - To pass arguments like '--strict', '--testBaseUrl', pass them as a list to the 'args' parameter:
-``````
+``````python
 class TestContract:
     pass
 
@@ -110,7 +127,7 @@ Specmatic can generate a coverage summary report which will list out all the api
 
 ### Enabling api coverage for Flask apps
 
-``````
+``````python
 class TestContract:
     pass
 
@@ -125,7 +142,7 @@ Specmatic() \
 
 ### Enabling api coverage for Sanic apps
 
-``````
+``````python
 class TestContract:
     pass
 
@@ -140,7 +157,7 @@ Specmatic() \
 
 ### Enabling api coverage for FastApi apps
 
-``````
+``````python
 class TestContract:
     pass
 
@@ -162,7 +179,7 @@ The ``````CoverageRoute`````` class has two properties:
 
 You can then enable coverage by passing your adapter like this:  
 
-``````
+``````python
 Specmatic() \
     .with_project_root(PROJECT_ROOT) \
     .with_stub(stub_host, stub_port, [expectation_json_file]) \
@@ -183,7 +200,7 @@ The only point to remember in mind is that the EndPointsApi url should return a 
 as described [here](https://docs.spring.io/spring-boot/docs/current/actuator-api/htmlsingle/#mappings).  
 
 Here's an example where we start both our FastApi app and coverage server outside the specmatic api call.  
-``````
+``````python
 app_server = ASGIAppServer('test.apps.fast_api:app', app_host, app_port)
 coverage_server = FastApiAppCoverageServer(app)
 

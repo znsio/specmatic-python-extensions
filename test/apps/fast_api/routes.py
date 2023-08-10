@@ -27,11 +27,21 @@ def find_available_products(type: str = Query(None, description="Filter by produ
 
 # Dummy route for coverage testing
 @app.post("/orders", response_model=int)
-async def create_order(request):
+async def create_order():
     pass
 
 
-# Dummy route for coverage testing
-@app.get("/orders/{order_id}", response_model=dict)
-def get_order(request):
+# Dummy routes for coverage testing
+@app.get("/orders/{order_id:int}", response_model=dict)
+def get_order(order_id: int):
+    pass
+
+
+@app.get("/orders/{order_id:int}/", response_model=dict)
+def get_order(order_id: int):
+    pass
+
+
+@app.get("/orders/{order_id:int}/details/{code:str}/info", response_model=dict)
+def get_order(order_id: int, code: str):
     pass
