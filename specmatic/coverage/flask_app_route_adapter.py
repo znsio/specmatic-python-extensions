@@ -14,7 +14,7 @@ class FlaskAppRouteAdapter(AppRouteAdapter):
                 print(f"\nStarted adapting route: {route_url} with methods: {methods}")
                 route_url = self.convert_to_spring_actuator_url_format(route_url)
                 self.process_route(route_url, methods)
-        return self.routes
+        return self.routes_as_list()
 
     def convert_to_spring_actuator_url_format(self, flask_route_url):
         pattern = r'<\w+:(\w+)>'

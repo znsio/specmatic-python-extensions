@@ -42,6 +42,36 @@ def get_order(order_id: int):
     pass
 
 
+@app.post("/orders/{order_id:int}", response_model=dict)
+def update_order(order_id: int):
+    pass
+
+
+@app.post("/orders/{order_id:int}/", response_model=dict)
+def update_order(order_id: int):
+    pass
+
+
+@app.put("/orders/{order_id:int}", response_model=dict)
+def update_order(order_id: int):
+    pass
+
+
+@app.put("/orders/{order_id:int}", response_model=dict)
+def update_order(order_id: int):
+    pass
+
+
+@app.delete("/orders/{order_id:int}/", response_model=dict)
+def delete_order(order_id: int):
+    pass
+
+
+@app.delete("/orders/{order_id:int}/", response_model=dict)
+def delete_order(order_id: int):
+    pass
+
+
 @app.get("/orders/{order_id:int}/details/{code:str}/info", response_model=dict)
-def get_order(order_id: int, code: str):
+def get_info(order_id: int, code: str):
     pass

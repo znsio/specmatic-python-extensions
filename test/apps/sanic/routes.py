@@ -5,7 +5,7 @@ import json as jsonp
 from test.apps.sanic.products import Products
 
 
-@app.route("/findAvailableProducts", methods=["GET"])
+@app.get("/findAvailableProducts")
 async def get_products(request):
     product_type = request.args.get("type")
     if not product_type:
@@ -23,12 +23,17 @@ async def get_products(request):
 
 
 # Dummy route for coverage testing
-@app.route("/orders", methods=["POST"])
+@app.post("/orders")
 async def create_order(request):
     pass
 
 
 # Dummy route for coverage testing
-@app.route("/orders/<order_id:int>", methods=["GET"])
+@app.get("/orders/<order_id:int>")
 async def get_order(request):
+    pass
+
+
+@app.post("/orders/<order_id:int>")
+async def update_order(request):
     pass
