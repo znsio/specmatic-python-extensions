@@ -10,5 +10,26 @@
         "in/specmatic/examples/store/api_order_v1.yaml"
       ]
     }
-  ]
+  ],
+   "report": {
+    "formatters": [
+      {
+        "type": "text",
+        "layout": "table"
+      }
+    ],
+    "types": {
+      "APICoverage": {
+        "OpenAPI": {
+          "successCriteria": {
+            "minThresholdPercentage": 100,
+            "maxMissedEndpointsInSpec": 0,
+            "enforce": false
+          },
+          "excludedEndpoints": [
+          ]
+        }
+      }
+    }
+  }
 }
