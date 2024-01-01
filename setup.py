@@ -26,7 +26,7 @@ setup(
     install_requires=[
         'pytest>=7.3.1',
         'requests>=2.26.0',
-        'Werkzeug>=2.3.3',
+        'Werkzeug>=2.3.8',
         'uvicorn>=0.18.0',
         'fastapi>=0.70.0',
         'flask>=2.2.5',
