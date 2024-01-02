@@ -6,7 +6,7 @@ Thanks for being willing to contribute!
 
 1. Fork and clone the repo
 2. Install Python > 3.8
-3. Install JRE 17
+3. Install JRE 17 or later
 4. Run `pip install -r requirements.txt` project root folder to install dependencies
 5. Create a branch for your PR with `git checkout -b your-branch-name`
 
