@@ -1,2 +1,2 @@
-__version__ = '0.26.4'
-__specmatic_version__ = '1.2.11'
+__version__ = '0.26.5'
+__specmatic_version__ = '1.2.12'
