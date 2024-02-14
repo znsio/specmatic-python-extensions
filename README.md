@@ -64,7 +64,7 @@ pytest.main()
 `````` 
 
 - In this, we are passing:
-  - an instance of your asgi app like flask 
+  - an instance of your wsgi app like flask 
   - app_host and app_port. If they are not specified, the app will be started on a random available port on 127.0.0.1.
   - You would need a [specmatic.json](https://specmatic.in/documentation/specmatic_json.html) file to be present in the root directory of your project.
   - an empty test class.
