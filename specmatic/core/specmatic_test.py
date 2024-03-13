@@ -23,5 +23,7 @@ class SpecmaticTest(SpecmaticBase):
     def _execute_tests(self):
         self.validate_mandatory_fields()
         cmd = self.create_command_array('test', get_junit_report_dir_path())
+        print("command array:")
+        print(cmd)
         print(f"\n Running specmatic tests for api at {self.host}:{self.port}")
         subprocess.run(cmd)
