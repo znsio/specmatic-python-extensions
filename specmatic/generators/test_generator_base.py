@@ -1,15 +1,28 @@
 import xml.etree.ElementTree as ET
+from typing import List
+
+from specmatic.generators.contract_test import ContractTest
 
 
 class TestGeneratorBase:
     @staticmethod
-    def generate_tests(junit_report_path, test_class, passing_test_fn, failing_test_fn):
+    def extract_contract_tests(junit_report_path) -> List[ContractTest]:
+        def extract_test_name(testcase) -> str:
+            return "test_" + testcase.get('name').strip()
+
+        def get_error_message(failure) -> str:
+            return "" if failure is None else failure.get('message')
+
         root = ET.parse(junit_report_path).getroot()
-        for testcase in root.iter('testcase'):
-            scenario = testcase.find('system-out').text.split('display-name:')[1].strip()
-            test_name = "test_" + scenario
-            failure = testcase.find('failure')
-            if failure is None:
-                setattr(test_class, test_name, passing_test_fn())
-            else:
-                setattr(test_class, test_name, failing_test_fn(failure.get('message') + failure.text))
+
+        contract_tests = [
+            ContractTest(
+                name=extract_test_name(testcase),
+                passed=failure is None,
+                error_message=get_error_message(failure)
+            )
+            for testcase in root.iter('testcase')
+            for failure in [testcase.find('failure')]
+        ]
+        print("Extracted " + str(len(contract_tests)) + " contract test(s)")
+        return contract_tests

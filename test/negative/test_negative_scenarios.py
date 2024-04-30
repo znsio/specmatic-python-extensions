@@ -12,8 +12,8 @@ app_port = 8000
 stub_host = "127.0.0.1"
 stub_port = 8080
 
-expectation_json_file = PROJECT_ROOT + '/test/data/expectation.json'
-invalid_expectation_json_file = PROJECT_ROOT + '/test/data/invalid_expectation.json'
+expectation_json_file = PROJECT_ROOT + '/test/resources/data/expectation.json'
+invalid_expectation_json_file = PROJECT_ROOT + '/test/resources/data/invalid_expectation.json'
 app_module = PROJECT_ROOT + '/test/sanic_app'
 
 

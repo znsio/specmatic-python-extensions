@@ -11,7 +11,7 @@ stub_host = "127.0.0.1"
 stub_port = 8080
 PROJECT_ROOT = get_project_root()
 APP_ROOT = PROJECT_ROOT + '/test'
-expectation_json_file = PROJECT_ROOT + '/test/data/expectation.json'
+expectation_json_file = PROJECT_ROOT + '/test/resources/data/expectation.json'
 
 
 @specmatic_contract_test(project_root=PROJECT_ROOT, appRouteAdapter=FlaskAppRouteAdapter(app))
