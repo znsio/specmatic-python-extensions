@@ -15,7 +15,7 @@ class FlaskAppRouteAdapter(AppRouteAdapter):
                 route_url = self.convert_to_spring_actuator_url_format(route_url)
                 self.process_route(route_url, methods)
         return self.routes_as_list()
-
+    
     def convert_to_spring_actuator_url_format(self, flask_route_url):
-        pattern = r'<\w+:(\w+)>'
+        pattern = r'<[^>]*:?\b(\w+)\b>'
         return re.sub(pattern, r'{\1}', flask_route_url)

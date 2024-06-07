@@ -7,3 +7,5 @@ __pycache__
 specmatic.jar
 specmatic_python.egg-info/*
 dist/*
+.venv
+build
