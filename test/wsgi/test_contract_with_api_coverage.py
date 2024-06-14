@@ -9,7 +9,7 @@ app_port = 5000
 stub_host = "127.0.0.1"
 stub_port = 8080
 PROJECT_ROOT = get_project_root()
-expectation_json_file = PROJECT_ROOT + '/test/data/expectation.json'
+expectation_json_file = PROJECT_ROOT + '/test/resources/data/expectation.json'
 
 
 class TestContract:

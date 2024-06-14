@@ -1,0 +1,121 @@
+<testsuite errors="0" failures="2" hostname="apples-MacBook-Pro.local" name="Contract Tests" skipped="0" tests="5"
+           time="2.234" timestamp="2024-04-22T23:27:12">
+    <properties>
+        <property name="apple.awt.application.name" value="SpecmaticApplication"/>
+        <property name="environment" value=""/>
+        <property name="file.encoding" value="UTF-8"/>
+        <property name="file.separator" value="/"/>
+        <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+        <property name="host" value="localhost"/>
+        <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+        <property name="java.awt.headless" value="true"/>
+        <property name="java.class.path" value="/Users/jaydeep/specmatic/specmatic.jar"/>
+        <property name="java.class.version" value="63.0"/>
+        <property name="java.home" value="/Library/Java/JavaVirtualMachines/temurin-19.jdk/Contents/Home"/>
+        <property name="java.io.tmpdir" value="/var/folders/t0/n9_yhvbn5yx6cs4hwk48s3gm0000gp/T/"/>
+        <property name="java.library.path"
+                  value="/Users/jaydeep/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+        <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+        <property name="java.runtime.version" value="19.0.2+7"/>
+        <property name="java.specification.name" value="Java Platform API Specification"/>
+        <property name="java.specification.vendor" value="Oracle Corporation"/>
+        <property name="java.specification.version" value="19"/>
+        <property name="java.vendor" value="Eclipse Adoptium"/>
+        <property name="java.vendor.url" value="https://adoptium.net/"/>
+        <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+        <property name="java.vendor.version" value="Temurin-19.0.2+7"/>
+        <property name="java.version" value="19.0.2"/>
+        <property name="java.version.date" value="2023-01-17"/>
+        <property name="java.vm.compressedOopsMode" value="Zero based"/>
+        <property name="java.vm.info" value="mixed mode"/>
+        <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+        <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+        <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+        <property name="java.vm.specification.version" value="19"/>
+        <property name="java.vm.vendor" value="Eclipse Adoptium"/>
+        <property name="java.vm.version" value="19.0.2+7"/>
+        <property name="jdk.debug" value="release"/>
+        <property name="line.separator" value=" "/>
+        <property name="native.encoding" value="UTF-8"/>
+        <property name="os.arch" value="aarch64"/>
+        <property name="os.name" value="Mac OS X"/>
+        <property name="os.version" value="13.0"/>
+        <property name="path.separator" value=":"/>
+        <property name="port" value="5000"/>
+        <property name="protocol" value="http"/>
+        <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+        <property name="stderr.encoding" value="UTF-8"/>
+        <property name="stdout.encoding" value="UTF-8"/>
+        <property name="suggestions" value=""/>
+        <property name="suggestionsPath" value=""/>
+        <property name="sun.arch.data.model" value="64"/>
+        <property name="sun.boot.library.path"
+                  value="/Library/Java/JavaVirtualMachines/temurin-19.jdk/Contents/Home/lib"/>
+        <property name="sun.cpu.endian" value="little"/>
+        <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+        <property name="sun.java.command"
+                  value="/Users/jaydeep/specmatic/specmatic.jar test --port=5000 --junitReportDir=."/>
+        <property name="sun.java.launcher" value="SUN_STANDARD"/>
+        <property name="sun.jnu.encoding" value="UTF-8"/>
+        <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+        <property name="timeout" value="60"/>
+        <property name="user.country" value="IN"/>
+        <property name="user.dir" value="/Users/jaydeep/znsio/specmatic-order-api-python"/>
+        <property name="user.home" value="/Users/jaydeep"/>
+        <property name="user.language" value="en"/>
+        <property name="user.name" value="jaydeep"/>
+        <property name="user.timezone" value="Asia/Kolkata"/>
+    </properties>
+    <testcase classname="in.specmatic.test.SpecmaticJUnitSupport"
+              name="+ve  Scenario: GET /products/(id:number) -&gt; 404 | EX:INVALID_ID" time="0.005">
+        <system-out><![CDATA[
+            unique-id:
+            [engine:junit-jupiter]/[class:in.specmatic.test.SpecmaticJUnitSupport]/[test-factory:contractTest()]/[dynamic-test:#6]
+            display-name: +ve Scenario: GET /products/(id:number) -> 404 | EX:INVALID_ID
+            ]]>
+        </system-out>
+    </testcase>
+    <testcase classname="in.specmatic.test.SpecmaticJUnitSupport"
+              name="+ve  Scenario: DELETE /products/(id:number) -&gt; 200 | EX:DELETE_PRODUCT" time="0.006">
+        <failure message="server error"></failure>
+        <system-out><![CDATA[
+            unique-id:
+            [engine:junit-jupiter]/[class:in.specmatic.test.SpecmaticJUnitSupport]/[test-factory:contractTest()]/[dynamic-test:#7]
+            display-name: +ve Scenario: DELETE /products/(id:number) -> 200 | EX:DELETE_PRODUCT
+            ]]>
+        </system-out>
+    </testcase>
+    <testcase classname="in.specmatic.test.SpecmaticJUnitSupport"
+              name="+ve  Scenario: POST /products/(id:number) -&gt; 200 | EX:UPDATE_DETAILS" time="0.005">
+        <system-out><![CDATA[
+            unique-id:
+            [engine:junit-jupiter]/[class:in.specmatic.test.SpecmaticJUnitSupport]/[test-factory:contractTest()]/[dynamic-test:#4]
+            display-name: +ve Scenario: POST /products/(id:number) -> 200 | EX:UPDATE_DETAILS
+            ]]>
+        </system-out>
+    </testcase>
+    <testcase classname="in.specmatic.test.SpecmaticJUnitSupport"
+              name="+ve  Scenario: GET /products/(id:number) -&gt; 200 | EX:GET_DETAILS" time="0.009">
+        <failure message="server error"></failure>
+        <system-out><![CDATA[
+            unique-id:
+            [engine:junit-jupiter]/[class:in.specmatic.test.SpecmaticJUnitSupport]/[test-factory:contractTest()]/[dynamic-test:#5]
+            display-name: +ve Scenario: GET /products/(id:number) -> 200 | EX:GET_DETAILS
+            ]]>
+        </system-out>
+    </testcase>
+    <testcase classname="in.specmatic.test.SpecmaticJUnitSupport"
+              name="+ve  Scenario: POST /products/(id:number) -&gt; 200 | EX:UPDATE_DETAILS" time="0.008">
+        <system-out><![CDATA[
+            unique-id:
+            [engine:junit-jupiter]/[class:in.specmatic.test.SpecmaticJUnitSupport]/[test-factory:contractTest()]/[dynamic-test:#2]
+            display-name: +ve Scenario: POST /products/(id:number) -> 200 | EX:UPDATE_DETAILS
+            ]]>
+        </system-out>
+    </testcase>
+    <system-out><![CDATA[
+        unique-id: [engine:junit-jupiter]
+        display-name: Contract Tests
+        ]]>
+    </system-out>
+</testsuite>

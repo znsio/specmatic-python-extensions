@@ -10,8 +10,13 @@ class PyTestGenerator(TestGeneratorBase):
         self.junit_report_path = junit_report_path
 
     def generate(self):
-        self.generate_tests(self.junit_report_path, self.test_class,  PyTestGenerator._generate_passing_test,
-                            PyTestGenerator._generate_failing_test)
+        contract_tests = self.extract_contract_tests(self.junit_report_path)
+        for contract_test in contract_tests:
+            if contract_test.passed:
+                setattr(self.test_class, contract_test.name, PyTestGenerator._generate_passing_test())
+            else:
+                setattr(self.test_class, contract_test.name, PyTestGenerator._generate_failing_test(contract_test.error_message))
+
 
     @staticmethod
     def _generate_passing_test():

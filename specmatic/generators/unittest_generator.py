@@ -22,5 +22,10 @@ class UnitTestGenerator(TestGeneratorBase):
         return test
 
     def generate(self):
-        self.generate_tests(self.junit_report_path, self.test_class, UnitTestGenerator._gen_passing_test,
-                            UnitTestGenerator._gen_failing_test)
+        contract_tests = self.extract_contract_tests(self.junit_report_path)
+        for contract_test in contract_tests:
+            if contract_test.passed:
+                setattr(self.test_class, contract_test.name, UnitTestGenerator._gen_passing_test())
+            else:
+                setattr(self.test_class, contract_test.name,
+                        UnitTestGenerator._gen_failing_test(contract_test.error_message))
