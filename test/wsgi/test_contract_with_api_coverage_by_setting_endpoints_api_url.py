@@ -1,6 +1,7 @@
 import pytest
 
 from specmatic.core.specmatic import Specmatic
+from specmatic.coverage.servers.flask_app_coverage_server import FlaskAppCoverageServer
 from specmatic.servers.wsgi_app_server import WSGIAppServer
 from test import (
     APP_HOST,
@@ -13,7 +14,10 @@ from test import (
 )
 
 app_server = WSGIAppServer(FLASK_APP, APP_HOST, APP_PORT)
+coverage_server = FlaskAppCoverageServer(FLASK_APP)
+
 app_server.start()
+coverage_server.start()
 
 
 class TestContract:
@@ -21,14 +25,13 @@ class TestContract:
 
 
 Specmatic().with_project_root(ROOT_DIR).with_stub(
-    STUB_HOST,
-    STUB_PORT,
-    expectation_json_files,
-).test_with_api_coverage_for_flask_app(
-    TestContract, FLASK_APP, APP_HOST, APP_PORT
-).run()
+    STUB_HOST, STUB_PORT, expectation_json_files
+).with_endpoints_api(
+    coverage_server.endpoints_api,
+).test(TestContract, APP_HOST, APP_PORT).run()
 
 app_server.stop()
+coverage_server.stop()
 
 if __name__ == "__main__":
     pytest.main()

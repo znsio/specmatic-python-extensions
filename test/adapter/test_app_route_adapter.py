@@ -1,14 +1,9 @@
-from typing import List
-
-import pytest
-
 from specmatic.coverage.app_route_adapter import AppRouteAdapter
 from specmatic.coverage.coverage_route import CoverageRoute
 
 
 class DummyAdapter(AppRouteAdapter):
-
-    def to_coverage_routes(self) -> List[CoverageRoute]:
+    def to_coverage_routes(self) -> list[CoverageRoute]:  # type: ignore
         pass
 
 
@@ -29,4 +24,6 @@ class TestAppRouteAdapter:
         adapter.process_route("/route1/", ["PUT"])
         adapter.process_route("/route1", ["DELETE"])
         adapter.process_route("/route1/", ["DELETE"])
-        assert adapter.routes_as_list() == [CoverageRoute("/route1", ["GET", "POST", "PUT", "DELETE"])]
+        assert adapter.routes_as_list() == [
+            CoverageRoute("/route1", ["GET", "POST", "PUT", "DELETE"])
+        ]

@@ -1,21 +1,9 @@
-import configparser
+import os
 
 import pytest
 
 from specmatic.core.specmatic import Specmatic
-from specmatic.utils import get_project_root
-
-PROJECT_ROOT = get_project_root()
-
-app_host = "127.0.0.1"
-app_port = 8000
-stub_host = "127.0.0.1"
-stub_port = 8080
-
-expectation_json_file = PROJECT_ROOT + '/test/data/expectation.json'
-app_module = PROJECT_ROOT + '/test/sanic_app'
-
-config_ini_path = get_project_root() + '/test/config.ini'
+from test import ROOT_DIR, SANIC_STR, STUB_HOST, STUB_PORT, expectation_json_files
 
 
 class TestContract:
@@ -23,30 +11,24 @@ class TestContract:
 
 
 def set_app_config(host: str, port: int):
-    config = configparser.ConfigParser()
-    config.read(config_ini_path)
-    config['dev']['ORDER_API_HOST'] = host
-    config['dev']['ORDER_API_PORT'] = str(port)
-    with open(config_ini_path, 'w') as configfile:
-        config.write(configfile)
+    os.environ["ORDER_API_HOST"] = host
+    os.environ["ORDER_API_PORT"] = str(port)
+    os.environ["API_URL"] = f"http://{host}:{port}"
 
 
 def reset_app_config():
-    config = configparser.ConfigParser()
-    config.read(config_ini_path)
-    config['dev']['ORDER_API_HOST'] = '127.0.0.1'
-    config['dev']['ORDER_API_PORT'] = '8080'
-    with open(config_ini_path, 'w') as configfile:
-        config.write(configfile)
+    os.environ["ORDER_API_HOST"] = STUB_HOST
+    os.environ["ORDER_API_PORT"] = str(STUB_PORT)
+    os.environ["API_URL"] = f"http://{STUB_HOST}:{STUB_PORT}"
 
 
-Specmatic() \
-    .with_project_root(PROJECT_ROOT) \
-    .with_stub(expectations=[expectation_json_file]) \
-    .with_asgi_app('test.apps.sanic:app', set_app_config_func=set_app_config,
-                   reset_app_config_func=reset_app_config) \
-    .test(TestContract) \
-    .run()
+Specmatic().with_project_root(ROOT_DIR).with_stub(
+    expectations=expectation_json_files
+).with_asgi_app(
+    SANIC_STR,
+    set_app_config_func=set_app_config,
+    reset_app_config_func=reset_app_config,
+).test(TestContract).run()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pytest.main()

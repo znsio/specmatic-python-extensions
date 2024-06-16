@@ -4,9 +4,8 @@ from specmatic.core.specmatic import Specmatic
 from test import (
     APP_HOST,
     APP_PORT,
+    FLASK_APP,
     ROOT_DIR,
-    SANIC_APP,
-    SANIC_STR,
     STUB_HOST,
     STUB_PORT,
     expectation_json_files,
@@ -19,9 +18,10 @@ class TestContract:
 
 Specmatic().with_project_root(ROOT_DIR).with_stub(
     STUB_HOST, STUB_PORT, expectation_json_files
-).with_asgi_app(SANIC_STR, APP_HOST, APP_PORT).test_with_api_coverage_for_sanic_app(
-    TestContract, SANIC_APP
-).run()
-
+).with_wsgi_app(
+    FLASK_APP,
+    APP_HOST,
+    APP_PORT,
+).test(TestContract).run()
 if __name__ == "__main__":
     pytest.main()

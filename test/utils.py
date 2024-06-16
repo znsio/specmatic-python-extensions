@@ -1,6 +1,7 @@
 from pathlib import Path
+
+from specmatic.build_utils import download_specmatic_jar, get_version
 from specmatic.utils import get_project_root
-from specmatic.build_utils import get_version, download_specmatic_jar
 
 
 def download_specmatic_jar_if_does_not_exist():
