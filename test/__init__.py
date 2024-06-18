@@ -1,4 +1,3 @@
-import os
 import pathlib
 
 from test.apps.fast_api import app as FASTAPI_APP
@@ -7,8 +6,6 @@ from test.apps.sanic_app import app as SANIC_APP
 from test.utils import download_specmatic_jar_if_does_not_exist
 
 download_specmatic_jar_if_does_not_exist()
-
-os.environ["SPECMATIC_GENERATIVE_TESTS"] = "true"
 
 ROOT_DIR = str(pathlib.Path.cwd().absolute())
 
