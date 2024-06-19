@@ -4,14 +4,14 @@
       "provider": "git",
       "repository": "https://github.com/znsio/specmatic-order-contracts.git",
       "test": [
-        "in/specmatic/examples/store/product-search-bff-api.yaml"
+        "in/specmatic/examples/store/product-search-bff-api_v4.yaml"
       ],
       "stub": [
-        "in/specmatic/examples/store/api_order_v1.yaml"
+        "in/specmatic/examples/store/api_order_v3.yaml"
       ]
     }
   ],
-   "report": {
+  "report": {
     "formatters": [
       {
         "type": "text",
@@ -26,8 +26,7 @@
             "maxMissedEndpointsInSpec": 0,
             "enforce": false
           },
-          "excludedEndpoints": [
-          ]
+          "excludedEndpoints": []
         }
       }
     }

@@ -15,14 +15,14 @@ class PyTestGenerator(TestGeneratorBase):
 
     @staticmethod
     def _generate_passing_test():
-        def test(self):
+        def test_pass(self):
             assert 1 == 1
 
-        return test
+        return test_pass
 
     @staticmethod
     def _generate_failing_test(error):
-        def test(self):
+        def test_fail(self):
             pytest.fail(error)
 
-        return test
+        return test_fail

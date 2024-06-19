@@ -9,17 +9,17 @@ class UnitTestGenerator(TestGeneratorBase):
 
     @staticmethod
     def _gen_passing_test():
-        def test(self):
+        def test_pass(self):
             self.assertTrue(1 == 1)
 
-        return test
+        return test_pass
 
     @staticmethod
     def _gen_failing_test(error):
-        def test(self):
+        def test_fail(self):
             self.fail(error)
 
-        return test
+        return test_fail
 
     def generate(self):
         self.generate_tests(self.junit_report_path, self.test_class, UnitTestGenerator._gen_passing_test,

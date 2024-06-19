@@ -9,3 +9,5 @@ specmatic_python.egg-info/*
 dist/*
 .venv
 build
+.vscode
+specmatic.egg-info

@@ -15,5 +15,5 @@ class SanicAppRouteAdapter(AppRouteAdapter):
         return self.routes_as_list()
 
     def convert_to_spring_actuator_url_format(self, flask_route_url):
-        pattern = r'<(\w+):(\w+)>'
-        return re.sub(pattern, r'{\1}', flask_route_url)
+        pattern = r"<(\w+):([^\/]+)>"
+        return re.sub(pattern, r"{\1}", flask_route_url)
