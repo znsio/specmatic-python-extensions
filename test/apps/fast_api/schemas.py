@@ -1,6 +1,6 @@
 import enum
 
-from pydantic import BaseModel, StrictInt, StrictStr
+from pydantic import BaseModel, Field, StrictInt, StrictStr
 
 
 class OrderStatus(str, enum.Enum):
@@ -19,7 +19,7 @@ class ProductType(str, enum.Enum):
 class Product(BaseModel):
     name: StrictStr
     type: ProductType
-    inventory: StrictInt
+    inventory: StrictInt = Field(ge=1, le=101)
     id: StrictInt | None = None
     description: StrictStr | None = ""
 
