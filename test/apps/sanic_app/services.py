@@ -16,7 +16,7 @@ class ProductService:
     }
 
     @staticmethod
-    def find_products(p_type: ProductType | None) -> list[Product]:
+    def find_products(p_type: ProductType | None) -> list[dict]:
         resp = requests.get(
             f"{app.config['API_URL']}{ProductService._API_LIST['SEARCH']}",
             params={"type": p_type.value if p_type else None},
@@ -25,7 +25,7 @@ class ProductService:
         if resp.status_code != 200:
             raise SanicException("An error occurred while retrieving the products.", status_code=resp.status_code)
 
-        return Product.load_many(resp.json())
+        return resp.json()
 
     @staticmethod
     def create_product(product: Product) -> dict[str, int]:

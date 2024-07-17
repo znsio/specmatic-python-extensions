@@ -1,3 +1,4 @@
+import json
 import os
 from datetime import UTC, datetime
 
@@ -24,7 +25,7 @@ def handle_marshmallow_validation_error(e: "ValidationError"):
         timestamp=datetime.now(tz=UTC).isoformat(),
         status=400,
         error="Bad Request",
-        message=",".join(e.messages),
+        message=json.dumps(e.messages),
     ), 400
 
 

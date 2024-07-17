@@ -1,5 +1,4 @@
 from fastapi import APIRouter
-from fastapi.responses import JSONResponse
 
 from ..schemas import Order
 from ..services import OrdersService
@@ -7,7 +6,7 @@ from ..services import OrdersService
 orders = APIRouter()
 
 
-@orders.post("/orders")
-async def create_order(order: Order):
+@orders.post("/orders", status_code=201)
+async def create_order(order: Order) -> dict[str, int]:
     new_order = await OrdersService.create_order(order)
-    return JSONResponse(status_code=201, content={"id": new_order["id"]})
+    return {"id": new_order["id"]}

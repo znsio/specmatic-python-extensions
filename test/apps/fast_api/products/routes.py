@@ -19,10 +19,10 @@ async def find_available_products(
         raise HTTPException(503, "Timeout")
 
     products = await ProductService.find_products(type)
-    return JSONResponse(status_code=200, content=products)
+    return JSONResponse(content=products)
 
 
-@products.post("/products")
-async def add_product(data: Product):
+@products.post("/products", status_code=201)
+async def add_product(data: Product) -> dict[str, int]:
     product = await ProductService.create_product(data)
-    return JSONResponse(status_code=201, content={"id": product["id"]})
+    return {"id": product["id"]}

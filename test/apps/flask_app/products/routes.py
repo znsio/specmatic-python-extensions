@@ -15,7 +15,7 @@ def find_available_products():
         return abort(503, "Timeout")
 
     products = ProductService.find_products(p_type)
-    return Product.dump(products)
+    return jsonify(products)
 
 
 @products.route("/products", methods=["POST"])

@@ -21,7 +21,7 @@ async def find_available_products(request: "Request"):
         raise ServiceUnavailable("Timeout")
 
     products = ProductService.find_products(p_type)
-    return json(Product.dump(products), status=200)
+    return json(products, status=200)
 
 
 @products.route("/products", methods=["POST"])
