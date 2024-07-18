@@ -22,10 +22,10 @@ class TestNegativeScenarios:
             ).test(TestNegativeScenarios).run()
         assert (
             f"{exception.value}"
-            == "Please specify either of the following parameters: project_root, specmatic_json_file_path"
+            == "Please specify either of the following parameters: project_root, specmatic_config_file_path"
         )
 
-    def test_throws_exception_and_shuts_down_stub_when_specmatic_json_path_is_not_found(
+    def test_throws_exception_and_shuts_down_stub_when_specmatic_config_path_is_not_found(
         self,
     ):
         with pytest.raises(Exception) as exception:
@@ -33,7 +33,7 @@ class TestNegativeScenarios:
                 expectations=expectation_json_files
             ).with_asgi_app("test.apps.sanic_app:app").test(TestNegativeScenarios).run()
         assert (
-            f"{exception.value}".find("Stub process terminated due to an error") != -1
+            f"{exception.value}".find("Specmatic config file not found, please check project_root and specmatic_config_file_path parameters") != -1
         )
 
     def test_throws_exception_and_shuts_down_stub_when_stub_port_is_already_in_use(

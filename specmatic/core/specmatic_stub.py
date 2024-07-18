@@ -1,5 +1,4 @@
 import json
-import os
 import subprocess
 import threading
 import traceback
@@ -13,8 +12,8 @@ from specmatic.core.specmatic_base import SpecmaticBase
 class SpecmaticStub(SpecmaticBase):
 
     def __init__(self, host: str = '127.0.0.1', port: int = 0, project_root: str = '',
-                 specmatic_json_file_path: str = '', args=None):
-        super().__init__(host, port, project_root, specmatic_json_file_path, args)
+                 specmatic_config_file_path: str = '', args=None):
+        super().__init__(host, port, project_root, specmatic_config_file_path, args)
         self.__stub_started_event = None
         self.__process = None
         self.__stub_running_success_message = 'Stub server is running on '
