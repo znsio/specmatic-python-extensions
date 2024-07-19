@@ -1,5 +1,5 @@
 # Specmatic Python
-This is a Python library to run [Specmatic](https://specmatic.in).
+This is a Python library to run [Specmatic](https://specmatic.io).
 Specmatic is a contract driven development tool that allows us to turn OpenAPI contracts into executable specifications.
 <br/>Click below to learn more about Specmatic and Contract Driven Development<br/><br/>
 [![Specmatic - Contract Driven Development](https://img.youtube.com/vi/3HPgpvd8MGg/0.jpg)](https://www.youtube.com/watch?v=3HPgpvd8MGg "Specmatic - Contract Driven Development")
@@ -11,8 +11,8 @@ Specmatic is a contract driven development tool that allows us to turn OpenAPI c
 
 #### Running Contract Tests
 A contract test validates an open api specification against a running api service.  
-The open api specification can be present either locally or in a [Central Contract Repository](https://specmatic.in/documentation/central_contract_repository.html)  
-[Click here](https://specmatic.in/documentation/contract_tests.html) to learn more about contract tests.  
+The open api specification can be present either locally or in a [Central Contract Repository](https://specmatic.io/documentation/central_contract_repository.html)  
+[Click here](https://specmatic.io/documentation/contract_tests.html) to learn more about contract tests.  
 
 #### How to use
 - Create a file called test_contract.py in your test folder.  
@@ -66,12 +66,12 @@ pytest.main()
 - In this, we are passing:
   - an instance of your wsgi app like flask 
   - app_host and app_port. If they are not specified, the app will be started on a random available port on 127.0.0.1.
-  - You would need a [specmatic.json](https://specmatic.in/documentation/specmatic_json.html) file to be present in the root directory of your project.
+  - You would need a [specmatic.json](https://specmatic.io/documentation/specmatic_json.html) file to be present in the root directory of your project.
   - an empty test class.
   - stub_host, stub_port, optional list of json files to set expectations on the stub.  
     The stub_host, stub_port will be used to run the specmatic stub server.   
     If they are not supplied, the stub will be started on a random available port on 127.0.0.1.    
-    [Click here](https://specmatic.in/documentation/service_virtualization_tutorial.html) to learn more about stubbing/service virtualization.
+    [Click here](https://specmatic.io/documentation/service_virtualization_tutorial.html) to learn more about stubbing/service virtualization.
 -  You can run this test from either your IDE or command line by pointing pytest to your test folder:
    ``````pytest test -v -s``````  
 - NOTE: Please ensure that you set the '-v' and '-s' flags while running pytest as otherwise pytest may swallow up the console output.
