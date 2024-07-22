@@ -66,7 +66,7 @@ pytest.main()
 - In this, we are passing:
   - an instance of your wsgi app like flask 
   - app_host and app_port. If they are not specified, the app will be started on a random available port on 127.0.0.1.
-  - You would need a [specmatic config](https://specmatic.in/documentation/specmatic_json.html) file to be present in the root directory of your project.
+  - You would need a [specmatic config](https://specmatic.io/documentation/specmatic_json.html) file to be present in the root directory of your project.
   - an empty test class.
   - stub_host, stub_port, optional list of json files to set expectations on the stub.  
     The stub_host, stub_port will be used to run the specmatic stub server.   

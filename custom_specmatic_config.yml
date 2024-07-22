@@ -1,10 +1,10 @@
 sources:
   - provider: git
     repository: https://github.com/znsio/specmatic-order-contracts.git
-    test:
-      - in/specmatic/examples/store/product-search-bff-api_v4.yaml
-    stub:
-      - in/specmatic/examples/store/api_order_v3.yaml
+    provides:
+      - io/specmatic/examples/store/openapi/product_search_bff_v4.yaml
+    consumes:
+      - io/specmatic/examples/store/openapi/api_order_v3.yaml
 
 report:
   formatters:
