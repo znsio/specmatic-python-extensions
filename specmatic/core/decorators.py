@@ -12,10 +12,10 @@ from specmatic.utils import get_junit_report_file_path
 
 
 def specmatic_stub(host: str = '127.0.0.1', port: int = 0, project_root: str = '', expectations=None,
-                   specmatic_json_file: str = ''):
+                   specmatic_config_file_path: str = ''):
     def decorator(cls):
         try:
-            cls.stub = SpecmaticStub(host, port, project_root, specmatic_json_file)
+            cls.stub = SpecmaticStub(host, port, project_root, specmatic_config_file_path)
             cls.stub.set_expectations(expectations)
         except Exception as e:
             if hasattr(cls, 'stub'):
@@ -31,7 +31,7 @@ def specmatic_stub(host: str = '127.0.0.1', port: int = 0, project_root: str = '
 
 def specmatic_contract_test(host: str = '127.0.0,1', port: int = 0,
                                               project_root: str = '',
-                                              specmatic_json_file: str = '', args=None, appRouteAdapter: AppRouteAdapter=None,):
+                                              specmatic_config_file_path: str = '', args=None, appRouteAdapter: AppRouteAdapter=None,):
     def decorator(cls):
         try:
             test_host = host
@@ -47,7 +47,7 @@ def specmatic_contract_test(host: str = '127.0.0,1', port: int = 0,
                 cls.coverage_server.start()
                 endpoints_api = cls.coverage_server.endpoints_api
 
-            SpecmaticTest(test_host, test_port, project_root, specmatic_json_file, args,
+            SpecmaticTest(test_host, test_port, project_root, specmatic_config_file_path, args,
                           endpoints_api).run()
 
             if issubclass(cls, unittest.TestCase):
