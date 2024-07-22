@@ -37,7 +37,7 @@ class Specmatic:
         self.test_args = None
 
         self.project_root = ''
-        self.specmatic_json_file_path = ''
+        self.specmatic_config_file_path = ''
 
         self.run_stub = False
         self.run_app = False
@@ -50,8 +50,8 @@ class Specmatic:
         self.project_root = project_root
         return self
 
-    def with_specmatic_json_file_path(self, specmatic_json_file_path):
-        self.specmatic_json_file_path = specmatic_json_file_path
+    def with_specmatic_config_file_path(self, specmatic_config_file_path):
+        self.specmatic_config_file_path = specmatic_config_file_path
         return self
 
     def with_stub(self, stub_host: str = '127.0.0.1', stub_port: int = 0, expectations=None, args=None):
@@ -138,7 +138,7 @@ class Specmatic:
 
     def __start_stub(self):
         if self.run_stub:
-            self.stub = SpecmaticStub(self.stub_host, self.stub_port, self.project_root, self.specmatic_json_file_path,
+            self.stub = SpecmaticStub(self.stub_host, self.stub_port, self.project_root, self.specmatic_config_file_path,
                                       self.stub_args)
             self.stub.set_expectations(self.expectations)
             if self.app_server is not None:
@@ -157,7 +157,7 @@ class Specmatic:
                     self.endpoints_api = self.coverage_server.endpoints_api
 
             SpecmaticTest(self.test_host, self.test_port, self.project_root,
-                          self.specmatic_json_file_path, self.test_args, self.endpoints_api).run()
+                          self.specmatic_config_file_path, self.test_args, self.endpoints_api).run()
 
             if issubclass(self.test_class, unittest.TestCase):
                 print("Injecting unittest methods")
