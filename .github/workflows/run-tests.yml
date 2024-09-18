@@ -23,7 +23,7 @@ jobs:
           java-version: '17'
           distribution: 'oracle'
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -38,14 +38,14 @@ jobs:
       - name: Run contract as tests with Specmatic Python
         run: coverage run --branch -m pytest test -v -s --junitxml contract-test-reports/TEST-junit-jupiter.xml
       - name: Publish contract test report
-        uses: mikepenz/action-junit-report@v3
+        uses: mikepenz/action-junit-report@v4
         if: always()
         with:
           report_paths: '**/contract-test-reports/TEST-*.xml'
       - name: Generate coverage report
         run: coverage html -d coverage-report
       - name: Upload coverage report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: coverage-report
