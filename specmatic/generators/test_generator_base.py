@@ -15,7 +15,7 @@ class TestGeneratorBase:
                 if test_case_info is None:
                     raise ValueError("Invalid test case information")
                 unique_id = test_case_info.groups()[0]
-                test_name = f"test [{unique_id}] {testcase.get("name")}"
+                test_name  = f"test [{unique_id}] {testcase.get('name')}"
                 failure_message = testcase.findtext('failure')
                 if failure_message is None:
                     test_cases.append((unique_id, test_name, passing_test_fn()))
