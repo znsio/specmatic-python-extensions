@@ -3,8 +3,9 @@ import socket
 import pytest
 
 from specmatic.core.specmatic import Specmatic
+from specmatic.core.specmatic_stub import SpecmaticStub
 from specmatic.utils import find_available_port
-from test import ROOT_DIR, expectation_json_files
+from test import RESOURCE_DIR, ROOT_DIR
 
 app_host = "127.0.0.1"
 app_port = 8000
@@ -15,6 +16,40 @@ invalid_expectation_json_file = ROOT_DIR + "/test/data/invalid_expectation.json"
 
 
 class TestNegativeScenarios:
+    def test_should_be_able_to_parse_randomly_assigned_stub_port(self):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.bind(("localhost", 9000))
+        try:
+            stub = SpecmaticStub("127.0.0.1", project_root=ROOT_DIR)
+            stub.stop()
+        finally:
+            sock.close()
+
+    def test_should_pick_first_port_when_multi_port_stub_is_used(self):
+        multi_stub_conf = RESOURCE_DIR / "multi_port_stub.yaml"
+        stub = SpecmaticStub("127.0.0.1", specmatic_config_file_path=str(multi_stub_conf))
+        try:
+            stub.stop()
+        finally:
+            assert stub.port == "9000"
+
+    def test_set_expectations_on_first_port_when_multi_port(self):
+        multi_stub_conf = RESOURCE_DIR / "multi_port_stub.yaml"
+        example = f"{ROOT_DIR}/test/data/stub0.json"
+        stub = SpecmaticStub("127.0.0.1", specmatic_config_file_path=str(multi_stub_conf))
+        try:
+            stub.set_expectations([example])
+        finally:
+            stub.stop()
+
+    def test_expectations_should_fail_when_invalid_port_is_specified(self):
+        multi_stub_conf = RESOURCE_DIR / "multi_port_stub.yaml"
+        example = f"{ROOT_DIR}/test/data/stub0.json"
+        stub = SpecmaticStub("127.0.0.1", specmatic_config_file_path=str(multi_stub_conf))
+        with pytest.raises(Exception):
+            stub.set_expectations([example], 1234)
+        stub.stop()
+
     def test_throws_exception_and_shuts_down_stub_when_stub_port_is_already_in_use(
         self,
     ):

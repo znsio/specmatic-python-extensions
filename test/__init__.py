@@ -8,6 +8,7 @@ from test.utils import download_specmatic_jar_if_does_not_exist
 download_specmatic_jar_if_does_not_exist()
 
 ROOT_DIR = str(pathlib.Path.cwd().absolute())
+RESOURCE_DIR = pathlib.Path.cwd() / "test" / "resources"
 
 expectation_json_files = []
 for file in pathlib.Path(ROOT_DIR, "test/data").iterdir():

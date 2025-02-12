@@ -17,7 +17,8 @@ class SpecmaticStub(SpecmaticBase):
         super().__init__(host, port, project_root, specmatic_config_file_path, args)
         self.__stub_started_event = None
         self.__process = None
-        self.__stub_running_success_message = 'Stub server is running on '
+        self.__free_port_message = 'Free port found'
+        self.__stub_serving_message = 'serving endpoints from specs'
         self.__error_queue = Queue()
         self.__start()
 
@@ -38,9 +39,14 @@ class SpecmaticStub(SpecmaticBase):
             print(f"\n Shutting down specmatic stub server on {self.host}:{self.port}, please wait ...")
             self.__process.kill()
 
-    def set_expectations(self, file_paths: []):
+    def set_expectations(self, file_paths: list[str], port: int|None = None):
+        port = port or self.port
+        if port is None:
+            raise Exception("The port needs to be specified, as the stub started on a random port and extraction failed from logs")
+
         if file_paths is None:
             file_paths = []
+
         try:
             for file_path in file_paths:
                 with open(file_path, 'r') as file:
@@ -48,7 +54,7 @@ class SpecmaticStub(SpecmaticBase):
                     headers = {
                         "Content-Type": "application/json"
                     }
-                    response = requests.post(self.__get_expectations_api_url(), json=json_string, headers=headers)
+                    response = requests.post(self.__get_expectations_api_url(port), json=json_string, headers=headers)
                     if response.status_code != 200:
                         self.stop()
                         raise Exception(f"{response.content} received for expectation json file: {json_string}")
@@ -58,8 +64,8 @@ class SpecmaticStub(SpecmaticBase):
             print(f"Error: {e}")
             raise e
 
-    def __get_expectations_api_url(self):
-        return f'http://{self.host}:{self.port}/_specmatic/expectations'
+    def __get_expectations_api_url(self, port):
+        return f'http://{self.host}:{port}/_specmatic/expectations'
 
     def __start_specmatic_stub_in_subprocess(self):
         stub_command = self.__create_stub_process_command()
@@ -83,9 +89,12 @@ class SpecmaticStub(SpecmaticBase):
 
     def __read_process_output(self):
         def signal_event_if_stub_has_started(line):
-            if self.__stub_running_success_message in line:
-                if self.port == 0:
-                    self.port = line.split(self.host + ':')[1].split('.')[0]
+            if self.__free_port_message in line and self.port == 0:
+                self.port = line.split(self.__free_port_message + ":")[1].strip()
+                self.__stub_started_event.set()
+
+            if self.__stub_serving_message in line and self.port == 0:
+                self.port = line.split(self.__stub_serving_message)[0].split(":")[-1].strip()
                 self.__stub_started_event.set()
 
         def read_and_print_output_line_by_line():
