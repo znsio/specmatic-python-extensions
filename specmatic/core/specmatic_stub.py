@@ -91,10 +91,10 @@ class SpecmaticStub(SpecmaticBase):
         def signal_event_if_stub_has_started(line):
             if self.__free_port_message in line and self.port == 0:
                 self.port = line.split(self.__free_port_message + ":")[1].strip()
-                self.__stub_started_event.set()
 
-            if self.__stub_serving_message in line and self.port == 0:
-                self.port = line.split(self.__stub_serving_message)[0].split(":")[-1].strip()
+            if self.__stub_serving_message in line:
+                if self.port == 0:
+                    self.port = line.split(self.__stub_serving_message)[0].split(":")[-1].strip()
                 self.__stub_started_event.set()
 
         def read_and_print_output_line_by_line():
