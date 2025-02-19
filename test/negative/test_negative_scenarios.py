@@ -1,4 +1,5 @@
 import socket
+from time import sleep
 
 import pytest
 
@@ -24,6 +25,13 @@ class TestNegativeScenarios:
             stub.stop()
         finally:
             sock.close()
+
+    def test_should_use_passed_port_even_if_final_logs_contradict_it(self):
+        stub = SpecmaticStub("127.0.0.1", 1234, project_root=ROOT_DIR)
+        try:
+            assert stub.port == 1234
+        finally:
+            stub.stop()
 
     def test_should_pick_first_port_when_multi_port_stub_is_used(self):
         multi_stub_conf = RESOURCE_DIR / "multi_port_stub.yaml"
