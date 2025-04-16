@@ -42,12 +42,11 @@ class TestNegativeScenarios:
             assert stub.port == "9002"
 
     def test_should_use_the_default_http_or_https_port_when_no_port_is_specified(self):
-        multi_stub_conf = RESOURCE_DIR / "multi_base_url_no_port.yaml"
-        stub = SpecmaticStub("127.0.0.1", specmatic_config_file_path=str(multi_stub_conf))
-        try:
-            stub.stop()
-        finally:
-            assert stub.port == "80"
+        port = SpecmaticStub._extract_port("- http://localhost/api")
+        assert port == "80"
+
+        port = SpecmaticStub._extract_port("- https://localhost/api")
+        assert port == "443"
 
     def test_should_pick_first_port_when_multi_base_url_stub_is_used(self):
         multi_stub_conf = RESOURCE_DIR / "multi_base_url_with_default.yaml"

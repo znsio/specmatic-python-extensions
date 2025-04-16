@@ -112,7 +112,8 @@ class SpecmaticStub(SpecmaticBase):
             self.__error_queue.put(tb)
             self.__stub_started_event.set()
 
-    def _extract_port(self, text: str) -> str:
+    @staticmethod
+    def _extract_port(text: str) -> str:
         for token in text.split():
             try:
                 parsed = urlparse(token)
