@@ -3,7 +3,6 @@ contracts:
   - git:
       url: "https://github.com/znsio/specmatic-order-contracts.git"
     consumes:
-      - "io/specmatic/examples/store/openapi/api_order_v1.yaml"
-      - port: 9002
+      - baseUrl: http://localhost/api
         specs:
           - "io/specmatic/examples/store/openapi/api_order_v3.yaml"

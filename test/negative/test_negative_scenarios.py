@@ -33,16 +33,32 @@ class TestNegativeScenarios:
         finally:
             stub.stop()
 
-    def test_should_pick_first_port_when_multi_port_stub_is_used(self):
-        multi_stub_conf = RESOURCE_DIR / "multi_port_stub.yaml"
+    def test_should_be_able_to_parse_port_when_base_url_has_postfix(self):
+        multi_stub_conf = RESOURCE_DIR / "multi_base_url.yaml"
+        stub = SpecmaticStub("127.0.0.1", specmatic_config_file_path=str(multi_stub_conf))
+        try:
+            stub.stop()
+        finally:
+            assert stub.port == "9002"
+
+    def test_should_use_the_default_http_or_https_port_when_no_port_is_specified(self):
+        multi_stub_conf = RESOURCE_DIR / "multi_base_url_no_port.yaml"
+        stub = SpecmaticStub("127.0.0.1", specmatic_config_file_path=str(multi_stub_conf))
+        try:
+            stub.stop()
+        finally:
+            assert stub.port == "80"
+
+    def test_should_pick_first_port_when_multi_base_url_stub_is_used(self):
+        multi_stub_conf = RESOURCE_DIR / "multi_base_url_with_default.yaml"
         stub = SpecmaticStub("127.0.0.1", specmatic_config_file_path=str(multi_stub_conf))
         try:
             stub.stop()
         finally:
             assert stub.port == "9000"
 
-    def test_set_expectations_on_first_port_when_multi_port(self):
-        multi_stub_conf = RESOURCE_DIR / "multi_port_stub.yaml"
+    def test_set_expectations_on_first_base_url_when_multi_port(self):
+        multi_stub_conf = RESOURCE_DIR / "multi_base_url_with_default.yaml"
         example = f"{ROOT_DIR}/test/data/stub0.json"
         stub = SpecmaticStub("127.0.0.1", specmatic_config_file_path=str(multi_stub_conf))
         try:
@@ -51,7 +67,7 @@ class TestNegativeScenarios:
             stub.stop()
 
     def test_expectations_should_fail_when_invalid_port_is_specified(self):
-        multi_stub_conf = RESOURCE_DIR / "multi_port_stub.yaml"
+        multi_stub_conf = RESOURCE_DIR / "multi_base_url_with_default.yaml"
         example = f"{ROOT_DIR}/test/data/stub0.json"
         stub = SpecmaticStub("127.0.0.1", specmatic_config_file_path=str(multi_stub_conf))
         with pytest.raises(Exception):

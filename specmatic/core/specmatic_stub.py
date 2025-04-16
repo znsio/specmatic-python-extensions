@@ -4,6 +4,7 @@ import subprocess
 import threading
 import traceback
 from queue import Queue
+from urllib.parse import urlparse
 
 import requests
 
@@ -94,7 +95,7 @@ class SpecmaticStub(SpecmaticBase):
 
             if self.__stub_serving_message in line:
                 if self.port == 0:
-                    self.port = line.split(self.__stub_serving_message)[0].split(":")[-1].strip()
+                    self.port = self._extract_port(line.split(self.__stub_serving_message)[0])
                 self.__stub_started_event.set()
 
         def read_and_print_output_line_by_line():
@@ -110,6 +111,22 @@ class SpecmaticStub(SpecmaticBase):
             tb = traceback.format_exc()
             self.__error_queue.put(tb)
             self.__stub_started_event.set()
+
+    def _extract_port(self, text: str) -> str:
+        for token in text.split():
+            try:
+                parsed = urlparse(token)
+                if not parsed.hostname:
+                    continue
+
+                implicit_port = { "http": 80,"https": 443 }.get(parsed.scheme, None)
+                port = parsed.port if parsed.port not in (None, -1) else implicit_port
+                if port is not None:
+                    return str(port)
+            except ValueError:
+                continue
+
+        raise Exception(f"Unable to extract port from: {text}")
 
     def __read_process_error_output(self):
         try:
