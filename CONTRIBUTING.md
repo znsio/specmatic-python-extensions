@@ -14,7 +14,7 @@ Thanks for being willing to contribute!
 > pull requests from branches on your fork. To do this, run:
 >
 > ```
-> git remote add upstream https://github.com/znsio/specmatic-python-extensions.git
+> git remote add upstream https://github.com/specmatic/specmatic-python-extensions.git
 > git fetch upstream
 > git branch --set-upstream-to=upstream/main main
 > ```
@@ -41,7 +41,7 @@ There are two builds as of now:
 1. Update the `````__version__````` property in `````specmatic/version.py````` file to the required version and check it in.  
    If the specmatic jar version is to updated, change the `````__specmatic_version__````` property in `````specmatic/version.py````` file accordingly.
 2. Ensure that the subsequent CI build is green.
-3. Navigate to the 'Releases' page: https://github.com/znsio/specmatic-python-extensions/releases
+3. Navigate to the 'Releases' page: https://github.com/specmatic/specmatic-python-extensions/releases
 4. Click on 'Draft a new release'
 5. Click on the 'Choose Tag' dropdown list and manually enter the version that was used in Step1.
 6. Set the Release title as 'v<Version>' ( For example: v0.4.7)
@@ -51,7 +51,7 @@ There are two builds as of now:
 
 ## Help needed
 
-Please checkout the [the open issues](https://github.com/znsio/specmatic-python-extensions/issues?q=is%3Aopen+is%3Aissue)
+Please checkout the [the open issues](https://github.com/specmatic/specmatic-python-extensions/issues?q=is%3Aopen+is%3Aissue)
 
 Also, please watch the repo and respond to questions/bug reports/feature
 requests! Thanks!
