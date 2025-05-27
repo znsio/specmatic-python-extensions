@@ -235,9 +235,9 @@ coverage_server.stop()
      If you are able to get the app started using uvicorn, it will work with specmatic too.  
 
 ## Sample Projects
-- [Check out the Specmatic Order BFF Python repo](https://github.com/znsio/specmatic-order-bff-python/) to see more examples of how to use specmatic with a Flask app.  
-- [Check out the Specmatic Order BFF Python Sanic repo](https://github.com/znsio/specmatic-order-bff-python-sanic/) to see more examples of how to use specmatic with a Sanic app.  
-- [Check out the Specmatic Order API Python repo](https://github.com/znsio/specmatic-order-api-python/) to see an examples of how to just run tests without using a stub.  
+- [Check out the Specmatic Order BFF Python repo](https://github.com/specmatic/specmatic-order-bff-python/) to see more examples of how to use specmatic with a Flask app.  
+- [Check out the Specmatic Order BFF Python Sanic repo](https://github.com/specmatic/specmatic-order-bff-python-sanic/) to see more examples of how to use specmatic with a Sanic app.  
+- [Check out the Specmatic Order API Python repo](https://github.com/specmatic/specmatic-order-api-python/) to see an examples of how to just run tests without using a stub.  
 
 
 
