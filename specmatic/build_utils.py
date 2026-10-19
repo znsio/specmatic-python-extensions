@@ -8,18 +8,12 @@ from pathlib import Path
 from specmatic.utils import get_project_root
 
 
-GITHUB_RELEASE_URL = "https://github.com/specmatic/specmatic/releases/download/{version}/specmatic.jar"
-REPOSILITE_RELEASE_URL = "https://repo.specmatic.io/releases/{artifact_path}"
-MAVEN_RELEASE_URL = "https://repo1.maven.org/maven2/{artifact_path}"
+SPECMATIC_RELEASE_URL = "https://repo.specmatic.io/releases/{artifact_path}"
 
 
 def download_specmatic_jar(version):
     artifact_path = f"io/specmatic/specmatic-executable-all/{version}/specmatic-executable-all-{version}.jar"
-    file_urls = [
-        GITHUB_RELEASE_URL.format(version=version),
-        REPOSILITE_RELEASE_URL.format(artifact_path=artifact_path),
-        MAVEN_RELEASE_URL.format(artifact_path=artifact_path),
-    ]
+    file_urls = [SPECMATIC_RELEASE_URL.format(artifact_path=artifact_path)]
     file_path = Path(get_project_root()) / "specmatic/core/specmatic.jar"
     failures = []
     for file_url in file_urls:
